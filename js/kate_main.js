@@ -1,4 +1,5 @@
-let allData = [], labData = [];
+(function() {
+  let allData = [], labData = [];
 let filteredData = [];
 
 const svg = d3.select("#chart");
@@ -439,3 +440,4 @@ sexFilter
 sexFilter
 .on("change.style", styleSexFilter)
 .dispatch("change");
+})

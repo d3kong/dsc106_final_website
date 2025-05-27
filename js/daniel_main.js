@@ -1,4 +1,5 @@
-const margin = { top: 100, right: 30, bottom: 30, left: 200 };
+(function() {
+  const margin = { top: 100, right: 30, bottom: 30, left: 200 };
 const width  = 1000 - margin.left - margin.right;
 const height = 700  - margin.top  - margin.bottom;
 
@@ -95,3 +96,4 @@ Promise.all([
   render(data);
 
 });
+})

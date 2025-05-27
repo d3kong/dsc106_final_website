@@ -5,8 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Surgical Insights – Interactive Atlas</title>
   <link rel="stylesheet" href="style.css">
+  
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script defer src="js/jwp_main.js"></script>
+  <script defer src="js/tracy_main.js"></script>
+  <script defer src="js/daniel_main.js"></script>
+  <script defer src="js/kate_main.js"></script>
+
+  <script defer src="js/scroll.js"></script>
 </head>
 <body>
   <div id="container">
@@ -15,26 +21,17 @@
     <section class="slide" id="slide1">
       <div class="body-wrapper">
         <div class="body-column">
-          <svg id="body-map" viewBox="0 0 494 610" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <rect x="0" y="0" width="494" height="610" fill="red" opacity="0.2"/>
+          <svg id="body-map" viewBox="0 0 494 610"
+               xmlns="http://www.w3.org/2000/svg"
+               xmlns:xlink="http://www.w3.org/1999/xlink">
             <image xlink:href="images/surgery_body.png" x="0" y="0" width="494" height="610" />
-            <g id="head_neck" class="region">
-              <circle cx="247" cy="100" r="60"></circle>
-              <rect  x="217" y="160" width="60" height="40"></rect>
-            </g>
-            <g id="thorax" class="region">
-              <path d="M175 170 Q247 120 319 170 L319 290 Q247 330 175 290 Z"/>
-            </g>
-            <g id="abdomen" class="region">
-              <path d="M185 255 Q247 290 309 255 L309 325 Q247 355 185 325 Z"/>
-            </g>
-            <g id="pelvis" class="region">
-              <path d="M205 330 Q247 355 289 330 L289 380 Q247 405 205 380 Z"/>
-            </g>
+            <!-- region overlays -->
+            <g id="head_neck" class="region"><circle cx="247" cy="100" r="60"></circle><rect x="217" y="160" width="60" height="40"></rect></g>
+            <g id="thorax"   class="region"><path d="M175 170 Q247 120 319 170 L319 290 Q247 330 175 290 Z"/></g>
+            <g id="abdomen"  class="region"><path d="M185 255 Q247 290 309 255 L309 325 Q247 355 185 325 Z"/></g>
+            <g id="pelvis"   class="region"><path d="M205 330 Q247 355 289 330 L289 380 Q247 405 205 380 Z"/></g>
           </svg>
-
         </div>
-
         <div class="text-column">
           <h2>Surgeries are stressful—both for your patients and for you.</h2>
           <p>Even the most routine procedures carry their own risks, and some operations, by their very nature, are significantly more complex or hazardous than others. Knowing what to expect and preparing accordingly can make all the difference.</p>
@@ -46,40 +43,70 @@
       </div>
     </section>
 
-    <section class="slide" id="slide2">
-      <h2>Slide 2: Risk & Demographic Patterns</h2>
-      <p>Identifying trends in past patients that could be correlated to surgical mortality risk can optimize preoperative decision-making...</p>
-
-      <label for="metricSelector">Select Metric:</label>
-      <select id="metricSelector"></select>
-
-      <label for="optypeSelector">Select Operation Type:</label>
-      <select id="optypeSelector"></select>
-
-      <button id="resetButton">Reset Filters</button>
-
-      <svg id="plot" width="300" height="350"></svg>
-      <div id="detailsBox"><strong>Click a boxplot</strong> or filter to see details</div>
-    </section>
-
-    <section class="slide" id="slide3">
-      <div class="placeholder">
-        <h2>Slide 3 Placeholder – Daniel Anxiety Stats</h2>
-        <p>Visualization will go here.</p>
+    <!-- Slide 2: Risk & Demographic Patterns (Tracy) -->
+    <section class="slide hidden" id="slide2">
+      <div class="slide2-wrapper">
+        <div class="left-body">
+          <img id="bodyImg" src="images/surgery_body.png" alt="Body map" />
+        </div>
+        <div class="right-viz">
+          <h2>Risk & Demographic Patterns</h2>
+          <div class="viz-block">
+            <label for="metricSelector">Select Metric:</label>
+            <select id="metricSelector"></select>
+            <label for="optypeSelector">Select Operation Type:</label>
+            <select id="optypeSelector"></select>
+            <button id="resetButton">Reset Filters</button>
+            <svg id="plot" width="300" height="350"></svg>
+            <div id="detailsBox"><strong>Click a boxplot</strong> or filter to see details</div>
+            <button id="maximizeBtn" title="Fullscreen">⛶</button>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="slide" id="slide4">
-      <div class="placeholder">
-        <h2>Slide 4 Placeholder – Kate Guide Stats</h2>
-        <p>Visualization will go here.</p>
+    <!-- Slide 3: Anxiety Heatmap (Daniel) -->
+    <section class="slide hidden" id="slide3">
+      <div class="slide2-wrapper">
+        <div class="left-body">
+          <img src="images/surgery_body.png" alt="Body map" id="bodyImg3" />
+        </div>
+        <div class="right-viz">
+          <h2>Surgery Anxiety Heatmap</h2>
+          <div id="heatmap"></div>
+          <div id="heatmap-details"></div>
+          <button id="maximizeBtn3" title="Fullscreen">⛶</button>
+        </div>
       </div>
     </section>
 
-    <section class="slide" id="slide5">
+    <!-- Slide 4: Preparation Guidance (Kate) -->
+    <section class="slide hidden" id="slide4">
+      <div class="slide2-wrapper">
+        <div class="left-body">
+          <img src="images/surgery_body.png" alt="Body map" id="bodyImg4" />
+        </div>
+        <div class="right-viz">
+          <h2>Tailored Surgery Preparation</h2>
+          <div id="kate-controls">
+            <label>Age: <input id="ageInput" type="number" /></label>
+            <label>Sex: <select id="sexInput"><option value="M">M</option><option value="F">F</option></select></label>
+            <label>Height (cm): <input id="heightInput" type="number" /></label>
+            <label>Weight (kg): <input id="weightInput" type="number" /></label>
+            <button id="kateSubmit">Get Profile</button>
+          </div>
+          <div id="kate-summary"></div>
+          <svg id="radarChart"></svg>
+          <button id="maximizeBtn4" title="Fullscreen">⛶</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 5: Conclusion -->
+    <section class="slide hidden" id="slide5">
       <div class="conclusion">
         <h2>Surgical care begins long before the incision.</h2>
-        <p>By using data to predict risk, anticipate anxiety, and prepare tailored guidance, you’re helping your patient face their operation not with fear—but with clarity. This isn't just about outcomes. It's about making the journey to the operating room more transparent, more informed, and more human.</p>
+        <p>By using data to predict risk, anticipate anxiety, and prepare tailored guidance, you’re helping your patient face their operation not with fear—but with clarity. This isn't about outcomes. It's about making the journey to the operating room more transparent, more informed, and more human.</p>
       </div>
     </section>
 
