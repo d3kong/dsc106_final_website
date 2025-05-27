@@ -54,21 +54,103 @@ const metrics = [
       }
 
       function drawBoxPlot() {
-        d3.selectAll(".boxplot").remove();
+        const svg = d3.select("#plot");
+        svg.selectAll("*").remove();         // clear old plot
 
-        // Filtered data by optype
-        let filtered = selectedOptype ? data.filter(d => d.optype === selectedOptype) : data;
+        // Size
+        const margin = { top: 30, right: 20, bottom: 50, left: 100 };
+        const innerW = +svg.attr("width")  - margin.left - margin.right;
+        const innerH = +svg.attr("height") - margin.top  - margin.bottom;
 
-        // Compute stats groups for each (risk,outcome)
+        const g = svg.append("g")
+                    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        /* ---------- data ---------- */
+        // filter by optype
+        const filtered = selectedOptype ? data.filter(d => d.optype === selectedOptype)
+                                        : data;
+
         const statsByGroup = [];
-        riskLevels.forEach(r => {
-          outcomes.forEach(o => {
-            const values = filtered
-              .filter(d => d.risk === r && d.death_inhosp === (o === "Died" ? 1 : 0))
+        riskLevels.forEach(risk => {
+          outcomes.forEach(out => {
+            const vals = filtered
+              .filter(d => d.risk === risk &&
+                          d.death_inhosp === (out === "Died" ? 1 : 0))
               .map(d => +d[currentMetric]);
-            if (values.length) statsByGroup.push({ risk: r, outcome: o, values });
+            if (vals.length) statsByGroup.push({
+              risk, outcome: out, values: vals,
+              stats: getBoxStats(vals)
+            });
           });
         });
+
+        if (!statsByGroup.length) return;  // nothing to draw
+
+        /* ---------- scales ---------- */
+        const x = d3.scaleLinear()
+                    .domain([
+                      d3.min(statsByGroup, d => d.stats.min),
+                      d3.max(statsByGroup, d => d.stats.max)
+                    ])
+                    .nice()
+                    .range([0, innerW]);
+
+        const y = d3.scaleBand()
+                    .domain(statsByGroup.map(d => `${d.outcome}-${d.risk}`))
+                    .range([0, innerH])
+                    .padding(0.25);
+
+        /* ---------- axes ---------- */
+        g.append("g")
+          .attr("class", "xaxis")
+          .attr("transform", `translate(0,${innerH})`)
+          .call(d3.axisBottom(x).ticks(4));
+
+        g.append("g")
+          .attr("class", "yaxis")
+          .call(
+            d3.axisLeft(y)
+              .tickFormat(d => {
+                const [o,r] = d.split("-");
+                return `${o} / ${r}`;
+              })
+          );
+
+        /* ---------- boxes ---------- */
+        const box = g.selectAll(".boxplot")
+                    .data(statsByGroup)
+                    .join("g")
+                    .attr("class", "boxplot")
+                    .attr("transform", d => `translate(0,${y(`${d.outcome}-${d.risk}`)})`)
+                    .on("click", d => {
+                      updateDetailsBoxFromFilter(d.values, currentMetric);
+                    });
+
+        // whiskers
+        box.append("line")
+          .attr("x1", d => x(d.stats.min))
+          .attr("x2", d => x(d.stats.max))
+          .attr("y1", y.bandwidth()/2)
+          .attr("y2", y.bandwidth()/2)
+          .attr("stroke", "#666");
+
+        // inter-quartile box
+        box.append("rect")
+          .attr("x",  d => x(d.stats.q1))
+          .attr("width", d => x(d.stats.q3) - x(d.stats.q1))
+          .attr("y",  0)
+          .attr("height", y.bandwidth())
+          .attr("fill", "#4682b4")
+          .attr("opacity", 0.7);
+
+        // median line
+        box.append("line")
+          .attr("x1", d => x(d.stats.median))
+          .attr("x2", d => x(d.stats.median))
+          .attr("y1", 0)
+          .attr("y2", y.bandwidth())
+          .attr("stroke", "#000")
+          .attr("stroke-width", 2);
       }
     });
 
@@ -98,4 +180,4 @@ const metrics = [
     `;
     d3.select('#detailsBox').html(html);
   }
-})
+})();
