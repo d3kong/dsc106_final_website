@@ -1,6 +1,6 @@
 async function init(){
   /* ----------- LOAD DATA ----------- */
-  const data = await d3.json("jwp.json");
+  const data = await d3.json("data/jwp.json");
   const regionStats = data.region_summary;
   const procStats   = data.proc_by_region;
   const statsMap = Object.fromEntries(regionStats.map(d=>[d.region,d]));

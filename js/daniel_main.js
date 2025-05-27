@@ -43,7 +43,7 @@ dropdown.selectAll("option")
 let lastHovered = null;
 
 Promise.all([
-  d3.json("daniel.json")
+  d3.json("data/daniel.json")
 ]).then(([data]) => {
   const metrics = ["death_score", "asa_score", "commonality_score", "anxiety_score"];
 

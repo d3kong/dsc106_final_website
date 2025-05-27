@@ -1,4 +1,4 @@
-fetch("tracy.json")
+fetch("data/tracy.json")
   .then(res => res.json())
   .then(data => {
     const outcomes = ["Survived", "Died"];

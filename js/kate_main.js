@@ -86,8 +86,8 @@ const labInfo = {
 
 // Load both datasets then initialize
 Promise.all([
-  d3.json("kate_card.json"), // allData for case filtering and summary
-  d3.json("kate_chart.json")            // labData for radar chart
+  d3.json("data/kate_card.json"), // allData for case filtering and summary
+  d3.json("data/kate_chart.json")            // labData for radar chart
 ]).then(([dashboardData, labTestData]) => {
   allData = dashboardData;
   labData = labTestData;
