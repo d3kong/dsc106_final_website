@@ -1,55 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DSC 106 – Surgery Visualization</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surgical Insights – Interactive Atlas</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script defer src="main.js"></script>
 </head>
 <body>
+  <div id="container">
 
-  <!-- ---------- TITLE SLIDE ---------- -->
-  <section class="slide" id="slide1">
-    <div class="title-content">
-      <h1>PROJECT NAME</h1>
-      <h2>DSC 106 • Spring 2025</h2>
-      <p>By John Wesley Pabalate</p>
-      <p class="hint">(click or press space)</p>
-    </div>
-  </section>
+    <!-- Slide 1: Intro & Body Selection -->
+    <section class="slide" id="slide1">
+      <div class="body-wrapper">
+        <div class="body-column">
+          <svg id="body-map" viewBox="0 0 494 610">
+            <image xlink:href="images/body_outline.png" x="0" y="0" width="494" height="610"/>
+            <g id="head_neck" class="region">
+              <circle cx="247" cy="100" r="60"></circle>
+              <rect  x="217" y="160" width="60" height="40"></rect>
+            </g>
+            <g id="thorax" class="region">
+              <path d="M175 170 Q247 120 319 170 L319 290 Q247 330 175 290 Z"/>
+            </g>
+            <g id="abdomen" class="region">
+              <path d="M185 255 Q247 290 309 255 L309 325 Q247 355 185 325 Z"/>
+            </g>
+            <g id="pelvis" class="region">
+              <path d="M205 330 Q247 355 289 330 L289 380 Q247 405 205 380 Z"/>
+            </g>
+          </svg>
+        </div>
 
-  <!-- ---------- CONTENT SLIDE ---------- -->
-  <section class="slide hidden" id="slide2">
-    <button id="returnBtn">⤺ Return</button>
-
-    <div class="slide2-wrapper" id="wrapper">
-      <!-- body column -->
-      <div class="left-body">
-        <img src="images/surgery_body.png" alt="Human body" id="bodyImg" />
+        <div class="text-column">
+          <h2>Surgeries are stressful—both for your patients and for you.</h2>
+          <p>Even the most routine procedures carry their own risks, and some operations, by their very nature, are significantly more complex or hazardous than others. Knowing what to expect and preparing accordingly can make all the difference.</p>
+          <p><strong>Note:</strong> Click on the area you're interested in to begin investigating the types of procedures commonly performed there—and the associated risk levels.</p>
+          <h3 class="section-title" id="viz-title"></h3>
+          <svg id="bar-chart"></svg>
+          <p id="viz-hint" class="hint">Click a bar to lock highlight</p>
+        </div>
       </div>
+    </section>
 
-      <!-- visualization column -->
-      <div class="right-viz">
-        <button id="maximizeBtn" title="Maximize visuals">↗</button>
-
-        <article class="viz-block">
-          <h3>Thyroid Procedures</h3>
-          <div class="chart-placeholder">[Bar Chart Goes Here]</div>
-        </article>
-
-        <article class="viz-block">
-          <h3>Cardiac Interventions</h3>
-          <div class="chart-placeholder">[Scatter Plot Goes Here]</div>
-        </article>
-
-        <article class="viz-block">
-          <h3>Orthopedic Outcomes</h3>
-          <div class="chart-placeholder">[Line Chart Goes Here]</div>
-        </article>
+    <!-- Placeholder for more slides -->
+    <section class="slide" id="slide2">
+      <div class="placeholder">
+        <h2>Slide 2 Placeholder – Tracy Stats</h2>
+        <p>Visualization will go here.</p>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <script src="script.js"></script>
+    <section class="slide" id="slide3">
+      <div class="placeholder">
+        <h2>Slide 3 Placeholder – Daniel Anxiety Stats</h2>
+        <p>Visualization will go here.</p>
+      </div>
+    </section>
+
+    <section class="slide" id="slide4">
+      <div class="placeholder">
+        <h2>Slide 4 Placeholder – Kate Guide Stats</h2>
+        <p>Visualization will go here.</p>
+      </div>
+    </section>
+
+    <section class="slide" id="slide5">
+      <div class="conclusion">
+        <h2>Surgical care begins long before the incision.</h2>
+        <p>By using data to predict risk, anticipate anxiety, and prepare tailored guidance, you’re helping your patient face their operation not with fear—but with clarity. This isn't just about outcomes. It's about making the journey to the operating room more transparent, more informed, and more human.</p>
+      </div>
+    </section>
+
+  </div>
 </body>
 </html>
