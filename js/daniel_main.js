@@ -1,7 +1,6 @@
-// interactive_anxiety_heatmap.js
 const margin = { top: 100, right: 30, bottom: 30, left: 200 };
-const width = 1000 - margin.left - margin.right;
-const height = 700 - margin.top - margin.bottom;
+const width  = 1000 - margin.left - margin.right;
+const height = 700  - margin.top  - margin.bottom;
 
 const svg = d3.select("#heatmap")
   .append("svg")
@@ -12,6 +11,7 @@ const svg = d3.select("#heatmap")
 
 const tooltip = d3.select("body")
   .append("div")
+  .attr("class","tooltip")
   .style("position", "absolute")
   .style("background", "#fff")
   .style("padding", "6px")
@@ -22,31 +22,14 @@ const tooltip = d3.select("body")
 
 const detailBox = d3.select("#details");
 
-const brushInfo = d3.select("#heatmap")
-  .append("div")
-  .attr("id", "brush-info")
-  .style("margin-top", "20px")
-  .style("font-size", "14px")
-  .style("font-family", "sans-serif");
-
-const dropdown = d3.select("#heatmap")
-  .insert("select", ":first-child")
-  .attr("id", "surgeryFilter")
-  .style("margin-bottom", "10px");
-
-dropdown.selectAll("option")
-  .data(["Top 10", "Top 20", "Top 50", "All"])
-  .enter()
-  .append("option")
-  .text(d => d);
-
-let lastHovered = null;
-
+// Load data and raw cases for grouping
 Promise.all([
-  d3.json("data/daniel.json")
-]).then(([data]) => {
+  d3.json("data/daniel.json"),
+  d3.csv("data/cases.csv", d3.autoType)
+]).then(([data, cases]) => {
   const metrics = ["death_score", "asa_score", "commonality_score", "anxiety_score"];
 
+  // Compute anxiety_score if not present
   data.forEach(d => {
     d.anxiety_score = 0.6 * d.death_score + 0.2 * d.asa_score + 0.2 * d.commonality_score;
   });
@@ -54,9 +37,20 @@ Promise.all([
   const scoreMin = d3.min(data, d => d.anxiety_score);
   const scoreMax = d3.max(data, d => d.anxiety_score);
 
-  const render = (filtered) => {
+  // Render function will re-run on filter changes
+  function render(filteredCases) {
     svg.selectAll("*").remove();
     detailBox.html("");
+
+    // Group by optype, averaging each metric
+    const grouped = Array.from(
+      d3.group(filteredCases, d => d.optype),
+      ([optype, recs]) => {
+        const entry = { optype };
+        metrics.forEach(m => entry[m] = d3.mean(recs, r => r[m]));
+        return entry;
+      }
+    );
 
     const x = d3.scaleBand()
       .domain(metrics)
@@ -64,7 +58,7 @@ Promise.all([
       .padding(0.05);
 
     const y = d3.scaleBand()
-      .domain(filtered.map(d => d.opname))
+      .domain(grouped.map(d => d.optype))
       .range([0, height])
       .padding(0.05);
 
@@ -75,92 +69,31 @@ Promise.all([
     svg.append("g").call(d3.axisTop(x));
     svg.append("g").call(d3.axisLeft(y));
 
-    const cellData = filtered.flatMap(d => metrics.map(m => ({
-      opname: d.opname,
-      metric: m,
-      value: d[m],
-      all: d
-    })));
+    // Flatten for rects
+    const cellData = grouped.flatMap(d =>
+      metrics.map(m => ({ optype: d.optype, metric: m, value: d[m], all: d }))
+    );
 
-    svg.selectAll()
+    svg.selectAll("rect")
       .data(cellData)
       .join("rect")
       .attr("x", d => x(d.metric))
-      .attr("y", d => y(d.opname))
+      .attr("y", d => y(d.optype))
       .attr("width", x.bandwidth())
       .attr("height", y.bandwidth())
       .style("fill", d => color(d.value))
       .style("stroke", "#fff")
-      .on("mouseover", function (event, d) {
-        lastHovered = d;
+      .on("mouseover", (event, d) => {
         tooltip.transition().duration(200).style("opacity", 1);
-        tooltip.html(`<b>${d.opname}</b><br>${d.metric}: ${d.value.toFixed(3)}`)
-          .style("left", (event.pageX + 10) + "px")
-          .style("top", (event.pageY - 28) + "px");
+        tooltip.html(`<b>${d.optype}</b><br>${d.metric}: ${d.value.toFixed(3)}`)
+          .style("left", (event.pageX+10)+"px")
+          .style("top",  (event.pageY-28)+"px");
       })
-      .on("mouseout", function () {
-        tooltip.transition().duration(500).style("opacity", 0);
-        lastHovered = null;
-      });
+      .on("mouseout", () => tooltip.transition().duration(500).style("opacity", 0));
+  }
 
-    const brush = d3.brush()
-      .extent([[0, 0], [width, height]])
-      .on("end", ({ selection }) => {
-        if (!selection) {
-          brushInfo.text("");
-          return;
-        }
-        const [[x0, y0], [x1, y1]] = selection;
-        const selected = cellData.filter(d => {
-          const cx = x(d.metric) + x.bandwidth() / 2;
-          const cy = y(d.opname) + y.bandwidth() / 2;
-          return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
-        });
+  // Initial draw with all cases
+  render(data);
 
-        svg.selectAll("rect")
-          .classed("selected", d => {
-            const cx = x(d.metric) + x.bandwidth() / 2;
-            const cy = y(d.opname) + y.bandwidth() / 2;
-            return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
-          });
-
-        if (selected.length > 0) {
-          const avg = d3.mean(selected, d => d.value);
-          brushInfo.html(`<b>${selected.length}</b> cells selected<br>Average value: <b>${avg.toFixed(3)}</b>`);
-        } else {
-          brushInfo.text("No cells selected.");
-        }
-      });
-
-    svg.append("g").call(brush);
-  };
-
-  const updateFilter = () => {
-    const choice = dropdown.node().value;
-    let filtered;
-    if (choice === "Top 10") filtered = data.sort((a, b) => b.anxiety_score - a.anxiety_score).slice(0, 10);
-    else if (choice === "Top 20") filtered = data.sort((a, b) => b.anxiety_score - a.anxiety_score).slice(0, 20);
-    else if (choice === "Top 50") filtered = data.sort((a, b) => b.anxiety_score - a.anxiety_score).slice(0, 50);
-    else filtered = data;
-    render(filtered);
-  };
-
-  dropdown.on("change", updateFilter);
-  updateFilter();
-
-  // Keyboard interaction
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && lastHovered) {
-      const vals = lastHovered.all;
-      detailBox.html(`
-        <div style="text-align:left; padding: 10px; border: 1px solid #ccc; background: #f9f9f9; border-radius: 6px;">
-          <b>${vals.opname}</b><br>
-          Anxiety Score: ${vals.anxiety_score.toFixed(3)}<br>
-          Death Score: ${vals.death_score.toFixed(3)}<br>
-          ASA Score: ${vals.asa_score.toFixed(3)}<br>
-          Commonality Score: ${vals.commonality_score.toFixed(3)}
-        </div>
-      `);
-    }
-  });
+  // If you have a surgeryFilter dropdown or body-click filter hook, call render() with the filtered subset
 });

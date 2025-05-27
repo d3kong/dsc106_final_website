@@ -1,12 +1,17 @@
 /* ---------- GLOBAL ---------- */
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;font-family:"Georgia",serif;overflow:hidden}
+html,body{
+  overflow: visible; /* TEMP DEBUG ONLY */
+}
 
 /* ---------- SLIDE SHELL ---------- */
 .slide{
   width:100vw;height:100vh;
   background:linear-gradient(to bottom,#b12d36,#3f3f9f);
-  color:#fff;display:flex;justify-content:center;align-items:center;position:relative}
+  color:#fff;display:flex;justify-content:center;align-items:center;
+  position:relative;
+  z-index: 1;
+}
 .hidden{display:none}
 
 /* ---------- TITLE SLIDE ---------- */
@@ -52,3 +57,62 @@ html,body{margin:0;height:100%;font-family:"Georgia",serif;overflow:hidden}
 .wrapper-collapsed .right-viz{flex:1 1 calc(100% - 80px);padding-left:60px}
 .wrapper-collapsed #maximizeBtn{display:none}
 
+/* ---------- BODY MAP REGIONS ---------- */
+.region path,
+.region circle,
+.region rect {
+  fill: transparent;
+  stroke: #000;
+  stroke-width: 1.5;
+  cursor: pointer;
+}
+
+.region--highlight {
+  stroke: #222;
+  stroke-width: 2.5;
+}
+
+.region--selected {
+  stroke: #ff0;
+  stroke-width: 3.5;
+}
+
+.region:hover path,
+.region:hover circle,
+.region:hover rect {
+  fill: rgba(255, 255, 0, 0.2);
+}
+
+#slide1 .body-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 40px;
+  padding: 0 40px;
+}
+
+.body-column {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.text-column {
+  max-width: 600px;
+}
+
+#body-map {
+  max-height: 85vh;
+  width: auto;
+  border: 2px dashed yellow;
+  background: rgba(255, 255, 255, 0.1);
+
+  position: relative;
+  height: 610px;
+  z-index: 10;
+}

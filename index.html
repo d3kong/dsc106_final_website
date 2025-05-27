@@ -6,7 +6,7 @@
   <title>Surgical Insights – Interactive Atlas</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script defer src="main.js"></script>
+  <script defer src="js/jwp_main.js"></script>
 </head>
 <body>
   <div id="container">
@@ -15,8 +15,9 @@
     <section class="slide" id="slide1">
       <div class="body-wrapper">
         <div class="body-column">
-          <svg id="body-map" viewBox="0 0 494 610">
-            <image xlink:href="images/body_outline.png" x="0" y="0" width="494" height="610"/>
+          <svg id="body-map" viewBox="0 0 494 610" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <rect x="0" y="0" width="494" height="610" fill="red" opacity="0.2"/>
+            <image xlink:href="images/surgery_body.png" x="0" y="0" width="494" height="610" />
             <g id="head_neck" class="region">
               <circle cx="247" cy="100" r="60"></circle>
               <rect  x="217" y="160" width="60" height="40"></rect>
@@ -31,6 +32,7 @@
               <path d="M205 330 Q247 355 289 330 L289 380 Q247 405 205 380 Z"/>
             </g>
           </svg>
+
         </div>
 
         <div class="text-column">
@@ -44,12 +46,20 @@
       </div>
     </section>
 
-    <!-- Placeholder for more slides -->
     <section class="slide" id="slide2">
-      <div class="placeholder">
-        <h2>Slide 2 Placeholder – Tracy Stats</h2>
-        <p>Visualization will go here.</p>
-      </div>
+      <h2>Slide 2: Risk & Demographic Patterns</h2>
+      <p>Identifying trends in past patients that could be correlated to surgical mortality risk can optimize preoperative decision-making...</p>
+
+      <label for="metricSelector">Select Metric:</label>
+      <select id="metricSelector"></select>
+
+      <label for="optypeSelector">Select Operation Type:</label>
+      <select id="optypeSelector"></select>
+
+      <button id="resetButton">Reset Filters</button>
+
+      <svg id="plot" width="300" height="350"></svg>
+      <div id="detailsBox"><strong>Click a boxplot</strong> or filter to see details</div>
     </section>
 
     <section class="slide" id="slide3">
