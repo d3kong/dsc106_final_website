@@ -2,35 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DSC 106 Project</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DSC 106 – Surgery Visualization</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Slide 1 -->
-  <div class="slide" id="slide1">
+
+  <!-- ---------- TITLE SLIDE ---------- -->
+  <section class="slide" id="slide1">
     <div class="title-content">
       <h1>PROJECT NAME</h1>
-      <h2>DSC 106</h2>
-      <p>By, ____________</p>
+      <h2>DSC 106 • Spring 2025</h2>
+      <p>By John Wesley Pabalate</p>
+      <p class="hint">(click or press space)</p>
     </div>
-  </div>
+  </section>
 
-  <!-- Slide 2 -->
-  <div class="slide hidden" id="slide2">
+  <!-- ---------- CONTENT SLIDE ---------- -->
+  <section class="slide hidden" id="slide2">
     <button id="returnBtn">⤺ Return</button>
-    <div class="slide2-content">
+
+    <div class="slide2-wrapper" id="wrapper">
+      <!-- body column -->
       <div class="left-body">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/Human_body_silhouette.svg" alt="body" />
+        <img src="images/surgery_body.png" alt="Human body" id="bodyImg" />
       </div>
+
+      <!-- visualization column -->
       <div class="right-viz">
-        <h3>Chart Title</h3>
-        <div class="chart-placeholder">
-          <p><em>[Insert Visualization Here]</em></p>
-        </div>
+        <button id="maximizeBtn" title="Maximize visuals">↗</button>
+
+        <article class="viz-block">
+          <h3>Thyroid Procedures</h3>
+          <div class="chart-placeholder">[Bar Chart Goes Here]</div>
+        </article>
+
+        <article class="viz-block">
+          <h3>Cardiac Interventions</h3>
+          <div class="chart-placeholder">[Scatter Plot Goes Here]</div>
+        </article>
+
+        <article class="viz-block">
+          <h3>Orthopedic Outcomes</h3>
+          <div class="chart-placeholder">[Line Chart Goes Here]</div>
+        </article>
       </div>
     </div>
-  </div>
+  </section>
 
   <script src="script.js"></script>
 </body>

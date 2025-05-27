@@ -1,66 +1,54 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: 'Georgia', serif;
-  }
-  
-  .slide {
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(to bottom, #b12d36, #3f3f9f);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .title-content {
-    text-align: center;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
-  .slide2-content {
-    display: flex;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .left-body {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .left-body img {
-    width: 60%;
-  }
-  
-  .right-viz {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: black;
-    background: white;
-    padding: 20px;
-    margin: 40px;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  }
-  
-  .chart-placeholder {
-    width: 300px;
-    height: 150px;
-    background-color: #eee;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-style: italic;
-  }
-  
+/* ---------- GLOBAL ---------- */
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;font-family:"Georgia",serif;overflow:hidden}
+
+/* ---------- SLIDE SHELL ---------- */
+.slide{
+  width:100vw;height:100vh;
+  background:linear-gradient(to bottom,#b12d36,#3f3f9f);
+  color:#fff;display:flex;justify-content:center;align-items:center;position:relative}
+.hidden{display:none}
+
+/* ---------- TITLE SLIDE ---------- */
+.title-content{text-align:center;line-height:1.3}
+.title-content h1{margin:0 0 .25em;font-size:4rem}
+.title-content h2{margin:0 0 .5em;font-weight:400}
+.title-content .hint{font-size:.9rem;opacity:.7}
+
+/* ---------- CONTENT LAYOUT ---------- */
+.slide2-wrapper{
+  width:100%;height:100%;display:flex;transition:.35s}
+
+.left-body{
+  flex:0 0 32%;display:flex;justify-content:center;align-items:center;
+  padding:24px 12px;transition:.35s}
+.left-body img{
+  height:92vh;max-width:650px;width:auto;filter:brightness(0)invert(1);
+  cursor:pointer;transition:.35s}
+
+.right-viz{
+  flex:1 1 68%;height:100%;padding:40px;overflow-y:auto;
+  background:#ffffff22;backdrop-filter:blur(6px);position:relative;transition:.35s}
+
+/* maximize arrow */
+#maximizeBtn{
+  position:absolute;top:14px;right:18px;
+  border:none;background:transparent;font-size:28px;color:#444;cursor:pointer}
+#maximizeBtn:hover{color:#000}
+
+/* viz cards */
+.viz-block{
+  background:#fff;border-radius:16px;padding:24px 32px 40px;margin-bottom:60px;
+  box-shadow:0 4px 10px rgb(0 0 0 /.15);color:#000}
+.viz-block:last-child{margin-bottom:80px}
+
+.chart-placeholder{
+  height:200px;border:2px dashed #bbb;display:flex;justify-content:center;align-items:center;
+  font-style:italic;color:#666}
+
+/* ---------- MAX-VIZ MODE ---------- */
+.wrapper-collapsed .left-body{flex:0 0 80px;align-items:flex-start;padding:12px}
+.wrapper-collapsed .left-body img{height:70px;max-width:70px}
+.wrapper-collapsed .right-viz{flex:1 1 calc(100% - 80px);padding-left:60px}
+.wrapper-collapsed #maximizeBtn{display:none}
+
