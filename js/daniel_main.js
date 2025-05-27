@@ -92,8 +92,6 @@ Promise.all([
       .on("mouseout", () => tooltip.transition().duration(500).style("opacity", 0));
   }
 
-  // Initial draw with all cases
   render(data);
 
-  // If you have a surgeryFilter dropdown or body-click filter hook, call render() with the filtered subset
 });
