@@ -1,85 +1,95 @@
+<!-- index.html  (replace your current file) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Surgical Insights – Interactive Atlas</title>
-  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet" href="style.css" />
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script defer src="js/jwp_main.js"></script>
   <script defer src="js/tracy_main.js"></script>
-  <script defer src="js/daniel_main.js"></script>
-  <script defer src="js/kate_main.js"></script>
 
-  <script defer src="js/scroll.js"></script>
+  <script>
+    /* simple gate: hide title, show viz on click or Space */
+    window.addEventListener('DOMContentLoaded', () => {
+      const title   = document.getElementById('title-screen');
+      const content = document.getElementById('slide2');
+
+      function launch() {
+        title.style.display  = 'none';
+        content.style.display = 'flex';  // slide uses flex
+      }
+
+      title.addEventListener('click',  launch);
+      window.addEventListener('keydown', e => {
+        if (e.code === 'Space') launch();
+      });
+    });
+  </script>
 </head>
 <body>
-  <div id="container">
 
-    <!-- Slide 1: Intro & Body Selection -->
-    <section class="slide" id="slide1">
-      <div class="body-wrapper">
-        <div class="body-column">
-          <svg id="body-map" viewBox="0 0 494 610"
-               xmlns="http://www.w3.org/2000/svg"
-               xmlns:xlink="http://www.w3.org/1999/xlink">
-            <image xlink:href="images/surgery_body.png" x="0" y="0" width="494" height="610" />
-            <!-- region overlays -->
-            <g id="head_neck" class="region"><circle cx="247" cy="100" r="60"></circle><rect x="217" y="160" width="60" height="40"></rect></g>
-            <g id="thorax"   class="region"><path d="M175 170 Q247 120 319 170 L319 290 Q247 330 175 290 Z"/></g>
-            <g id="abdomen"  class="region"><path d="M185 255 Q247 290 309 255 L309 325 Q247 355 185 325 Z"/></g>
-            <g id="pelvis"   class="region"><path d="M205 330 Q247 355 289 330 L289 380 Q247 405 205 380 Z"/></g>
+  <!-- ───────────── TITLE SCREEN ───────────── -->
+  <section id="title-screen" class="title-slide">
+    <h1>Preoperative Mental Preparation: Surgical Risk & Communication</h1>
+    <h2>DSC&nbsp;106</h2>
+    <p class="author">Kate Feng, Tracy Vu, Daniel Kong, JohnWesley Pabalate</p>
+    <p class="hint">(click or press&nbsp;<kbd>space</kbd>)</p>
+  </section>
+
+  <!-- ───────────── MAIN VISUALIZATION ───────────── -->
+  <section class="slide" id="slide2" style="display:none">
+    <div class="slide-grid">
+
+      <!-- BODY MAP COLUMN -->
+      <div class="map-cell">
+        <div class="body-container">
+          <img src="images/surgery_body.png" alt="body map" class="body-image"/>
+          <svg id="body-map2" viewBox="0 0 494 610"
+               preserveAspectRatio="xMidYMid meet"
+               xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(0 56)">
+              <g id="head_neck" class="region">
+                <circle cx="247" cy="133" r="46"></circle>
+                <rect   x="225" y="170" width="44" height="32"></rect>
+              </g>
+              <g id="thorax" class="region">
+                <path d="M195 196 Q247 158 299 196 L299 286 Q247 322 195 286 Z"/>
+              </g>
+              <g id="abdomen" class="region">
+                <path d="M205 304 Q247 334 289 304 L289 374 Q247 404 205 374 Z"/>
+              </g>
+              <g id="pelvis" class="region">
+                <path d="M215 392 Q247 422 279 392 L279 462 Q247 492 215 462 Z"/>
+              </g>
+            </g>
           </svg>
         </div>
-        <div class="text-column">
-          <h2>Surgeries are stressful—both for your patients and for you.</h2>
-          <p>Even the most routine procedures carry their own risks, and some operations, by their very nature, are significantly more complex or hazardous than others. Knowing what to expect and preparing accordingly can make all the difference.</p>
-          <p><strong>Note:</strong> Click on the area you're interested in to begin investigating the types of procedures commonly performed there—and the associated risk levels.</p>
-          <h3 class="section-title" id="viz-title"></h3>
-          <svg id="bar-chart"></svg>
-          <p id="viz-hint" class="hint">Click a bar to lock highlight</p>
-        </div>
+        <p class="body-hint">Click on the body to filter operation&nbsp;types</p>
       </div>
-    </section>
 
-    <!-- Slide 2: Risk & Demographic Patterns (Tracy) -->
-    <section class="slide" id="slide2">
-      <div class="slide2-wrapper">
-        <div class="left-body">
-          <img id="bodyImg" src="images/surgery_body.png" alt="Body map" />
+      <!-- RIGHT PANEL -->
+      <div class="panel-cell">
+        <h2>Risk &amp; Demographic Patterns</h2>
+        <div class="control-row">
+          <label for="metricSelector">Metric:</label>
+          <select id="metricSelector"></select>
+          <button id="resetButton">Reset</button>
         </div>
-        <div class="right-viz">
-          <h2>Risk & Demographic Patterns</h2>
-          <div class="viz-block">
-            <label for="metricSelector">Select Metric:</label>
-            <select id="metricSelector"></select>
-            <label for="optypeSelector">Select Operation Type:</label>
-            <select id="optypeSelector"></select>
-            <button id="resetButton">Reset Filters</button>
-            <svg id="plot" width="300" height="350"></svg>
-            <div id="detailsBox"><strong>Click a boxplot</strong> or filter to see details</div>
-            <button id="maximizeBtn" title="Fullscreen">⛶</button>
+        <div class="viz-block">
+          <svg id="plot" width="340" height="350"></svg>
+          <div id="detailsBox" class="details">
+            <strong>Click a boxplot</strong> or use filters to see details
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- Slide 3: Anxiety Heatmap (Daniel) -->
-    <section class="slide" id="slide3">
-      <div class="slide2-wrapper">
-        <div class="left-body">
-          <img src="images/surgery_body.png" alt="Body map" id="bodyImg3" />
-        </div>
-        <div class="right-viz">
-          <h2>Surgery Anxiety Heatmap</h2>
-          <div id="heatmap"></div>
-          <div id="heatmap-details"></div>
-          <button id="maximizeBtn3" title="Fullscreen">⛶</button>
-        </div>
-      </div>
-    </section>
+    </div>
+  </section>
 
+<<<<<<< HEAD
     <!-- Slide 4: Preparation Guidance (Kate) -->
     <section class="slide " id="slide4">
       <div class="slide2-wrapper">
@@ -115,5 +125,7 @@
     </section>
 
   </div>
+=======
+>>>>>>> 962ed1c (prototype update)
 </body>
 </html>
