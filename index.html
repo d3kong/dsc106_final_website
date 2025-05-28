@@ -1,4 +1,3 @@
-<!-- index.html  (replace your current file) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,70 +6,52 @@
   <title>Surgical Insights – Interactive Atlas</title>
 
   <link rel="stylesheet" href="style.css" />
-
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script defer src="js/tracy_main.js"></script>
 
   <script>
-    /* simple gate: hide title, show viz on click or Space */
+    /* Hide title, reveal viz on click or Space */
     window.addEventListener('DOMContentLoaded', () => {
-      const title   = document.getElementById('title-screen');
-      const content = document.getElementById('slide2');
+      const title  = document.getElementById('title-screen');
+      const slide  = document.getElementById('slide2');
+      const launch = () => { title.style.display = 'none'; slide.style.display = 'flex'; };
 
-      function launch() {
-        title.style.display  = 'none';
-        content.style.display = 'flex';  // slide uses flex
-      }
-
-      title.addEventListener('click',  launch);
-      window.addEventListener('keydown', e => {
-        if (e.code === 'Space') launch();
-      });
+      title.addEventListener('click', launch);
+      window.addEventListener('keydown', e => { if (e.code === 'Space') launch(); });
     });
   </script>
 </head>
 <body>
 
-  <!-- ───────────── TITLE SCREEN ───────────── -->
+  <!-- ───────────────── TITLE SCREEN ───────────────── -->
   <section id="title-screen" class="title-slide">
-    <h1>Preoperative Mental Preparation: Surgical Risk & Communication</h1>
-    <h2>DSC&nbsp;106</h2>
-    <p class="author">Kate Feng, Tracy Vu, Daniel Kong, JohnWesley Pabalate</p>
+    <h1>Pre-operative Mental Preparation</h1>
+    <h2>Surgical Risk&nbsp;&amp;&nbsp;Communication</h2>
+    <p class="author">Kate Feng · Tracy Vu · Daniel Kong · John&nbsp;Wesley&nbsp;Pabalate</p>
     <p class="hint">(click or press&nbsp;<kbd>space</kbd>)</p>
   </section>
 
-  <!-- ───────────── MAIN VISUALIZATION ───────────── -->
+  <!-- ───────────────── SINGLE INTERACTIVE SLIDE ───────────────── -->
   <section class="slide" id="slide2" style="display:none">
     <div class="slide-grid">
 
-      <!-- BODY MAP COLUMN -->
+      <!-- LEFT : mini skeleton + hint -->
       <div class="map-cell">
         <div class="body-container">
-          <img src="images/surgery_body.png" alt="body map" class="body-image"/>
-          <svg id="body-map2" viewBox="0 0 494 610"
-               preserveAspectRatio="xMidYMid meet"
-               xmlns="http://www.w3.org/2000/svg">
+          <img src="images/surgery_body.png" alt="body map" class="body-image" />
+          <svg id="body-map2" viewBox="0 0 494 610" preserveAspectRatio="xMidYMid meet">
             <g transform="translate(0 56)">
-              <g id="head_neck" class="region">
-                <circle cx="247" cy="133" r="46"></circle>
-                <rect   x="225" y="170" width="44" height="32"></rect>
-              </g>
-              <g id="thorax" class="region">
-                <path d="M195 196 Q247 158 299 196 L299 286 Q247 322 195 286 Z"/>
-              </g>
-              <g id="abdomen" class="region">
-                <path d="M205 304 Q247 334 289 304 L289 374 Q247 404 205 374 Z"/>
-              </g>
-              <g id="pelvis" class="region">
-                <path d="M215 392 Q247 422 279 392 L279 462 Q247 492 215 462 Z"/>
-              </g>
+              <g id="head_neck" class="region"><circle cx="247" cy="133" r="46"/><rect x="225" y="170" width="44" height="32"/></g>
+              <g id="thorax"     class="region"><path d="M195 196 Q247 158 299 196 L299 286 Q247 322 195 286 Z"/></g>
+              <g id="abdomen"    class="region"><path d="M205 304 Q247 334 289 304 L289 374 Q247 404 205 374 Z"/></g>
+              <g id="pelvis"     class="region"><path d="M215 392 Q247 422 279 392 L279 462 Q247 492 215 462 Z"/></g>
             </g>
           </svg>
         </div>
         <p class="body-hint">Click on the body to filter operation&nbsp;types</p>
       </div>
 
-      <!-- RIGHT PANEL -->
+      <!-- RIGHT : metric selector + box-plot -->
       <div class="panel-cell">
         <h2>Risk &amp; Demographic Patterns</h2>
         <div class="control-row">
@@ -81,7 +62,7 @@
         <div class="viz-block">
           <svg id="plot" width="340" height="350"></svg>
           <div id="detailsBox" class="details">
-            <strong>Click a boxplot</strong> or use filters to see details
+            <strong>Click a boxplot</strong> or use the metric filter to see details
           </div>
         </div>
       </div>
@@ -89,37 +70,25 @@
     </div>
   </section>
 
+  <!-- (other slides unchanged) -->
+
+</body>
+</html>
+
+
+
 <<<<<<< HEAD
-    <!-- Slide 4: Preparation Guidance (Kate) -->
-    <section class="slide " id="slide4">
-      <div class="slide2-wrapper">
-        <div class="left-body">
-          <img src="images/surgery_body.png" alt="Body map" id="bodyImg4" />
-        </div>
-        <div class="right-viz">
-          <h2>Tailored Surgery Preparation</h2>
-          <div id="kate-controls">
-            <label>Age: <input id="ageInput" type="number" /></label>
-            <label>Sex: <select id="sexInput"><option value="M">M</option><option value="F">F</option></select></label>
-            <label>Height (cm): <input id="heightInput" type="number" /></label>
-            <label>Weight (kg): <input id="weightInput" type="number" /></label>
-            <button id="kateSubmit">Get Profile</button>
-          </div>
-          <div id="kate-summary"></div>
-          <svg id="radarChart"></svg>
-          <button id="maximizeBtn4" title="Fullscreen">⛶</button>
-        </div>
-      </div>
-    </section>
+
 
     <!-- Slide 5: Conclusion -->
     <section class="slide" id="slide5">
       <div class="conclusion">
+        <title>Write-up</title>
         <h2>Surgical care begins long before the incision.</h2>
         <p>By using data to predict risk, anticipate anxiety, and prepare tailored guidance, you’re helping your patient face their operation not with fear—but with clarity. This isn't about outcomes. It's about making the journey to the operating room more transparent, more informed, and more human.</p>
-        <h3>What have we done so far?</h3>
+        <h2>What have we done so far?</h2>
         <p>So far, our group has put together the layout of the website, which John Wesley has been working on in Figma. We have all the text for each slide written down, and are working on integrating them into each visualization. While all of our visualizations are ready, there are still a few that need to be integrated properly into the final website (ex. The radar chart and guide at the end). The body to the left is clickable, but still needs to be used as a filter for the visualizations on the right.</p>
-        <h4>Most challenging part?</h4>
+        <h2>Most challenging part?</h2>
         <p>The most challenging part will likely be making sure all the visualizations work together in one website. We currently have each visualization in a separate brainstorming repo (each with its own js and html folder). Making sure all of them work together in singular html, js, and css files will be time-consuming. Once we have all of them together, having them look visually appealing next to each other and putting them into a “scrolly-telling” style will take some time.</p>
       </div>
     </section>
@@ -127,5 +96,4 @@
   </div>
 =======
 >>>>>>> 962ed1c (prototype update)
-</body>
-</html>
+
