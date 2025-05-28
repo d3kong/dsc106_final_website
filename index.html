@@ -8,37 +8,26 @@
   <link rel="stylesheet" href="style.css" />
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script defer src="js/tracy_main.js"></script>
-
-  <script>
-    /* Hide title, reveal viz on click or Space */
-    window.addEventListener('DOMContentLoaded', () => {
-      const title  = document.getElementById('title-screen');
-      const slide  = document.getElementById('slide2');
-      const launch = () => { title.style.display = 'none'; slide.style.display = 'flex'; };
-
-      title.addEventListener('click', launch);
-      window.addEventListener('keydown', e => { if (e.code === 'Space') launch(); });
-    });
-  </script>
+  <script defer src="js/daniel_main.js"></script>
+  <script defer src="js/kate_main.js"></script>
+  <script defer src="js/scroll.js"></script>
 </head>
 <body>
 
-  <!-- ───────────────── TITLE SCREEN ───────────────── -->
-  <section id="title-screen" class="title-slide">
+  <!-- ────────────── TITLE SCREEN ────────────── -->
+  <section id="slide1" class="title-slide">
     <h1>Pre-operative Mental Preparation</h1>
     <h2>Surgical Risk&nbsp;&amp;&nbsp;Communication</h2>
     <p class="author">Kate Feng · Tracy Vu · Daniel Kong · John&nbsp;Wesley&nbsp;Pabalate</p>
     <p class="hint">(click or press&nbsp;<kbd>space</kbd>)</p>
   </section>
 
-  <!-- ───────────────── SINGLE INTERACTIVE SLIDE ───────────────── -->
-  <section class="slide" id="slide2" style="display:none">
+  <!-- ────────────── SLIDE 2 – Tracy's Viz ────────────── -->
+  <section class="slide hidden" id="slide2">
     <div class="slide-grid">
-
-      <!-- LEFT : mini skeleton + hint -->
       <div class="map-cell">
-        <div class="body-container">
-          <img src="images/surgery_body.png" alt="body map" class="body-image" />
+        <div class="body-container" id="wrapper">
+          <img id="bodyImg" src="images/surgery_body.png" alt="body map" class="body-image" />
           <svg id="body-map2" viewBox="0 0 494 610" preserveAspectRatio="xMidYMid meet">
             <g transform="translate(0 56)">
               <g id="head_neck" class="region"><circle cx="247" cy="133" r="46"/><rect x="225" y="170" width="44" height="32"/></g>
@@ -50,8 +39,6 @@
         </div>
         <p class="body-hint">Click on the body to filter operation&nbsp;types</p>
       </div>
-
-      <!-- RIGHT : metric selector + box-plot -->
       <div class="panel-cell">
         <h2>Risk &amp; Demographic Patterns</h2>
         <div class="control-row">
@@ -66,34 +53,46 @@
           </div>
         </div>
       </div>
-
     </div>
   </section>
 
-  <!-- (other slides unchanged) -->
+  <!-- ────────────── SLIDE 3 – Daniel's Radar Chart ────────────── -->
+  <section class="slide hidden" id="slide3">
+    <div class="slide-grid">
+      <h2>Patient Profiles: Radar Chart</h2>
+      <div id="heatmap" class="viz-block" style="position: relative;">
+        <!-- Dropdown inserted by JS -->
+        <!-- SVG inserted by JS -->
+      </div>
+      <div id="heatmap-details" class="details" style="margin-top:10px; font-family: sans-serif; font-size: 14px;">
+        <em>Hover over cells and press <kbd>Enter</kbd> to see details here.</em>
+      </div>
+      <p class="body-hint">This radar chart shows composite scores across various metrics by patient profile.</p>
+    </div>
+  </section>
+
+  <!-- ────────────── SLIDE 4 – Kate's Guide ────────────── -->
+  <section class="slide hidden" id="slide4">
+    <div class="slide-grid">
+      <h2>Guided Preparation Tips</h2>
+      <div id="kate-viz-container" class="viz-block">
+        <!-- kate_main.js will populate this -->
+      </div>
+      <p class="body-hint">Tailored patient preparation tips based on risk and body region.</p>
+    </div>
+  </section>
+
+  <!-- ────────────── SLIDE 5 – Conclusion ────────────── -->
+  <section class="slide hidden" id="slide5">
+    <div class="conclusion">
+      <h2>Surgical care begins long before the incision.</h2>
+      <p>By using data to predict risk, anticipate anxiety, and prepare tailored guidance, you’re helping your patient face their operation not with fear—but with clarity. This isn't about outcomes. It's about making the journey to the operating room more transparent, more informed, and more human.</p>
+      <h2>What have we done so far?</h2>
+      <p>So far, our group has put together the layout of the website, which John Wesley has been working on in Figma. We have all the text for each slide written down, and are working on integrating them into each visualization. While all of our visualizations are ready, there are still a few that need to be integrated properly into the final website (ex. The radar chart and guide at the end). The body to the left is clickable, but still needs to be used as a filter for the visualizations on the right.</p>
+      <h2>Most challenging part?</h2>
+      <p>The most challenging part will likely be making sure all the visualizations work together in one website. We currently have each visualization in a separate brainstorming repo (each with its own js and html folder). Making sure all of them work together in singular html, js, and css files will be time-consuming. Once we have all of them together, having them look visually appealing next to each other and putting them into a “scrolly-telling” style will take some time.</p>
+    </div>
+  </section>
 
 </body>
 </html>
-
-
-
-<<<<<<< HEAD
-
-
-    <!-- Slide 5: Conclusion -->
-    <section class="slide" id="slide5">
-      <div class="conclusion">
-        <title>Write-up</title>
-        <h2>Surgical care begins long before the incision.</h2>
-        <p>By using data to predict risk, anticipate anxiety, and prepare tailored guidance, you’re helping your patient face their operation not with fear—but with clarity. This isn't about outcomes. It's about making the journey to the operating room more transparent, more informed, and more human.</p>
-        <h2>What have we done so far?</h2>
-        <p>So far, our group has put together the layout of the website, which John Wesley has been working on in Figma. We have all the text for each slide written down, and are working on integrating them into each visualization. While all of our visualizations are ready, there are still a few that need to be integrated properly into the final website (ex. The radar chart and guide at the end). The body to the left is clickable, but still needs to be used as a filter for the visualizations on the right.</p>
-        <h2>Most challenging part?</h2>
-        <p>The most challenging part will likely be making sure all the visualizations work together in one website. We currently have each visualization in a separate brainstorming repo (each with its own js and html folder). Making sure all of them work together in singular html, js, and css files will be time-consuming. Once we have all of them together, having them look visually appealing next to each other and putting them into a “scrolly-telling” style will take some time.</p>
-      </div>
-    </section>
-
-  </div>
-=======
->>>>>>> 962ed1c (prototype update)
-

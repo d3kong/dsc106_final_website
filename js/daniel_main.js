@@ -1,27 +1,16 @@
-// js/daniel_main.js   –  Slide-3 “Anxiety Heat-map”
 (function () {
-  /* ---------- layout helpers ---------- */
-  const margin = { top: 80, right: 20, bottom: 30, left: 200 };
+  const margin = { top: 100, right: 50, bottom: 30, left: 150 };
 
-  function innerSize() {
-    const { width, height } = document
-      .querySelector("#heatmap")
-      .getBoundingClientRect();
-    return {
-      w: Math.max(400, width)  - margin.left - margin.right,
-      h: Math.max(400, height) - margin.top  - margin.bottom,
-    };
-  }
+  const wrap = d3.select("#heatmap");           // heatmap container div
+  const detailBox = d3.select("#heatmap-details"); // details div in HTML
 
-  /* ---------- persistent DOM ---------- */
-  const wrap      = d3.select("#heatmap");              // slide-3 container
-  const detailBox = d3.select("#heatmap-details");      // tiny box you already have
-
-  const dropdown  = wrap
-    .insert("select", ":first-child")                   // before SVG
+  // Dropdown filter before SVG
+  const dropdown = wrap
+    .insert("select", ":first-child")
     .attr("id", "surgeryFilter")
-    .style("margin-bottom", "10px")
-    .selectAll("option")
+    .style("margin-bottom", "10px");
+
+  dropdown.selectAll("option")
     .data(["Top 10", "Top 20", "Top 50", "All"])
     .enter()
     .append("option")
@@ -29,6 +18,7 @@
 
   const tooltip = d3.select("body")
     .append("div")
+    .attr("class", "tooltip")
     .style("position", "absolute")
     .style("background", "#fff")
     .style("padding", "6px")
@@ -37,155 +27,169 @@
     .style("pointer-events", "none")
     .style("opacity", 0);
 
-  let   allData       = [];   // full JSON
-  let   currentSubset = [];   // filtered by region + dropdown
-  let   lastHovered   = null; // for Enter-key details
+  // Brush info container (under heatmap)
+  let brushInfo = wrap.select("#brush-info");
+  if (brushInfo.empty()) {
+    brushInfo = wrap.append("div")
+      .attr("id", "brush-info")
+      .style("margin-top", "20px")
+      .style("font-size", "14px")
+      .style("font-family", "sans-serif");
+  }
 
-  /* ---------- main render ---------- */
+  let allData = [];
+  let lastHovered = null;
+
   function render(data) {
-    currentSubset = data;   // save for resize
-
-    wrap.selectAll("svg").remove();           // wipe previous draw
+    wrap.selectAll("svg").remove();
     detailBox.html("");
+    brushInfo.text("");
 
-    const { w, h } = innerSize();
+    const width = 1000 - margin.left - margin.right;
+    const height = 700 - margin.top - margin.bottom;
 
-    const svg = wrap
-      .append("svg")
-      .attr("width",  w + margin.left + margin.right)
-      .attr("height", h + margin.top  + margin.bottom)
+    const svg = wrap.append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+      .attr("preserveAspectRatio", "xMidYMid meet")
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    /* ---- axes & scales ---- */
-    const metrics = ["death_score", "asa_score",
-                     "commonality_score", "anxiety_score"];
+    const metrics = ["death_score", "asa_score", "commonality_score", "anxiety_score"];
+
+    // Sort y domain alphabetically or by anxiety_score
+    const yDomain = data.map(d => d.opname).sort();
 
     const x = d3.scaleBand()
       .domain(metrics)
-      .range([0, w])
+      .range([0, width])
       .padding(0.05);
 
     const y = d3.scaleBand()
-      .domain(data.map(d => d.optype).sort())
-      .range([0, h])
+      .domain(yDomain)
+      .range([0, height])
       .padding(0.05);
 
+    // Color scale: reversed to have green=low anxiety, red=high anxiety
+    const scoreMin = d3.min(allData, d => d.anxiety_score);
+    const scoreMax = d3.max(allData, d => d.anxiety_score);
     const color = d3.scaleSequential()
-      .interpolator(d3.interpolateRdYlGn)      // green → red
-      .domain(d3.extent(allData, d => d.anxiety_score).reverse());
+      .interpolator(d3.interpolateRdYlGn)
+      .domain([scoreMax, scoreMin]); // reversed domain
 
     svg.append("g").call(d3.axisTop(x));
     svg.append("g").call(d3.axisLeft(y));
 
-    /* ---- cell data ---- */
-    const cells = data.flatMap(d => metrics.map(m => ({
-      optype : d.optype,
-      metric : m,
-      value  : d[m],
-      allRow : d,
-    })));
+    // Prepare cells
+    const cells = data.flatMap(d =>
+      metrics.map(m => ({
+        opname: d.opname,
+        metric: m,
+        value: d[m],
+        allRow: d
+      }))
+    );
 
-    svg.selectAll("rect")
+    const rects = svg.selectAll("rect")
       .data(cells)
       .join("rect")
       .attr("x", d => x(d.metric))
-      .attr("y", d => y(d.optype))
-      .attr("width",  x.bandwidth())
+      .attr("y", d => y(d.opname))
+      .attr("width", x.bandwidth())
       .attr("height", y.bandwidth())
       .style("fill", d => color(d.value))
       .style("stroke", "#fff")
-      .on("mouseover", (e, d) => {
+      .on("mouseover", (event, d) => {
         lastHovered = d;
         tooltip.transition().duration(200).style("opacity", 1);
-        tooltip.html(`<b>${d.optype}</b><br>${d.metric}: ${d.value.toFixed(3)}`)
-               .style("left", (e.pageX + 10) + "px")
-               .style("top",  (e.pageY - 28) + "px");
+        tooltip.html(`<b>${d.opname}</b><br>${d.metric}: ${d.value.toFixed(3)}`)
+          .style("left", (event.pageX + 10) + "px")
+          .style("top", (event.pageY - 28) + "px");
       })
       .on("mouseout", () => {
         tooltip.transition().duration(500).style("opacity", 0);
         lastHovered = null;
       });
 
-    /* ---- brush ---- */
-    const brushInfo = wrap.select("#brush-info").empty()
-        ? wrap.append("div").attr("id","brush-info")
-                             .style("margin-top","20px")
-                             .style("font-size","14px")
-                             .style("font-family","sans-serif")
-        : wrap.select("#brush-info");
+    // Brush setup
+    const brush = d3.brush()
+      .extent([[0, 0], [width, height]])
+      .on("end", ({ selection }) => {
+        if (!selection) {
+          brushInfo.text("");
+          rects.classed("selected", false);
+          return;
+        }
+        const [[x0, y0], [x1, y1]] = selection;
+        const selected = cells.filter(d => {
+          const cx = x(d.metric) + x.bandwidth() / 2;
+          const cy = y(d.opname) + y.bandwidth() / 2;
+          return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
+        });
 
-    svg.append("g")
-      .call(d3.brush()
-        .extent([[0,0], [w,h]])
-        .on("end", ({selection}) => {
-          if (!selection) { brushInfo.text(""); return; }
-          const [[x0,y0],[x1,y1]] = selection;
-          const sel = cells.filter(d=>{
-            const cx = x(d.metric)+x.bandwidth()/2;
-            const cy = y(d.optype)+y.bandwidth()/2;
-            return x0<=cx && cx<=x1 && y0<=cy && cy<=y1;
-          });
-          svg.selectAll("rect")
-             .classed("selected", d=>{
-                const cx = x(d.metric)+x.bandwidth()/2;
-                const cy = y(d.optype)+y.bandwidth()/2;
-                return x0<=cx && cx<=x1 && y0<=cy && cy<=y1;
-             });
-          if (sel.length)
-            brushInfo.html(`<b>${sel.length}</b> cells selected<br>Average value: <b>${d3.mean(sel,d=>d.value).toFixed(3)}</b>`);
-          else brushInfo.text("No cells selected.");
-        }));
+        rects.classed("selected", d => {
+          const cx = x(d.metric) + x.bandwidth() / 2;
+          const cy = y(d.opname) + y.bandwidth() / 2;
+          return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
+        });
+
+        if (selected.length > 0) {
+          const avg = d3.mean(selected, d => d.value);
+          brushInfo.html(`<b>${selected.length}</b> cells selected<br>Average value: <b>${avg.toFixed(3)}</b>`);
+        } else {
+          brushInfo.text("No cells selected.");
+        }
+      });
+
+    svg.append("g").call(brush);
   }
 
-  /* ---------- dropdown filter ---------- */
-  function applyDropdown(region = null) {
-    const choice = d3.select("#surgeryFilter").property("value");
-    let subset = allData;
-    if (region) subset = subset.filter(d => d.region === region);
+  function updateFilter() {
+    const choice = dropdown.property("value");
+    if (!allData.length) return;
 
-    subset = subset.sort((a,b)=>b.anxiety_score - a.anxiety_score);
-    if (choice === "Top 10")   subset = subset.slice(0,10);
-    else if (choice === "Top 20") subset = subset.slice(0,20);
-    else if (choice === "Top 50") subset = subset.slice(0,50);
+    let filtered;
+    // Sort descending by anxiety_score on each filter change
+    const sortedData = [...allData].sort((a, b) => b.anxiety_score - a.anxiety_score);
 
-    render(subset);
+    if (choice === "Top 10") filtered = sortedData.slice(0, 10);
+    else if (choice === "Top 20") filtered = sortedData.slice(0, 20);
+    else if (choice === "Top 50") filtered = sortedData.slice(0, 50);
+    else filtered = sortedData;
+
+    render(filtered);
   }
 
-  d3.select("#surgeryFilter").on("change", () => applyDropdown(currentRegion));
-
-  /* ---------- keyboard “Enter” → show details ---------- */
-  window.addEventListener("keydown", e=>{
-    if (e.key === "Enter" && lastHovered){
-      const v = lastHovered.allRow;
-      detailBox.html(`
-        <div style="text-align:left;padding:10px;border:1px solid #ccc;background:#f9f9f9;border-radius:6px;">
-          <b>${v.optype}</b><br>
-          Anxiety: ${v.anxiety_score.toFixed(3)}<br>
-          Death  : ${v.death_score.toFixed(3)}<br>
-          ASA    : ${v.asa_score.toFixed(3)}<br>
-          Common : ${v.commonality_score.toFixed(3)}
-        </div>`);
-    }
-  });
-
-  /* ---------- region selection from Slide-1 ---------- */
-  let currentRegion = null;
-  addEventListener("regionSelected", e=>{
-    currentRegion = e.detail.region;        // "thorax", "abdomen", …
-    applyDropdown(currentRegion);
-  });
-
-  /* ---------- data load ---------- */
-  d3.json("data/daniel.json").then(json=>{
-    // enrich json → anxiety_score (matches your original script)
-    json.forEach(d=>{
-      d.anxiety_score = 0.6*d.death_score + 0.2*d.asa_score + 0.2*d.commonality_score;
+  d3.json("data/daniel.json").then(data => {
+    // Calculate anxiety_score if not present
+    data.forEach(d => {
+      if (d.anxiety_score === undefined) {
+        d.anxiety_score = 0.6 * d.death_score + 0.2 * d.asa_score + 0.2 * d.commonality_score;
+      }
     });
-    allData = json;
-    applyDropdown();            // first draw, no region filter
-  });
 
-  /* ---------- redraw on resize ---------- */
-  window.addEventListener("resize", () => render(currentSubset));
+    allData = data;
+    updateFilter();
+
+    dropdown.on("change", updateFilter);
+
+    // Keyboard interaction
+    d3.select("body").on("keydown", (event) => {
+      if (event.key === "Enter" && lastHovered) {
+        const vals = lastHovered.allRow;
+        detailBox.html(`
+          <div style="text-align:left; padding: 10px; border: 1px solid #ccc; background: #f9f9f9; border-radius: 6px;">
+            <b>${vals.opname}</b><br>
+            Anxiety Score: ${vals.anxiety_score.toFixed(3)}<br>
+            Death Score: ${vals.death_score.toFixed(3)}<br>
+            ASA Score: ${vals.asa_score.toFixed(3)}<br>
+            Commonality Score: ${vals.commonality_score.toFixed(3)}
+          </div>
+        `);
+      }
+    });
+  }).catch(error => {
+    console.error("Failed to load heatmap data:", error);
+  });
 })();
