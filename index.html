@@ -6,6 +6,7 @@
   <title>Surgical Insights – Interactive Atlas</title>
 
   <link rel="stylesheet" href="style.css" />
+
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script defer src="js/tracy_main.js"></script>
   <script defer src="js/daniel_main.js"></script>
@@ -73,13 +74,96 @@
   <!-- ────────────── SLIDE 4 – Kate's Guide ────────────── -->
   <section class="slide hidden" id="slide4">
     <div class="slide-grid">
-      <h2>Guided Preparation Tips</h2>
-      <div id="kate-viz-container" class="viz-block">
-        <!-- kate_main.js will populate this -->
+  
+      <!-- LEFT: Body Map -->
+      <div class="map-cell">
+        <div class="body-container" id="wrapper">
+          <img id="bodyImg" src="images/surgery_body.png" alt="body map" class="body-image" />
+          <svg id="body-map2" viewBox="0 0 494 610" preserveAspectRatio="xMidYMid meet">
+            <g transform="translate(0 56)">
+              <g id="head_neck" class="region"><circle cx="247" cy="133" r="46"/><rect x="225" y="170" width="44" height="32"/></g>
+              <g id="thorax" class="region"><path d="M195 196 Q247 158 299 196 L299 286 Q247 322 195 286 Z"/></g>
+              <g id="abdomen" class="region"><path d="M205 304 Q247 334 289 304 L289 374 Q247 404 205 374 Z"/></g>
+              <g id="pelvis" class="region"><path d="M215 392 Q247 422 279 392 L279 462 Q247 492 215 462 Z"/></g>
+            </g>
+          </svg>
+        </div>
+        <p class="body-hint">Click on the body to filter operation&nbsp;types</p>
       </div>
-      <p class="body-hint">Tailored patient preparation tips based on risk and body region.</p>
+  
+      <!-- RIGHT: Panel -->
+      <div class="panel-cell">
+        <h2>Guided Preparation Tips</h2>
+        <h3>What to Tell Your Patient?</h3>
+  
+        <div class="control-row">
+          <!-- AGE -->
+          <div class="slider-container">
+            <label for="ageSlider">
+              Age: <span id="ageValue" class="slider-value">50</span>
+            </label>
+            <input type="range" id="ageSlider" min="0" max="100" value="50" />
+            <div class="slider-tooltip" id="ageSliderTooltip"></div>
+          </div>
+
+          <!-- HEIGHT -->
+          <div class="slider-container">
+            <label for="heightSlider">
+              Height (cm): <span id="heightValue" class="slider-value">155</span>
+            </label>
+            <input type="range" id="heightSlider" min="100" max="210" value="155" />
+            <div class="slider-tooltip" id="heightSliderTooltip"></div>
+          </div>
+          <!-- WEIGHT -->
+          <div class="slider-container">
+            <label for="weightSlider">
+              Weight (kg): <span id="weightValue" class="slider-value">90</span>
+            </label>
+            <input type="range" id="weightSlider" min="30" max="150" value="90" />
+            <div class="slider-tooltip" id="weightSliderTooltip"></div>
+          </div>
+
+          <!-- GENDER SELECT -->
+          <div class="select-container">
+            <label for="sexFilter">Gender:</label>
+            <select id="sexFilter">
+              <option value="all">All</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+            </select>
+          </div>
+
+          <!-- OPERATION REGION SELECT -->
+          <div class="select-container">
+            <label for="regionFilter">Anatomical Region:</label>
+            <select id="regionFilter">
+              <option value="all">All</option>
+              <option value="Colorectal">Colorectal</option>
+              <option value="Biliary/Pancreas">Biliary/Pancreas</option>
+              <option value="Others">Others</option>
+              <option value="Stomach">Stomach</option>
+              <option value="Major resection">Major resection</option>
+              <option value="Minor resection">Minor resection</option>
+              <option value="Breast">Breast</option>
+              <option value="Transplantation">Transplantation</option>
+              <option value="Vascular">Vascular</option>
+              <option value="Hepatic">Hepatic</option>
+              <option value="Thyroid">Thyroid</option>
+            </select>
+          </div>
+        </div>
+  
+        <div class="viz-block">
+          <svg id="chart" width="340" height="350"></svg>
+          <div id="summary" class="card summary">
+            <strong>Use controls to explore</strong>
+          </div>
+        </div>
+      </div>
     </div>
+    <p class="body-hint">Tailored patient preparation tips based on risk and body region.</p>
   </section>
+
 
   <!-- ────────────── SLIDE 5 – Conclusion ────────────── -->
   <section class="slide hidden" id="slide5">

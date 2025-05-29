@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---------- slide navigation ---------- */
   const slide1   = document.getElementById('slide1');
   const slide2   = document.getElementById('slide2');
+  const slide3 = document.getElementById('slide3');
+  const slide4 = document.getElementById('slide4');
   const returnBtn = document.getElementById('returnBtn');
 
   function showSlide1() {
@@ -12,6 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function showSlide2() {
     slide1.classList.add('hidden');
     slide2.classList.remove('hidden');
+  }
+  function showSlide4() {
+    slide3.classList.add('hidden');
+    slide4.classList.remove('hidden');
   }
 
   // Advance to Slide 2 only when clicking outside of region elements
