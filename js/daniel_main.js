@@ -151,15 +151,6 @@
     .text(d => d)
     .on("change", () => { selectedMetric = dropdown.property("value"); updateFilter(); });
 
-  // Body click handler
-  d3.selectAll("#body-map2 .region").style("cursor","pointer").on("click", function() {
-    const id = d3.select(this).attr("id");
-    const grp = regionToGroup[id];
-    if (!grp) return;
-    selectedGroup = grp;
-    updateFilter();
-  });
-
   // Load data & init
   Promise.all([ d3.json("data/daniel.json"), d3.json("data/surgery_groups.json") ])
     .then(([procedures, groups]) => {
@@ -169,6 +160,16 @@
         return { ...d, optype: found ? found.group : "Other" };
       });
       updateFilter();
+
+      d3.selectAll("#body-map2 .region")
+        .style("cursor","pointer")
+        .on("click", function() {
+          const id = d3.select(this).attr("id");
+          const grp = regionToGroup[id];
+          if (!grp) return;
+          selectedGroup = grp;
+          updateFilter();
+        });
     })
     .catch(err => console.error("heatmap load error", err));
 })();
