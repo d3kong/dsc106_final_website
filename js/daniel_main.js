@@ -1,19 +1,12 @@
 (function () {
-  const margin = { top: 100, right: 50, bottom: 30, left: 150 };
-
-  // Main containers
+  const margin = { top: 100, right: 50, bottom: 30, left: 200 };
   const wrap      = d3.select("#heatmap");
   const detailBox = d3.select("#heatmap-details");
 
-  // Use the dropdown placed in HTML
+  // Dropdown is defined in HTML; we'll populate it after loading data
   const dropdown = d3.select("#surgeryFilter").style("margin-bottom", "10px");
-  dropdown.selectAll("option")
-    .data(["Top 10", "Top 20", "Top 50", "All"] )
-    .join("option")
-      .attr("value", d => d)
-      .text(d => d);
 
-  // Tooltip for hover
+  // Tooltip div for hover
   const tooltip = d3.select("body")
     .append("div")
     .attr("class", "tooltip")
@@ -67,14 +60,14 @@
       .range([0, height])
       .padding(0.05);
 
-    // Color scale based on full data anxiety range
+    // Color scale based on full dataset anxiety range
     const scoreMin = d3.min(allData, d => d.anxiety_score);
     const scoreMax = d3.max(allData, d => d.anxiety_score);
     const color = d3.scaleSequential()
       .interpolator(d3.interpolateRdYlGn)
       .domain([scoreMax, scoreMin]);
 
-    // Axes with labels
+    // Axes
     svg.append("g")
       .attr("class","x-axis")
       .attr("transform","translate(0,0)")
@@ -84,7 +77,7 @@
       .attr("class","y-axis")
       .call(d3.axisLeft(y));
 
-    // Build cells
+    // Build heatmap cells
     const cells = data.flatMap(d =>
       metrics.map(m => ({ opname: d.opname, metric: m, value: d[m], allRow: d }))
     );
@@ -92,53 +85,52 @@
     const rects = svg.selectAll("rect")
       .data(cells)
       .join("rect")
-      .attr("x",      d => x(d.metric))
-      .attr("y",      d => y(d.opname))
-      .attr("width",  x.bandwidth())
-      .attr("height", y.bandwidth())
-      .style("fill",   d => color(d.value))
-      .style("stroke", "#fff")
-      .on("mouseover", (event, d) => {
-        lastHovered = d;
-        tooltip.transition().duration(200).style("opacity", 1)
-               .html(`<b>${d.opname}</b><br>${d.metric}: ${d.value.toFixed(3)}`)
-               .style("left", (event.pageX + 10) + "px")
-               .style("top",  (event.pageY - 28) + "px");
-               
-      })
-      .on("mouseout", () => {
-        tooltip.transition().duration(200).style("opacity", 0);
-        lastHovered = null;
-      });
-
-    // ─── Keyboard access: Tab + Enter on each cell ───
-    rects
-      .attr("tabindex", 0)
-      .on("focus", (event, d) => {
-        lastHovered = d;
-        tooltip.transition().duration(200).style("opacity", 1)
-               .html(`<b>${d.opname}</b><br>${d.metric}: ${d.value.toFixed(3)}`)
-               .style("left", (event.pageX + 10) + "px")
-               .style("top",  (event.pageY - 28) + "px");
-      })
-      .on("blur", () => {
-        tooltip.transition().duration(200).style("opacity", 0);
-        lastHovered = null;
-      })
-      .on("keydown", (event, d) => {
-        if (event.key === "Enter") {
-          const v = d.allRow;
-          detailBox.html(
-            `<div style="text-align:left; padding:10px; border:1px solid #ccc; background:#f9f9f9; border-radius:6px;">
-               <b>${v.opname}</b><br>
-               Death Score: ${v.death_score.toFixed(3)}<br>
-               ASA Score: ${v.asa_score.toFixed(3)}<br>
-               Commonality Score: ${v.commonality_score.toFixed(3)}<br>
-               Anxiety Score: ${v.anxiety_score.toFixed(3)}
-             </div>`
-          );
-        }
-      });
+        .attr("x",      d => x(d.metric))
+        .attr("y",      d => y(d.opname))
+        .attr("width",  x.bandwidth())
+        .attr("height", y.bandwidth())
+        .style("fill",   d => color(d.value))
+        .style("stroke", "#fff")
+        .attr("tabindex", 0)
+        .attr("focusable", true)
+        .on("mouseover", (event, d) => {
+          lastHovered = d;
+          tooltip.transition().duration(200).style("opacity", 1)
+                 .html(`<b>${d.opname}</b><br>${d.metric}: ${d.value.toFixed(3)}`)
+                 .style("left", (event.pageX + 10) + "px")
+                 .style("top",  (event.pageY - 28) + "px");
+          // auto-focus the rect so Enter will work immediately
+          event.currentTarget.focus();
+        })
+        .on("mouseout", () => {
+          tooltip.transition().duration(200).style("opacity", 0);
+          lastHovered = null;
+        })
+        .on("focus", (event, d) => {
+          lastHovered = d;
+          tooltip.transition().duration(200).style("opacity", 1)
+                 .html(`<b>${d.opname}</b><br>${d.metric}: ${d.value.toFixed(3)}`)
+                 .style("left", (event.pageX + 10) + "px")
+                 .style("top",  (event.pageY - 28) + "px");
+        })
+        .on("blur", () => {
+          tooltip.transition().duration(200).style("opacity", 0);
+          lastHovered = null;
+        })
+        .on("keydown", (event, d) => {
+          if (event.key === "Enter") {
+            const v = d.allRow;
+            detailBox.html(
+              `<div style="text-align:left; padding:10px; border:1px solid #ccc; background:#f9f9f9; border-radius:6px;">
+                 <b>${v.opname}</b><br>
+                 Death Score: ${v.death_score.toFixed(3)}<br>
+                 ASA Score: ${v.asa_score.toFixed(3)}<br>
+                 Commonality Score: ${v.commonality_score.toFixed(3)}<br>
+                 Anxiety Score: ${v.anxiety_score.toFixed(3)}
+               </div>`
+            );
+          }
+        });
 
     // Brush for multi-cell summary
     const brush = d3.brush()
@@ -174,30 +166,39 @@
     const choice = dropdown.property("value");
     if (!allData.length) return;
 
+    // sort descending by anxiety_score
     const sorted = [...allData].sort((a, b) => b.anxiety_score - a.anxiety_score);
     let filtered;
-    if (choice === "Top 10") filtered = sorted.slice(0, 10);
-    else if (choice === "Top 20") filtered = sorted.slice(0, 20);
-    else if (choice === "Top 50") filtered = sorted.slice(0, 50);
-    else filtered = sorted;
+    if (choice === "All") {
+      filtered = sorted;
+    } else {
+      filtered = sorted.filter(d => d.optype === choice);
+    }
 
     render(filtered);
   }
 
-  // Load and initialize
+  // load data
   d3.json("data/daniel.json").then(data => {
     data.forEach(d => {
       if (d.anxiety_score === undefined) {
-        d.anxiety_score = 0.6 * d.death_score
-                        + 0.2 * d.asa_score
-                        + 0.2 * d.commonality_score;
+        d.anxiety_score = 0.6 * d.death_score + 0.2 * d.asa_score + 0.2 * d.commonality_score;
       }
     });
     allData = data;
+
+    // populate dropdown with distinct operation types
+    const optypes = Array.from(new Set(allData.map(d => d.optype))).sort();
+    dropdown.selectAll("option")
+      .data(["All", ...optypes])
+      .join("option")
+        .attr("value", d => d)
+        .text(d => d);
+
     updateFilter();
     dropdown.on("change", updateFilter);
 
-    // Global Enter for detail pane
+    // global Enter for lastHovered
     d3.select("body").on("keydown", event => {
       if (event.key === "Enter" && lastHovered) {
         const v = lastHovered.allRow;
@@ -212,5 +213,5 @@
         );
       }
     });
-  }).catch(err => console.error("Failed to load heatmap data:", err));
+  }).catch(error => console.error("Failed to load heatmap data:", error));
 })();
