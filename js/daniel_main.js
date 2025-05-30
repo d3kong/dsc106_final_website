@@ -1,14 +1,21 @@
-(function() {
-  // margin setup
-  const margin = { top: 100, right: 50, bottom: 30, left: 200 };
+(function () {
+  const margin = { top: 100, right: 50, bottom: 30, left: 250 };
 
-  // main containers
+  // Main containers
   const wrap      = d3.select("#heatmap");
   const detailBox = d3.select("#heatmap-details");
-  const dropdown  = d3.select("#surgeryFilter").style("margin-bottom", "10px");
 
-  // tooltip for hover
-  const tooltip = d3.select("body").append("div")
+  // Use the dropdown placed in HTML
+  const dropdown = d3.select("#surgeryFilter").style("margin-bottom", "10px");
+  dropdown.selectAll("option")
+    .data(["Top 10", "Top 20", "Top 50", "All"] )
+    .join("option")
+      .attr("value", d => d)
+      .text(d => d);
+
+  // Tooltip for hover
+  const tooltip = d3.select("body")
+    .append("div")
     .attr("class", "tooltip")
     .style("position",       "absolute")
     .style("background",     "#fff")
@@ -18,36 +25,19 @@
     .style("pointer-events", "none")
     .style("opacity",        0);
 
-  // brush info area
+  // Brush-info pane
   let brushInfo = wrap.select("#brush-info");
   if (brushInfo.empty()) {
     brushInfo = wrap.append("div")
       .attr("id", "brush-info")
       .style("margin-top", "20px")
-      .style("font-family", "sans-serif")
-      .style("font-size", "14px");
+      .style("font-size",  "14px")
+      .style("font-family","sans-serif");
   }
 
-  // state
   let allData = [];
-  let selectedGroup = "All";
-  let selectedMetric = "death_score";
   let lastHovered = null;
 
-  // metrics available
-  const metricsList = ["death_score", "asa_score", "commonality_score"];
-
-  // map SVG region IDs to group names
-  const regionToGroup = {
-    head_neck:   "Endocrine",
-    thorax:      "Transplantation",
-    abdomen:     "HPB",
-    pelvis:      "GI tract",
-    vascular:    "Vascular",
-    breast:      "Breast & Other"
-  };
-
-  // render heatmap for given data subset
   function render(data) {
     wrap.selectAll("svg").remove();
     detailBox.html("");
@@ -57,148 +47,174 @@
     const height =  700 - margin.top  - margin.bottom;
 
     const svg = wrap.append("svg")
-      .attr("width",  width + margin.left + margin.right)
+      .attr("width",  width  + margin.left + margin.right)
       .attr("height", height + margin.top  + margin.bottom)
-      .attr("viewBox", `0 0 ${width+margin.left+margin.right} ${height+margin.top+margin.bottom}`)
+      .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
       .attr("preserveAspectRatio", "xMidYMid meet")
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // two columns: selectedMetric and anxiety_score
-    const cols = [selectedMetric, "anxiety_score"];
+    const metrics = ["death_score", "asa_score", "commonality_score", "anxiety_score"];
     const yDomain = data.map(d => d.opname);
 
-    const x = d3.scaleBand().domain(cols).range([0, width]).padding(0.05);
-    const y = d3.scaleBand().domain(yDomain).range([0, height]).padding(0.05);
+    const x = d3.scaleBand()
+      .domain(metrics)
+      .range([0, width])
+      .padding(0.05);
 
-    // color by overall anxiety range
-    const minA = d3.min(allData, d => d.anxiety_score);
-    const maxA = d3.max(allData, d => d.anxiety_score);
+    const y = d3.scaleBand()
+      .domain(yDomain)
+      .range([0, height])
+      .padding(0.05);
+
+    // Color scale based on full data anxiety range
+    const scoreMin = d3.min(allData, d => d.anxiety_score);
+    const scoreMax = d3.max(allData, d => d.anxiety_score);
     const color = d3.scaleSequential()
       .interpolator(d3.interpolateRdYlGn)
-      .domain([maxA, minA]);
+      .domain([scoreMax, scoreMin]);
 
-    // axes
-    svg.append("g").attr("class", "x-axis").call(d3.axisTop(x));
-    svg.append("g").attr("class", "y-axis").call(d3.axisLeft(y));
+    // Axes with labels
+    svg.append("g")
+      .attr("class","x-axis")
+      .attr("transform","translate(0,0)")
+      .call(d3.axisTop(x));
 
-    // prepare cells
+    svg.append("g")
+      .attr("class","y-axis")
+      .call(d3.axisLeft(y));
+
+    // Build cells
     const cells = data.flatMap(d =>
-      cols.map(c => ({ opname: d.opname, metric: c, value: d[c], row: d }))
+      metrics.map(m => ({ opname: d.opname, metric: m, value: d[m], allRow: d }))
     );
 
-    // draw
-    const rects = svg.selectAll("rect").data(cells).join("rect")
-      .attr("x", d => x(d.metric))
-      .attr("y", d => y(d.opname))
-      .attr("width", x.bandwidth())
+    const rects = svg.selectAll("rect")
+      .data(cells)
+      .join("rect")
+      .attr("x",      d => x(d.metric))
+      .attr("y",      d => y(d.opname))
+      .attr("width",  x.bandwidth())
       .attr("height", y.bandwidth())
-      .style("fill", d => color(d.value))
+      .style("fill",   d => color(d.value))
       .style("stroke", "#fff")
-      .attr("tabindex", 0)
-      .attr("focusable", true)
-      .on("mouseover", (event,d) => {
+      .on("mouseover", (event, d) => {
         lastHovered = d;
-        tooltip.transition().duration(200).style("opacity",1)
-               .html(`<b>${d.opname}</b><br>${d.metric}: ${d.value.toFixed(3)}`)
-               .style("left", (event.pageX+10)+"px")
-               .style("top",  (event.pageY-28)+"px");
+        // show tooltip as before…
+        tooltip.transition().duration(200).style("opacity", 1)
+              .html(`<b>${d.opname}</b><br>${d.metric}: ${d.value.toFixed(3)}`)
+              .style("left", (event.pageX + 10) + "px")
+              .style("top",  (event.pageY - 28) + "px");
+
+        // new: give this rect keyboard focus
         event.currentTarget.focus();
       })
-      .on("mouseout", () => { tooltip.transition().duration(200).style("opacity",0); lastHovered=null; })
-      .on("focus", (event,d) => {
+      .on("mouseout", () => {
+        tooltip.transition().duration(200).style("opacity", 0);
+        lastHovered = null;
+      });
+
+    // ─── Keyboard access: Tab + Enter on each cell ───
+    rects
+      .attr("tabindex", 0)
+      .attr("focusable", true)
+      .on("focus", (event, d) => {
         lastHovered = d;
-        tooltip.transition().duration(200).style("opacity",1)
+        tooltip.transition().duration(200).style("opacity", 1)
                .html(`<b>${d.opname}</b><br>${d.metric}: ${d.value.toFixed(3)}`)
-               .style("left", (event.pageX+10)+"px")
-               .style("top",  (event.pageY-28)+"px");
+               .style("left", (event.pageX + 10) + "px")
+               .style("top",  (event.pageY - 28) + "px");
       })
-      .on("blur", () => { tooltip.transition().duration(200).style("opacity",0); lastHovered=null; })
-      .on("keydown", (event,d) => {
+      .on("blur", () => {
+        tooltip.transition().duration(200).style("opacity", 0);
+        lastHovered = null;
+      })
+      .on("keydown", (event, d) => {
         if (event.key === "Enter") {
-          const v = d.row;
+          const v = d.allRow;
           detailBox.html(
             `<div style="text-align:left; padding:10px; border:1px solid #ccc; background:#f9f9f9; border-radius:6px;">
                <b>${v.opname}</b><br>
-               ${selectedMetric}: ${v[selectedMetric].toFixed(3)}<br>
+               Death Score: ${v.death_score.toFixed(3)}<br>
+               ASA Score: ${v.asa_score.toFixed(3)}<br>
+               Commonality Score: ${v.commonality_score.toFixed(3)}<br>
                Anxiety Score: ${v.anxiety_score.toFixed(3)}
              </div>`
           );
         }
       });
 
-    // brush selection
-    const brush = d3.brush().extent([[0,0],[width,height]]).on("end",({selection})=>{
-      if (!selection) { brushInfo.text(""); rects.classed("selected",false); return; }
-      const [[x0,y0],[x1,y1]] = selection;
-      const sel = cells.filter(d => {
-        const cx = x(d.metric)+x.bandwidth()/2;
-        const cy = y(d.opname)+y.bandwidth()/2;
-        return x0<=cx&&cx<=x1&&y0<=cy&&cy<=y1;
+    // Brush for multi-cell summary
+    const brush = d3.brush()
+      .extent([[0, 0], [width, height]])
+      .on("end", ({ selection }) => {
+        if (!selection) {
+          brushInfo.text("");
+          rects.classed("selected", false);
+          return;
+        }
+        const [[x0, y0], [x1, y1]] = selection;
+        const selected = cells.filter(d => {
+          const cx = x(d.metric) + x.bandwidth() / 2;
+          const cy = y(d.opname) + y.bandwidth() / 2;
+          return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
+        });
+        rects.classed("selected", d => {
+          const cx = x(d.metric) + x.bandwidth() / 2;
+          const cy = y(d.opname) + y.bandwidth() / 2;
+          return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
+        });
+        if (selected.length) {
+          const avg = d3.mean(selected, d => d.value);
+          brushInfo.html(`<b>${selected.length}</b> cells selected<br>Average: <b>${avg.toFixed(3)}</b>`);
+        } else {
+          brushInfo.text("No cells selected.");
+        }
       });
-      rects.classed("selected", d => sel.includes(d));
-      if (sel.length) {
-        const avg = d3.mean(sel, d => d.value);
-        brushInfo.html(`<b>${sel.length}</b> cells selected<br>Average: <b>${avg.toFixed(3)}</b>`);
-      } else brushInfo.text("No cells selected.");
-    });
     svg.append("g").call(brush);
   }
 
-  // update filter and redraw
   function updateFilter() {
+    const choice = dropdown.property("value");
+    if (!allData.length) return;
+
+    const sorted = [...allData].sort((a, b) => b.anxiety_score - a.anxiety_score);
     let filtered;
-    if (selectedGroup === "All") {
-      filtered = allData.slice();
-    } else {
-      filtered = allData.filter(d => d.optype === selectedGroup);
-    }
-    // sort descending by anxiety
-    filtered.sort((a,b) => b.anxiety_score - a.anxiety_score);
+    if (choice === "Top 10") filtered = sorted.slice(0, 10);
+    else if (choice === "Top 20") filtered = sorted.slice(0, 20);
+    else if (choice === "Top 50") filtered = sorted.slice(0, 50);
+    else filtered = sorted;
+
     render(filtered);
   }
 
-  // load data and initialize
-  Promise.all([
-    d3.json("data/daniel.json"),
-    d3.json("data/surgery_groups.json")
-  ]).then(([procs, groups]) => {
-    // annotate each procedure with group via substring match
-    allData = procs.map(d => {
-      const found = groups.find(g =>
-        g.members.some(mem =>
-          d.opname.toLowerCase().includes(mem.toLowerCase())
-        )
-      );
-      return { ...d, optype: found ? found.group : "Other" };
+  // Load and initialize
+  d3.json("data/daniel.json").then(data => {
+    data.forEach(d => {
+      if (d.anxiety_score === undefined) {
+        d.anxiety_score = 0.6 * d.death_score
+                        + 0.2 * d.asa_score
+                        + 0.2 * d.commonality_score;
+      }
     });
-
-    // populate metric dropdown
-    dropdown.selectAll("option").data(metricsList).join("option")
-      .attr("value", d => d)
-      .text(d => d);
-    dropdown.property("value", selectedMetric);
-    dropdown.on("change", () => {
-      selectedMetric = dropdown.property("value");
-      updateFilter();
-    });
-
-    // initial group = All
-    selectedGroup = "All";
-
-    // setup body clicks now that regionToGroup is known
-    d3.selectAll("#body-map2 .region").on("click", function(event) {
-      d3.selectAll("#body-map2 .region").classed("region--selected", false);
-      d3.select(this).classed("region--selected", true);
-      const id = d3.select(this).attr("id");
-      const grp = regionToGroup[id];
-      if (!grp) return;
-      selectedGroup = grp;
-      updateFilter();
-    });
-
-    // initial draw
+    allData = data;
     updateFilter();
-  })
-  .catch(err => console.error("heatmap load error:", err));
+    dropdown.on("change", updateFilter);
+
+    // Global Enter for detail pane
+    d3.select("body").on("keydown", event => {
+      if (event.key === "Enter" && lastHovered) {
+        const v = lastHovered.allRow;
+        detailBox.html(
+          `<div style="text-align:left; padding:10px; border:1px solid #ccc; background:#f9f9f9; border-radius:6px;">
+             <b>${v.opname}</b><br>
+             Death Score: ${v.death_score.toFixed(3)}<br>
+             ASA Score: ${v.asa_score.toFixed(3)}<br>
+             Commonality Score: ${v.commonality_score.toFixed(3)}<br>
+             Anxiety Score: ${v.anxiety_score.toFixed(3)}
+           </div>`
+        );
+      }
+    });
+  }).catch(err => console.error("Failed to load heatmap data:", err));
 })();
