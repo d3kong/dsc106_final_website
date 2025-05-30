@@ -1,0 +1,49 @@
+[
+  {
+    "group": "GI tract",
+    "count": 3163,
+    "members": [
+      "Colorectal",
+      "Stomach",
+      "Major resection",
+      "Minor resection"
+    ]
+  },
+  {
+    "group": "Breast & Other",
+    "count": 1233,
+    "members": [
+      "Breast",
+      "Others"
+    ]
+  },
+  {
+    "group": "HPB",
+    "count": 1070,
+    "members": [
+      "Biliary/Pancreas",
+      "Hepatic"
+    ]
+  },
+  {
+    "group": "Transplantation",
+    "count": 403,
+    "members": [
+      "Transplantation"
+    ]
+  },
+  {
+    "group": "Vascular",
+    "count": 262,
+    "members": [
+      "Vascular"
+    ]
+  },
+  {
+    "group": "Endocrine",
+    "count": 257,
+    "members": [
+      "Thyroid"
+    ]
+  }
+]

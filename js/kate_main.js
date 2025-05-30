@@ -1,10 +1,9 @@
-(function() {
-  let allData = [], labData = [];
+let allData = [], labData = [];
 let filteredData = [];
 
 const svg = d3.select("#chart");
-const width  = +svg.attr("width");
-const height = +svg.attr("height");
+const width  = +svg.attr("width"),
+      height = +svg.attr("height");
 const radius = Math.min(width, height) / 2 - 60;
 
 const g = svg.append("g")
@@ -90,6 +89,7 @@ Promise.all([
   d3.json("data/kate_card.json"), // allData for case filtering and summary
   d3.json("data/kate_chart.json")            // labData for radar chart
 ]).then(([dashboardData, labTestData]) => {
+
   allData = dashboardData;
   labData = labTestData;
 
@@ -128,14 +128,13 @@ function updateSummary() {
   
   // Clear previous content
   summaryContainer.html("");
-  
-  // let sex = sexFilter.property("value");
-  // let region = regionFilter.property("value");
 
-  let region = regionFilter.property("value").toLowerCase().trim();
+  // let region = regionFilter.property("value").toLowerCase().trim();
+
+  let region = selectedRegion || regionFilter.property("value").toLowerCase().trim();
+
   let sex    = sexFilter.property(  "value").toLowerCase().trim();
-
-
+  
   if (sex === "all") sex = "";
   if (region === "all") region = "";
   
@@ -440,4 +439,62 @@ sexFilter
 sexFilter
 .on("change.style", styleSexFilter)
 .dispatch("change");
-})
+
+// MAPPING
+
+let selectedRegion = "";
+let selectedOptype = "";
+
+const optypeToRegion = {
+  "Colorectal":"abdomen","Stomach":"abdomen",
+  "Major resection":"abdomen","Minor resection":"abdomen",
+  "Biliary/Pancreas":"thorax","Hepatic":"thorax","Breast":"thorax",
+  "Vascular":"thorax","Thyroid":"head_neck",
+  "Transplantation":"pelvis","Others":"pelvis"
+};
+
+// 1) REGION click
+d3.selectAll("#body-map2 .region").on("click", function () {
+  selectedRegion = this.id; // or map to lowercase if needed
+  selectedOptype = "";
+
+  d3.select("#optypeSelector").property("value", "");
+  d3.selectAll(".region--selected").classed("region--selected", false);
+  d3.select(this).classed("region--selected", true);
+
+  updateAll(); // triggers both updateSummary and updateRadar
+});
+
+const opDD = d3.select("#optypeSelector").on("change", function () {
+  selectedOptype = this.value;
+  selectedRegion = optypeToRegion[selectedOptype] || "";
+
+  d3.selectAll(".region--selected").classed("region--selected", false);
+  if (selectedRegion) {
+    d3.select(`#body-map2 .region#${selectedRegion}`).classed("region--selected", true);
+  }
+
+  updateAll(); // triggers both updateSummary and updateRadar
+});
+
+Array.from(new Set(data.map(d => d.region)))
+           .filter(d => d)
+           .sort()
+           .forEach(op => opDD.append("option").attr("value",op).text(op));
+
+d3.select("#resetButton").on("click", () => {
+  selectedOptype = ""; selectedRegion = "";
+  d3.select("#optypeSelector").property("value","");
+  d3.selectAll(".region--selected").classed("region--selected", false);
+  updateAll();
+});
+
+function getFiltered() {
+  let arr = data;
+  if (selectedRegion) {
+    arr = arr.filter(d => optypeToRegion[d.region] === selectedRegion);
+  } else if (selectedOptype) {
+    arr = arr.filter(d => d.region === selectedOptype);
+  }
+  return arr.map(d => +d[currentMetric]);
+}
