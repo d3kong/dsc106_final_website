@@ -58,8 +58,8 @@
 
     const metrics = ["death_score", "asa_score", "commonality_score", "anxiety_score"];
 
-    // Sort y domain alphabetically or by anxiety_score
-    const yDomain = data.map(d => d.opname).sort();
+    // Use the filtered data order (already sorted by anxiety_score) for y-axis
+    const yDomain = data.map(d => d.opname);
 
     const x = d3.scaleBand()
       .domain(metrics)
@@ -71,17 +71,28 @@
       .range([0, height])
       .padding(0.05);
 
-    // Color scale: reversed to have green=low anxiety, red=high anxiety
+    // Color scale: reversed so green = low anxiety, red = high anxiety
     const scoreMin = d3.min(allData, d => d.anxiety_score);
     const scoreMax = d3.max(allData, d => d.anxiety_score);
     const color = d3.scaleSequential()
       .interpolator(d3.interpolateRdYlGn)
-      .domain([scoreMax, scoreMin]); // reversed domain
+      .domain([scoreMax, scoreMin]);
 
-    svg.append("g").call(d3.axisTop(x));
-    svg.append("g").call(d3.axisLeft(y));
+    // === AXES WITH LABELS ===
+    // Top axis: metrics
+    svg.append("g")
+      .attr("class", "x-axis")
+      .attr("transform", "translate(0, 0)")
+      .call(d3.axisTop(x));
 
-    // Prepare cells
+    // Left axis: operation names
+    svg.append("g")
+      .attr("class", "y-axis")
+      .attr("transform", "translate(0, 0)")
+      .call(d3.axisLeft(y));
+    // =======================
+
+    // Draw heatmap cells
     const cells = data.flatMap(d =>
       metrics.map(m => ({
         opname: d.opname,
@@ -149,10 +160,9 @@
     const choice = dropdown.property("value");
     if (!allData.length) return;
 
-    let filtered;
-    // Sort descending by anxiety_score on each filter change
+    // sort descending by anxiety_score each time
     const sortedData = [...allData].sort((a, b) => b.anxiety_score - a.anxiety_score);
-
+    let filtered;
     if (choice === "Top 10") filtered = sortedData.slice(0, 10);
     else if (choice === "Top 20") filtered = sortedData.slice(0, 20);
     else if (choice === "Top 50") filtered = sortedData.slice(0, 50);
@@ -161,20 +171,18 @@
     render(filtered);
   }
 
+  // Load data and initialize
   d3.json("data/daniel.json").then(data => {
-    // Calculate anxiety_score if not present
     data.forEach(d => {
       if (d.anxiety_score === undefined) {
         d.anxiety_score = 0.6 * d.death_score + 0.2 * d.asa_score + 0.2 * d.commonality_score;
       }
     });
-
     allData = data;
     updateFilter();
-
     dropdown.on("change", updateFilter);
 
-    // Keyboard interaction
+    // keyboard detail pane
     d3.select("body").on("keydown", (event) => {
       if (event.key === "Enter" && lastHovered) {
         const vals = lastHovered.allRow;
@@ -189,7 +197,5 @@
         `);
       }
     });
-  }).catch(error => {
-    console.error("Failed to load heatmap data:", error);
-  });
+  }).catch(error => console.error("Failed to load heatmap data:", error));
 })();
