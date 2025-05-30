@@ -59,7 +59,6 @@
   <!-- ────────────── SLIDE 3 – Daniel's Heatmap ────────────── -->
   <section class="slide hidden" id="slide3">
     <div class="slide-grid">
-      <h2>Patient Profiles: Radar Chart</h2>
       <div class="map-cell">
         <div class="body-container" id="wrapper">
           <img id="bodyImg" src="images/surgery_body.png" alt="body map" class="body-image" />
@@ -74,15 +73,17 @@
         </div>
         <p class="body-hint">Click on the body to filter operation&nbsp;types</p>
       </div>
-
-      <div id="heatmap" class="viz-block" style="position: relative;">
-        <!-- Dropdown inserted by JS -->
-        <!-- SVG inserted by JS -->
+      <div class="panel-cell">
+        <h2>Patient Profiles: Radar Chart</h2>
+        <div id="heatmap" class="viz-block" style="position: relative;">
+          <!-- Dropdown inserted by JS -->
+          <!-- SVG inserted by JS -->
+        </div>
+        <div id="heatmap-details" class="details" style="margin-top:10px; font-family: sans-serif; font-size: 14px;">
+          <em>Hover over cells and press <kbd>click</kbd> to see details here.</em>
+        </div>
+        <p class="body-hint">Shows the different metrics that contribute to anxiety ranges for different surgeries hello</p>
       </div>
-      <div id="heatmap-details" class="details" style="margin-top:10px; font-family: sans-serif; font-size: 14px;">
-        <em>Hover over cells and press <kbd>click</kbd> to see details here.</em>
-      </div>
-      <p class="body-hint">Shows the different metrics that contribute to anxiety ranges for different surgeries hello</p>
     </div>
   </section>
 
