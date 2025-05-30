@@ -100,14 +100,11 @@
       .style("stroke", "#fff")
       .on("mouseover", (event, d) => {
         lastHovered = d;
-        // show tooltip as before…
         tooltip.transition().duration(200).style("opacity", 1)
-              .html(`<b>${d.opname}</b><br>${d.metric}: ${d.value.toFixed(3)}`)
-              .style("left", (event.pageX + 10) + "px")
-              .style("top",  (event.pageY - 28) + "px");
-
-        // new: give this rect keyboard focus
-        event.currentTarget.focus();
+               .html(`<b>${d.opname}</b><br>${d.metric}: ${d.value.toFixed(3)}`)
+               .style("left", (event.pageX + 10) + "px")
+               .style("top",  (event.pageY - 28) + "px");
+               
       })
       .on("mouseout", () => {
         tooltip.transition().duration(200).style("opacity", 0);
@@ -117,7 +114,6 @@
     // ─── Keyboard access: Tab + Enter on each cell ───
     rects
       .attr("tabindex", 0)
-      .attr("focusable", true)
       .on("focus", (event, d) => {
         lastHovered = d;
         tooltip.transition().duration(200).style("opacity", 1)
