@@ -1,7 +1,7 @@
 (function () {
   const margin = { top: 100, right: 50, bottom: 30, left: 150 };
 
-  const wrap = d3.select("#heatmap");           // heatmap container div
+  const wrap = d3.select("#heatmap");             // heatmap container div
   const detailBox = d3.select("#heatmap-details"); // details div in HTML
 
   // Dropdown filter before SVG
@@ -37,8 +37,26 @@
       .style("font-family", "sans-serif");
   }
 
-  let allData = [];
+  let rawData = [];
+  let groupedData = [];
   let lastHovered = null;
+
+  // Roll up raw surgeon entries into average-per-optype
+  function rollUpByOptype(data) {
+    return Array.from(
+      d3.rollup(
+        data,
+        rows => ({
+          death_score:        d3.mean(rows, d => d.death_score),
+          asa_score:          d3.mean(rows, d => d.asa_score),
+          commonality_score:  d3.mean(rows, d => d.commonality_score),
+          anxiety_score:      d3.mean(rows, d => d.anxiety_score)
+        }),
+        d => d.optype
+      ),
+      ([optype, metrics]) => ({ optype, ...metrics })
+    );
+  }
 
   function render(data) {
     wrap.selectAll("svg").remove();
@@ -56,10 +74,11 @@
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
+    // Metrics to display
     const metrics = ["death_score", "asa_score", "commonality_score", "anxiety_score"];
 
-    // Use the filtered data order (already sorted by anxiety_score) for y-axis
-    const yDomain = data.map(d => d.opname);
+    // Y-axis domain: one row per optype
+    const yDomain = data.map(d => d.optype);
 
     const x = d3.scaleBand()
       .domain(metrics)
@@ -71,31 +90,28 @@
       .range([0, height])
       .padding(0.05);
 
-    // Color scale: reversed so green = low anxiety, red = high anxiety
-    const scoreMin = d3.min(allData, d => d.anxiety_score);
-    const scoreMax = d3.max(allData, d => d.anxiety_score);
+    // Color scale based on rawData anxiety range
+    const scoreMin = d3.min(rawData, d => d.anxiety_score);
+    const scoreMax = d3.max(rawData, d => d.anxiety_score);
     const color = d3.scaleSequential()
       .interpolator(d3.interpolateRdYlGn)
       .domain([scoreMax, scoreMin]);
 
     // === AXES WITH LABELS ===
-    // Top axis: metrics
     svg.append("g")
       .attr("class", "x-axis")
-      .attr("transform", "translate(0, 0)")
+      .attr("transform", "translate(0,0)")
       .call(d3.axisTop(x));
 
-    // Left axis: operation names
     svg.append("g")
       .attr("class", "y-axis")
-      .attr("transform", "translate(0, 0)")
       .call(d3.axisLeft(y));
     // =======================
 
-    // Draw heatmap cells
+    // Flatten into cells: one per optype × metric
     const cells = data.flatMap(d =>
       metrics.map(m => ({
-        opname: d.opname,
+        optype: d.optype,
         metric: m,
         value: d[m],
         allRow: d
@@ -106,7 +122,7 @@
       .data(cells)
       .join("rect")
       .attr("x", d => x(d.metric))
-      .attr("y", d => y(d.opname))
+      .attr("y", d => y(d.optype))
       .attr("width", x.bandwidth())
       .attr("height", y.bandwidth())
       .style("fill", d => color(d.value))
@@ -114,7 +130,7 @@
       .on("mouseover", (event, d) => {
         lastHovered = d;
         tooltip.transition().duration(200).style("opacity", 1);
-        tooltip.html(`<b>${d.opname}</b><br>${d.metric}: ${d.value.toFixed(3)}`)
+        tooltip.html(`<b>${d.optype}</b><br>${d.metric}: ${d.value.toFixed(3)}`)
           .style("left", (event.pageX + 10) + "px")
           .style("top", (event.pageY - 28) + "px");
       })
@@ -123,7 +139,7 @@
         lastHovered = null;
       });
 
-    // Brush setup
+    // Brush selection
     const brush = d3.brush()
       .extent([[0, 0], [width, height]])
       .on("end", ({ selection }) => {
@@ -135,13 +151,13 @@
         const [[x0, y0], [x1, y1]] = selection;
         const selected = cells.filter(d => {
           const cx = x(d.metric) + x.bandwidth() / 2;
-          const cy = y(d.opname) + y.bandwidth() / 2;
+          const cy = y(d.optype) + y.bandwidth() / 2;
           return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
         });
 
         rects.classed("selected", d => {
           const cx = x(d.metric) + x.bandwidth() / 2;
-          const cy = y(d.opname) + y.bandwidth() / 2;
+          const cy = y(d.optype) + y.bandwidth() / 2;
           return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
         });
 
@@ -158,43 +174,45 @@
 
   function updateFilter() {
     const choice = dropdown.property("value");
-    if (!allData.length) return;
+    if (!groupedData.length) return;
 
-    // sort descending by anxiety_score each time
-    const sortedData = [...allData].sort((a, b) => b.anxiety_score - a.anxiety_score);
+    // Sort descending by anxiety_score
+    const sorted = [...groupedData].sort((a, b) => b.anxiety_score - a.anxiety_score);
     let filtered;
-    if (choice === "Top 10") filtered = sortedData.slice(0, 10);
-    else if (choice === "Top 20") filtered = sortedData.slice(0, 20);
-    else if (choice === "Top 50") filtered = sortedData.slice(0, 50);
-    else filtered = sortedData;
+    if (choice === "Top 10") filtered = sorted.slice(0, 10);
+    else if (choice === "Top 20") filtered = sorted.slice(0, 20);
+    else if (choice === "Top 50") filtered = sorted.slice(0, 50);
+    else filtered = sorted;
 
     render(filtered);
   }
 
-  // Load data and initialize
+  // Load and initialize
   d3.json("data/daniel.json").then(data => {
     data.forEach(d => {
       if (d.anxiety_score === undefined) {
         d.anxiety_score = 0.6 * d.death_score + 0.2 * d.asa_score + 0.2 * d.commonality_score;
       }
     });
-    allData = data;
+    rawData = data;
+    groupedData = rollUpByOptype(rawData);
+
     updateFilter();
     dropdown.on("change", updateFilter);
 
-    // keyboard detail pane
+    // Enter key for detail pane
     d3.select("body").on("keydown", (event) => {
       if (event.key === "Enter" && lastHovered) {
         const vals = lastHovered.allRow;
-        detailBox.html(`
-          <div style="text-align:left; padding: 10px; border: 1px solid #ccc; background: #f9f9f9; border-radius: 6px;">
-            <b>${vals.opname}</b><br>
-            Anxiety Score: ${vals.anxiety_score.toFixed(3)}<br>
-            Death Score: ${vals.death_score.toFixed(3)}<br>
-            ASA Score: ${vals.asa_score.toFixed(3)}<br>
-            Commonality Score: ${vals.commonality_score.toFixed(3)}
-          </div>
-        `);
+        detailBox.html(
+          `<div style="text-align:left; padding: 10px; border: 1px solid #ccc; background: #f9f9f9; border-radius: 6px;">
+             <b>${vals.optype}</b><br>
+             Anxiety Score: ${vals.anxiety_score.toFixed(3)}<br>
+             Death Score: ${vals.death_score.toFixed(3)}<br>
+             ASA Score: ${vals.asa_score.toFixed(3)}<br>
+             Commonality Score: ${vals.commonality_score.toFixed(3)}
+           </div>`
+        );
       }
     });
   }).catch(error => console.error("Failed to load heatmap data:", error));
