@@ -176,14 +176,32 @@
     applyDropdown(currentRegion);
   });
 
-  /* ---------- data load ---------- */
-  d3.json("data/daniel.json").then(json=>{
-    // enrich json → anxiety_score (matches your original script)
-    json.forEach(d=>{
-      d.anxiety_score = 0.6*d.death_score + 0.2*d.asa_score + 0.2*d.commonality_score;
+  d3.json("data/daniel.json").then(json => {
+    json.forEach(d => {
+      d.anxiety_score =
+          0.6 * d.death_score       +
+          0.2 * d.asa_score         +
+          0.2 * d.commonality_score;
     });
-    allData = json;
-    applyDropdown();            // first draw, no region filter
+
+    const grouped = Array.from(
+      d3.rollup(
+        json,
+        v => ({
+          optype            : v[0].optype,
+          region            : v[0].region,
+          count             : d3.sum  (v, d => d.count),
+          death_score       : d3.mean (v, d => d.death_score),
+          asa_score         : d3.mean (v, d => d.asa_score),
+          commonality_score : d3.mean (v, d => d.commonality_score),
+          anxiety_score     : d3.mean (v, d => d.anxiety_score)
+        }),
+        d => d.optype           // ← group key
+      ).values()                // rollup gives a Map → turn to array
+    );
+
+    allData = grouped;          // << use this everywhere else
+    applyDropdown();            // first draw
   });
 
   /* ---------- redraw on resize ---------- */
