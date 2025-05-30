@@ -30,7 +30,7 @@
 
   // state
   let allData = [];
-  let selectedGroup;
+  let selectedGroup = "All";
   let selectedMetric = "death_score";
   let lastHovered = null;
 
@@ -147,9 +147,14 @@
 
   // update filter and redraw
   function updateFilter() {
-    const filtered = allData
-      .filter(d => d.optype === selectedGroup)
-      .sort((a,b) => b.anxiety_score - a.anxiety_score);
+    let filtered;
+    if (selectedGroup === "All") {
+      filtered = allData.slice();
+    } else {
+      filtered = allData.filter(d => d.optype === selectedGroup);
+    }
+    // sort descending by anxiety
+    filtered.sort((a,b) => b.anxiety_score - a.anxiety_score);
     render(filtered);
   }
 
@@ -178,8 +183,8 @@
       updateFilter();
     });
 
-    // pick default group (first in surgery_groups)
-    selectedGroup = groups[0].group;
+    // initial group = All
+    selectedGroup = "All";
 
     // setup body clicks now that regionToGroup is known
     d3.selectAll("#body-map2 .region").on("click", function(event) {
