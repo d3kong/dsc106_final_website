@@ -28,7 +28,6 @@ const optypeToRegion = {
 const ageSlider    = d3.select("#ageSlider"),
       heightSlider = d3.select("#heightSlider"),
       weightSlider = d3.select("#weightSlider"),
-      sexFilter    = d3.select("#sexFilter"),
       ageTip       = d3.select("#ageSliderTooltip"),
       heightTip    = d3.select("#heightSliderTooltip"),
       weightTip    = d3.select("#weightSliderTooltip");
@@ -111,7 +110,6 @@ Promise.all([
   ageSlider.on("input", () => handleSlider("age"));
   heightSlider.on("input", () => handleSlider("height"));
   weightSlider.on("input", () => handleSlider("weight"));
-  sexFilter.on("change", updateAll);
 
   // Initial update
   handleSlider("age");
@@ -120,13 +118,13 @@ Promise.all([
   updateAll();
 });
 
-d3.selectAll("#body-map2 .region")
+d3.selectAll("#body-map4 .region")
 .style("cursor", "pointer")
 .on("click", function() {
-  d3.selectAll("#body-map2 .region.region--selected")
-    .classed("region--selected", false);
-
-  selectedRegion = this.id; 
+  selectedRegion = this.id;
+  selectedOptype = "";
+  d3.select("#optypeSelector").property("value","");
+  d3.selectAll(".region--selected").classed("region--selected", false);
   d3.select(this).classed("region--selected", true);
 
   updateAll();
@@ -149,15 +147,11 @@ function updateAll() {
 }
 
 function updateSummary() {
-  const minRequired = 2;
+  const minRequired = 0;
   const summaryContainer = d3.select("#summary");
   
   // Clear previous content
   summaryContainer.html("");
-  
-  let sex    = sexFilter.property(  "value").toLowerCase().trim();
-  
-  if (sex === "all") sex = "";
   
   const age = +ageSlider.property("value");
   const height = +heightSlider.property("value");
@@ -165,18 +159,16 @@ function updateSummary() {
 
 
   const filteredData = allData.filter(d => {
-    //  Check sex as before
-    if (sex && d.sex !== sex) return false;
-    
+
     if (selectedRegion) {
       const mapped = optypeToRegion[d.optype];
       if (!mapped || mapped !== selectedRegion) return false;
     }
 
-    //  Match age/height/weight within ±5
-    if (d.age < age - 5 || d.age > age + 5)       return false;
-    if (d.height < height - 5 || d.height > height + 5) return false;
-    if (d.weight < weight - 5 || d.weight > weight + 5) return false;
+    //  Match age/height/weight within ±10
+    if (d.age < age - 10 || d.age > age + 10)       return false;
+    if (d.height < height - 10 || d.height > height + 10) return false;
+    if (d.weight < weight - 10 || d.weight > weight + 10) return false;
     
     return true;
   });
@@ -269,25 +261,21 @@ function updateSummary() {
 
 function updateRadar() {
   const radarContainer = d3.select(".chart-container");
+  const minRequired = 0;
 
   const age = +ageSlider.node().value;
   const height = +heightSlider.node().value;
   const weight = +weightSlider.node().value;
-  const sex = sexFilter.node().value;
 
   ageTip.text(age);
   heightTip.text(height);
   weightTip.text(weight);
 
   let filt = labData.filter(d =>
-      d.age >= age - 5 && d.age <= age + 5 &&
-      d.height >= height - 5 && d.height <= height + 5 &&
-      d.weight >= weight - 5 && d.weight <= weight + 5
+      d.age >= age - 10 && d.age <= age + 10 &&
+      d.height >= height - 10 && d.height <= height + 10 &&
+      d.weight >= weight - 10 && d.weight <= weight + 10
   );
-
-  if (sex !== "all") {
-      filt = filt.filter(d => d.sex === sex);
-  }
 
   if (selectedRegion) {
     filt = filt.filter(d => {
@@ -296,7 +284,7 @@ function updateRadar() {
     });
   }
 
-  if (filt.length < 1) {
+  if (filt.length < minRequired) {
       radarContainer
           .append("div")
           .attr("class", "warning-message")
@@ -444,28 +432,3 @@ weightSlider
 })
 .on("change",() => weightTip.style("opacity",0));
 weightSlider.on("input", updateSummary);
-
-sexFilter.on("change", updateRadar);
-sexFilter.on("change", updateSummary);
-
-function styleSexFilter() {
-const v = sexFilter.node().value;
-let bg, col;
-if (v === "M") {
-    bg  = "#cce5ff";
-    col = "#003366";
-} else if (v === "F") {
-    bg  = "#ffccdd";
-    col = "#800040";
-} else {
-    bg  = "white";
-    col = "#333";
-}
-sexFilter
-    .style("background-color", bg)
-    .style("color", col);
-}
-
-sexFilter
-.on("change.style", styleSexFilter)
-.dispatch("change");
