@@ -1,5 +1,6 @@
 let allData = [], labData = [];
 let filteredData = [];
+let selectedRegion = "";
 
 const svg = d3.select("#chart");
 const width  = +svg.attr("width"),
@@ -9,12 +10,25 @@ const radius = Math.min(width, height) / 2 - 60;
 const g = svg.append("g")
              .attr("transform", `translate(${width/2},${height/2})`);
 
+const optypeToRegion = {
+  "Colorectal":      "abdomen",
+  "Stomach":         "abdomen",
+  "Major resection": "abdomen",
+  "Minor resection": "abdomen",
+  "Biliary/Pancreas":"thorax",
+  "Hepatic":         "thorax",
+  "Breast":          "thorax",
+  "Vascular":        "thorax",
+  "Thyroid":         "head_neck",
+  "Transplantation": "pelvis",
+  "Others":          "pelvis"
+};
+
 // Controls & tooltips
 const ageSlider    = d3.select("#ageSlider"),
       heightSlider = d3.select("#heightSlider"),
       weightSlider = d3.select("#weightSlider"),
       sexFilter    = d3.select("#sexFilter"),
-      regionFilter = d3.select("#regionFilter"),
       ageTip       = d3.select("#ageSliderTooltip"),
       heightTip    = d3.select("#heightSliderTooltip"),
       weightTip    = d3.select("#weightSliderTooltip");
@@ -98,7 +112,6 @@ Promise.all([
   heightSlider.on("input", () => handleSlider("height"));
   weightSlider.on("input", () => handleSlider("weight"));
   sexFilter.on("change", updateAll);
-  regionFilter.on("change", updateAll);
 
   // Initial update
   handleSlider("age");
@@ -106,6 +119,19 @@ Promise.all([
   handleSlider("weight");
   updateAll();
 });
+
+d3.selectAll("#body-map2 .region")
+.style("cursor", "pointer")
+.on("click", function() {
+  d3.selectAll("#body-map2 .region.region--selected")
+    .classed("region--selected", false);
+
+  selectedRegion = this.id; 
+  d3.select(this).classed("region--selected", true);
+
+  updateAll();
+});
+
 
 function handleSlider(id) {
   const slider = d3.select(`#${id}Slider`);
@@ -128,27 +154,32 @@ function updateSummary() {
   
   // Clear previous content
   summaryContainer.html("");
-
-  // let region = regionFilter.property("value").toLowerCase().trim();
-
-  let region = selectedRegion || regionFilter.property("value").toLowerCase().trim();
-
+  
   let sex    = sexFilter.property(  "value").toLowerCase().trim();
   
   if (sex === "all") sex = "";
-  if (region === "all") region = "";
   
   const age = +ageSlider.property("value");
   const height = +heightSlider.property("value");
   const weight = +weightSlider.property("value");
-  
-  const filteredData = allData.filter(d =>
-    (!sex || d.sex === sex) &&
-    (!region || d.region.toLowerCase().trim() === region) &&
-    d.age >= age - 5 && d.age <= age + 5 &&
-    d.height >= height - 5 && d.height <= height + 5 &&
-    d.weight >= weight - 5 && d.weight <= weight + 5
-  );
+
+
+  const filteredData = allData.filter(d => {
+    //  Check sex as before
+    if (sex && d.sex !== sex) return false;
+    
+    if (selectedRegion) {
+      const mapped = optypeToRegion[d.optype];
+      if (!mapped || mapped !== selectedRegion) return false;
+    }
+
+    //  Match age/height/weight within ±5
+    if (d.age < age - 5 || d.age > age + 5)       return false;
+    if (d.height < height - 5 || d.height > height + 5) return false;
+    if (d.weight < weight - 5 || d.weight > weight + 5) return false;
+    
+    return true;
+  });
   
   if (filteredData.length < minRequired) {
     summaryContainer
@@ -243,7 +274,6 @@ function updateRadar() {
   const height = +heightSlider.node().value;
   const weight = +weightSlider.node().value;
   const sex = sexFilter.node().value;
-  const region = regionFilter.node().value;
 
   ageTip.text(age);
   heightTip.text(height);
@@ -259,11 +289,14 @@ function updateRadar() {
       filt = filt.filter(d => d.sex === sex);
   }
 
-  if (region !== "all") {
-    filt = filt.filter(d => d.region === region);
+  if (selectedRegion) {
+    filt = filt.filter(d => {
+      const mapped = optypeToRegion[d.optype];
+      return mapped === selectedRegion;
+    });
   }
 
-  if (filt.length < 0) {
+  if (filt.length < 1) {
       radarContainer
           .append("div")
           .attr("class", "warning-message")
@@ -415,9 +448,6 @@ weightSlider.on("input", updateSummary);
 sexFilter.on("change", updateRadar);
 sexFilter.on("change", updateSummary);
 
-regionFilter.on("change", updateRadar);
-regionFilter.on("change", updateSummary);
-
 function styleSexFilter() {
 const v = sexFilter.node().value;
 let bg, col;
@@ -439,62 +469,3 @@ sexFilter
 sexFilter
 .on("change.style", styleSexFilter)
 .dispatch("change");
-
-// MAPPING
-
-let selectedRegion = "";
-let selectedOptype = "";
-
-const optypeToRegion = {
-  "Colorectal":"abdomen","Stomach":"abdomen",
-  "Major resection":"abdomen","Minor resection":"abdomen",
-  "Biliary/Pancreas":"thorax","Hepatic":"thorax","Breast":"thorax",
-  "Vascular":"thorax","Thyroid":"head_neck",
-  "Transplantation":"pelvis","Others":"pelvis"
-};
-
-// 1) REGION click
-d3.selectAll("#body-map2 .region").on("click", function () {
-  selectedRegion = this.id; // or map to lowercase if needed
-  selectedOptype = "";
-
-  d3.select("#optypeSelector").property("value", "");
-  d3.selectAll(".region--selected").classed("region--selected", false);
-  d3.select(this).classed("region--selected", true);
-
-  updateAll(); // triggers both updateSummary and updateRadar
-});
-
-const opDD = d3.select("#optypeSelector").on("change", function () {
-  selectedOptype = this.value;
-  selectedRegion = optypeToRegion[selectedOptype] || "";
-
-  d3.selectAll(".region--selected").classed("region--selected", false);
-  if (selectedRegion) {
-    d3.select(`#body-map2 .region#${selectedRegion}`).classed("region--selected", true);
-  }
-
-  updateAll(); // triggers both updateSummary and updateRadar
-});
-
-Array.from(new Set(data.map(d => d.region)))
-           .filter(d => d)
-           .sort()
-           .forEach(op => opDD.append("option").attr("value",op).text(op));
-
-d3.select("#resetButton").on("click", () => {
-  selectedOptype = ""; selectedRegion = "";
-  d3.select("#optypeSelector").property("value","");
-  d3.selectAll(".region--selected").classed("region--selected", false);
-  updateAll();
-});
-
-function getFiltered() {
-  let arr = data;
-  if (selectedRegion) {
-    arr = arr.filter(d => optypeToRegion[d.region] === selectedRegion);
-  } else if (selectedOptype) {
-    arr = arr.filter(d => d.region === selectedOptype);
-  }
-  return arr.map(d => +d[currentMetric]);
-}
