@@ -1,209 +1,315 @@
-// js/tracy_main.js
+fetch("data/tracy.json")
+  .then(res => res.json())
+  .then(data => {
+    const outcomes = ["Survived", "Died"];
+    const riskLevels = ["low", "medium", "high"];
+    const color = { Survived: "#4caf50", Died: "#f44336" };
+    const metrics = [
+      { id: "age", label: "Age" },
+      { id: "asa", label: "ASA Score" },
+      { id: "bmi", label: "BMI" },
+      { id: "preop_hb", label: "Pre-op Hemoglobin" },
+      { id: "intraop_ebl", label: "Intra-op Blood Loss (mL)" },
+      { id: "preop_cr", label: "Pre-op Creatinine" },
+      { id: "preop_alb", label: "Pre-op Albumin" },
+      { id: "preop_na", label: "Pre-op Sodium" },
+      { id: "preop_k", label: "Pre-op Potassium" },
+      { id: "preop_gluc", label: "Pre-op Glucose" },
+      { id: "intraop_uo", label: "Intra-op Urine Output (mL)" }
+    ];
 
-const metrics = [
-  { id:"age", label:"Age" },
-  { id:"asa", label:"ASA Score" },
-  { id:"bmi", label:"BMI" },
-  { id:"preop_hb", label:"Pre-op Hemoglobin" },
-  { id:"intraop_ebl", label:"Intra-op Blood Loss (mL)" },
-  { id:"preop_cr", label:"Pre-op Creatinine" },
-  { id:"preop_alb", label:"Pre-op Albumin" },
-  { id:"preop_na", label:"Pre-op Sodium" },
-  { id:"preop_k", label:"Pre-op Potassium" },
-  { id:"preop_gluc", label:"Pre-op Glucose" },
-  { id:"intraop_uo", label:"Intra-op Urine Output (mL)" }
-];
+    let currentMetric = metrics[0].id;
+    let selectedBox = null;
+    let highlightedOutcome = null;
+    let highlightedRisk = null;
+    let selectedOptype = "";
+    let selectedRegion = null;
 
-(function() {
-  fetch("data/tracy.json")
-    .then(r => r.json())
-    .then(data => {
-      const outcomes = ["Survived","Died"];
-      const riskLevels = ["low","medium","high"];
+    const optypeToRegion = {
+      "Colorectal": "abdomen", "Stomach": "abdomen",
+      "Major resection": "abdomen", "Minor resection": "abdomen",
+      "Biliary/Pancreas": "thorax", "Hepatic": "thorax", "Breast": "thorax",
+      "Vascular": "thorax", "Thyroid": "head_neck",
+      "Transplantation": "pelvis", "Others": "pelvis"
+    };
 
-      let selectedOptype = "";
-      let selectedRegion = "";
-      let currentMetric = metrics[0].id;
-
-      // map each raw optype → region-ID
-      const optypeToRegion = {
-        "Colorectal":"abdomen","Stomach":"abdomen",
-        "Major resection":"abdomen","Minor resection":"abdomen",
-        "Biliary/Pancreas":"thorax","Hepatic":"thorax","Breast":"thorax",
-        "Vascular":"thorax","Thyroid":"head_neck",
-        "Transplantation":"pelvis","Others":"pelvis"
-      };
-
-      // 1) REGION click
-      d3.selectAll("#body-map2 .region")
-        .on("click", function() {
-          selectedRegion = this.id;
-          selectedOptype = "";
-          d3.select("#optypeSelector").property("value","");
-          d3.selectAll(".region--selected").classed("region--selected", false);
-          d3.select(this).classed("region--selected", true);
-          redraw();
-        });
-
-      // 2) DROPDOWNS
-      const opDD = d3.select("#optypeSelector")
-        .on("change", function() {
-          selectedOptype = this.value;
-          selectedRegion = "";
-          d3.selectAll(".region--selected").classed("region--selected", false);
-          redraw();
-        });
-
-      Array.from(new Set(data.map(d => d.optype)))
-           .filter(d => d)
-           .sort()
-           .forEach(op => opDD.append("option").attr("value",op).text(op));
-
-      const metricDD = d3.select("#metricSelector")
-        .on("change", function() {
-          currentMetric = this.value;
-          redraw();
-        });
-      metrics.forEach(m =>
-        metricDD.append("option").attr("value",m.id).text(m.label)
-      );
-
-      d3.select("#resetButton").on("click", () => {
-        selectedOptype = ""; selectedRegion = "";
-        d3.select("#optypeSelector").property("value","");
+    d3.selectAll("#body-map2 .region")
+      .on("click", function () {
+        selectedRegion = this.id;
+        selectedOptype = "";
+        d3.select("#optypeSelector").property("value", "");
         d3.selectAll(".region--selected").classed("region--selected", false);
-        redraw();
+        drawBoxPlot(currentMetric);
+        updateDetailsBoxFromFilter();
       });
 
-      // INITIAL DRAW
-      redraw();
+    d3.select("#resetButton")
+      .on("click", () => {
+        highlightedOutcome = null;
+        highlightedRisk = null;
+        selectedBox = null;
+        selectedOptype = "";
+        selectedRegion = null;
+        d3.select("#optypeSelector").property("value", "");
+        d3.select("#detailsBox").html(`<strong>Click a boxplot</strong> or filter to see details`);
+        updateOpacity();
+        drawBoxPlot(currentMetric);
+        updateDetailsBoxFromFilter();
+      });
 
-      // redraw chart & details
-      function redraw() {
-        const values = getFiltered();
-        drawBoxPlot(values);
-        updateDetails(values);
-      }
+    const selector = d3.select("#metricSelector")
+      .on("change", function () {
+        currentMetric = this.value;
+        drawBoxPlot(currentMetric);
+        updateDetailsBoxFromFilter();
+      });
 
-      // filter raw data → array of currentMetric
-      function getFiltered() {
-        let arr = data;
-        if (selectedRegion) {
-          arr = arr.filter(d => optypeToRegion[d.optype] === selectedRegion);
-        } else if (selectedOptype) {
-          arr = arr.filter(d => d.optype === selectedOptype);
-        }
-        return arr.map(d => +d[currentMetric]);
-      }
+    metrics.forEach(metric => {
+      selector.append("option")
+        .attr("value", metric.id)
+        .text(metric.label);
+    });
 
-      // draw boxplot on #plot
-      function drawBoxPlot(vals) {
-        const svg = d3.select("#plot");
-        svg.selectAll("*").remove();
-        const margin={top:30,right:20,bottom:50,left:75},
-              W=+svg.attr("width")-margin.left-margin.right,
-              H=+svg.attr("height")-margin.top-margin.bottom;
-        const g = svg.append("g")
-                     .attr("transform",`translate(${margin.left},${margin.top})`);
+    // const optypeSelector = d3.select(".slide#slide2 .control-row")
+    //   .insert("select", "#resetButton")
+    //   .attr("id", "optypeSelector")
+    //   .style("margin-left", "10px")
+    //   .on("change", function () {
+    //     selectedOptype = this.value;
+    //     drawBoxPlot(currentMetric);
+    //     updateDetailsBoxFromFilter();
+    //   });
 
-        // group stats by outcome & risk
-        const stats = [];
-        riskLevels.forEach(r => {
-          outcomes.forEach(o => {
-            let subset = data.filter(d =>
-              d.risk===r && d.death_inhosp===+(o==="Died")
-            );
-            if (selectedRegion)
-              subset = subset.filter(d => optypeToRegion[d.optype] === selectedRegion);
-            else if (selectedOptype)
-              subset = subset.filter(d => d.optype === selectedOptype);
-            const arr = subset.map(d => +d[currentMetric]);
-            if (arr.length) stats.push({
-              key:`${o}-${r}`, outcome:o, risk:r,
-              vals:arr, stats:boxStats(arr)
-            });
-          });
+    // const optypes = Array.from(new Set(data.map(d => d.optype).filter(d => d)));
+    // optypes.sort();
+    // optypes.forEach(op => {
+    //   optypeSelector.append("option")
+    //     .attr("value", op)
+    //     .text(op);
+    // });
+
+    drawBoxPlot(currentMetric);
+
+    function drawBoxPlot(variable) {
+      selectedBox = null;
+      d3.select("#detailsBox").html(`<strong>Filter by the mortality and risk level and/or use the body</strong> to see details`);
+
+      const svg = d3.select("#plot");
+      const width = 300;
+      const height = 350;
+      const margin = { top: 40, right: 10, bottom: 40, left: 40 };
+      const boxWidth = 30;
+      const title = metrics.find(m => m.id === variable).label;
+
+      svg.selectAll("*").remove();
+
+      const yScale = d3.scaleLinear()
+        .domain([
+          d3.min(data, d => +d[variable]),
+          d3.max(data, d => +d[variable])
+        ])
+        .nice()
+        .range([height - margin.bottom, margin.top]);
+
+      const xScale = d3.scaleBand()
+        .domain(riskLevels)
+        .range([margin.left, width - margin.right])
+        .paddingInner(0.3)
+        .paddingOuter(0.2);
+
+      svg.append("g")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(xScale))
+        .selectAll("text")
+        .style("cursor", "pointer")
+        .style("font-weight", "bold")
+        .on("click", function (event, d) {
+          highlightedRisk = highlightedRisk === d ? null : d;
+          updateOpacity();
+          updateDetailsBoxFromFilter();
         });
 
-        if (!stats.length) {
-          g.append("text")
-           .attr("x",W/2).attr("y",H/2)
-           .attr("text-anchor","middle").attr("fill","#666")
-           .text("No data for this filter");
-          return;
-        }
+      svg.append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(yScale));
 
-        const x = d3.scaleLinear()
-                    .domain([
-                      d3.min(stats,d=>d.stats.min),
-                      d3.max(stats,d=>d.stats.max)
-                    ]).nice().range([0,W]);
+      svg.append("text")
+        .attr("text-anchor", "middle")
+        .attr("transform", `translate(${margin.left - 30},${height / 2})rotate(-90)`)
+        .text(title);
 
-        const y = d3.scaleBand()
-                    .domain(stats.map(d=>d.key))
-                    .range([0,H]).padding(0.3);
+      svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", margin.top / 2)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "16px")
+        .attr("font-weight", "bold")
+        .text(`${title} by Risk and Outcome`);
 
-        g.append("g")
-         .attr("transform",`translate(0,${H})`)
-         .call(d3.axisBottom(x).ticks(4));
-        g.append("g")
-         .call(d3.axisLeft(y).tickFormat(d=>{
-           const [o,r] = d.split("-");
-           return `${o} / ${r}`;
-         }));
+      riskLevels.forEach((risk, i) => {
+        outcomes.forEach((outcome, j) => {
+          const filtered = data.filter(d =>
+            d.risk === risk &&
+            d.death_inhosp === (outcome === "Died" ? 1 : 0) &&
+            d[variable] != null &&
+            (!selectedOptype || d.optype === selectedOptype) &&
+            (!selectedRegion || optypeToRegion[d.optype] === selectedRegion)
+          );
+          const values = filtered.map(d => +d[variable]);
+          if (!values.length) return;
 
-        const box = g.selectAll(".box")
-                     .data(stats)
-                     .join("g")
-                       .attr("class","box")
-                       .attr("transform",d=>`translate(0,${y(d.key)})`)
-                       .on("click", d=> updateDetails(d.vals));
+          const stats = getBoxStats(values);
+          const cx = xScale(risk) + j * boxWidth - boxWidth / 2 + xScale.bandwidth() / 2;
+          const g = svg.append("g")
+            .attr("class", `boxplot boxplot-${outcome}`)
+            .attr("data-group", `${risk}-${outcome}`);
 
-        box.append("line")
-           .attr("x1",d=>x(d.stats.min))
-           .attr("x2",d=>x(d.stats.max))
-           .attr("y1",y.bandwidth()/2)
-           .attr("y2",y.bandwidth()/2)
-           .attr("stroke","#666");
+          g.append("line")
+            .attr("x1", cx)
+            .attr("x2", cx)
+            .attr("y1", yScale(stats.min))
+            .attr("y2", yScale(stats.max))
+            .attr("stroke", "#333");
 
-        box.append("rect")
-           .attr("x",d=>x(d.stats.q1))
-           .attr("width",d=>x(d.stats.q3)-x(d.stats.q1))
-           .attr("height",y.bandwidth())
-           .attr("fill","#4682b4").attr("opacity",0.7);
+          g.append("rect")
+            .attr("x", cx - boxWidth / 2)
+            .attr("width", boxWidth)
+            .attr("y", yScale(stats.q3))
+            .attr("height", yScale(stats.q1) - yScale(stats.q3))
+            .attr("fill", color[outcome])
+            .attr("stroke", "#000")
+            .on("click", () => {
+              selectedBox = `${risk}-${outcome}-${variable}`;
+              updateDetailsBoxFromFilter();
+            });
 
-        box.append("line")
-           .attr("x1",d=>x(d.stats.median))
-           .attr("x2",d=>x(d.stats.median))
-           .attr("y1",0).attr("y2",y.bandwidth())
-           .attr("stroke","#000").attr("stroke-width",2);
+          g.append("line")
+            .attr("x1", cx - boxWidth / 2)
+            .attr("x2", cx + boxWidth / 2)
+            .attr("y1", yScale(stats.median))
+            .attr("y2", yScale(stats.median))
+            .attr("stroke", "#000");
+        });
+      });
+
+      const legend = svg.append("g")
+        .attr("transform", `translate(${width - margin.right - 100}, ${margin.top})`);
+
+      outcomes.forEach((outcome, i) => {
+        const legendRow = legend.append("g")
+          .attr("transform", `translate(0, ${i * 20})`)
+          .style("cursor", "pointer")
+          .on("click", () => {
+            highlightedOutcome = highlightedOutcome === outcome ? null : outcome;
+            updateOpacity();
+            updateDetailsBoxFromFilter();
+          });
+
+        legendRow.append("rect")
+          .attr("width", 12)
+          .attr("height", 12)
+          .attr("fill", color[outcome])
+          .attr("stroke", "#000");
+
+        legendRow.append("text")
+          .attr("x", 18)
+          .attr("y", 10)
+          .text(outcome)
+          .attr("font-size", "12px")
+          .attr("alignment-baseline", "middle");
+      });
+
+      updateOpacity();
+    }
+
+    function updateOpacity() {
+      d3.selectAll(".boxplot")
+        .transition().duration(200)
+        .style("opacity", function () {
+          const [boxRisk, boxOutcome] = d3.select(this).attr("data-group").split("-");
+          const riskMatch = !highlightedRisk || highlightedRisk === boxRisk;
+          const outcomeMatch = !highlightedOutcome || highlightedOutcome === boxOutcome;
+          return riskMatch && outcomeMatch ? 1 : 0.2;
+        });
+    }
+
+    function updateDetailsBoxFromFilter() {
+      let filtered = data;
+
+      if (highlightedRisk) {
+        filtered = filtered.filter(d => d.risk === highlightedRisk);
+      }
+      if (highlightedOutcome) {
+        filtered = filtered.filter(d => d.death_inhosp === (highlightedOutcome === "Died" ? 1 : 0));
+      }
+      if (selectedOptype) {
+        filtered = filtered.filter(d => d.optype === selectedOptype);
+      }
+      if (selectedRegion) {
+        filtered = filtered.filter(d => optypeToRegion[d.optype] === selectedRegion);
       }
 
-      function boxStats(a) {
-        const s = a.slice().sort(d3.ascending),
-              q1 = d3.quantile(s,0.25),
-              m  = d3.quantile(s,0.5),
-              q3 = d3.quantile(s,0.75),
-              iqr= q3-q1,
-              min= d3.min(s.filter(v=>v>=q1-1.5*iqr)),
-              max= d3.max(s.filter(v=>v<=q3+1.5*iqr));
-        return {min,q1,median:m,q3,max};
+      if (!filtered.length) {
+        d3.select("#detailsBox").html(`<em>No data matching current filters.</em>`);
+        return;
       }
 
-      function updateDetails(arr) {
-        const st = boxStats(arr),
-              label = metrics.find(m=>m.id===currentMetric).label;
-        d3.select("#detailsBox").html(`
-          <h3>${label}</h3>
-          <ul>
-            <li><strong>Min:</strong> ${st.min.toFixed(2)}</li>
-            <li><strong>Q1:</strong> ${st.q1.toFixed(2)}</li>
-            <li><strong>Median:</strong> ${st.median.toFixed(2)}</li>
-            <li><strong>Q3:</strong> ${st.q3.toFixed(2)}</li>
-            <li><strong>Max:</strong> ${st.max.toFixed(2)}</li>
-          </ul>
-        `);
+      const values = filtered.map(d => +d[currentMetric]).filter(v => !isNaN(v));
+      if (!values.length) {
+        d3.select("#detailsBox").html(`<em>No values for selected metric.</em>`);
+        return;
       }
 
-    });
-})();
+      const stats = getBoxStats(values);
+      const opDurations = filtered.map(d => (+d.opend - +d.opstart) / 60).filter(v => !isNaN(v));
+      const medianDuration = d3.median(opDurations)?.toFixed(1);
+
+      const anestheticCounts = d3.rollup(
+        filtered.filter(d => d.ane_type),
+        v => v.length,
+        d => d.ane_type
+      );
+      const commonAnes = Array.from(anestheticCounts.entries())
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3)
+        .map(([type]) => type)
+        .join(", ");
+
+      const bloodLoss = filtered.map(d => +d.intraop_ebl).filter(v => !isNaN(v));
+      const medianEBL = d3.median(bloodLoss)?.toFixed(1);
+
+      const icuCount = filtered.filter(d => +d.icu_days > 0).length;
+      const icuPercent = ((icuCount / filtered.length) * 100).toFixed(1);
+
+      d3.select("#detailsBox").html(`
+        <strong>Filtered Stats:</strong><br>
+        Risk: ${highlightedRisk || "All"}<br>
+        Outcome: ${highlightedOutcome || "All"}<br>
+        Operation Type: ${selectedOptype || "All"}<br>
+        Body Region: ${selectedRegion || "All"}<br><br>
+        <table>
+          <tr><td>Min:</td><td>${stats.min.toFixed(1)}</td></tr>
+          <tr><td>Q1:</td><td>${stats.q1.toFixed(1)}</td></tr>
+          <tr><td>Median:</td><td>${stats.median.toFixed(1)}</td></tr>
+          <tr><td>Q3:</td><td>${stats.q3.toFixed(1)}</td></tr>
+          <tr><td>Max:</td><td>${stats.max.toFixed(1)}</td></tr>
+        </table><br>
+        <strong>Additional Info:</strong><br>
+        Median Surgery Duration: ${medianDuration} min<br>
+        Common Anesthetics: ${commonAnes}<br>
+        Median Blood Loss: ${medianEBL} mL<br>
+        ICU Admission: ${icuPercent}% of patients
+      `);
+    }
+
+    function getBoxStats(values) {
+      const sorted = values.slice().sort(d3.ascending);
+      const q1 = d3.quantile(sorted, 0.25);
+      const median = d3.quantile(sorted, 0.5);
+      const q3 = d3.quantile(sorted, 0.75);
+      const iqr = q3 - q1;
+      const min = d3.min(sorted.filter(v => v >= q1 - 1.5 * iqr));
+      const max = d3.max(sorted.filter(v => v <= q3 + 1.5 * iqr));
+      return { min, q1, median, q3, max };
+    }
+  });
