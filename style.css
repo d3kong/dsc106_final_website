@@ -28,36 +28,45 @@ html, body { width: 100%; height: 100%; font-family: Georgia, serif; overflow-x:
   display: grid; grid-template-columns: 40% 60%; gap: 2rem;
 }
 
-/* LEFT COL (body map) */
+/* LEFT COL (BODY MAP) */
 .map-cell { display: flex; flex-direction: column; align-items: center; }
 .body-container {
-  position: relative; width: 100%; max-width: 300px;
+  position: relative;
+  width: 100%;
+  max-width: 300px;
   aspect-ratio: 494/610;
 }
 .body-image {
-  width: 100%; height: 100%; object-fit: contain; display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
   filter: invert(1) brightness(2) contrast(250%);
 }
 
-#body-map2 { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* ─── Slide 2 & Slide 3 Body‐Map ─── */
+#body-map2 {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* NOTE: we removed `pointer-events: none;` so that clicks reach the children */
+}
 
-/* keep the pointer cursor on each region */
+/* Make each invisible “region” path/circle/rect actually hit‐testable */
 .region {
   cursor: pointer;
 }
-
-/* give each invisible shape a tiny bit of opacity and explicit pointer‐events */
 .region path,
 .region circle,
 .region rect {
   fill: transparent;
   stroke: transparent;
   stroke-width: 5;
-  opacity: 0.01;         /* just enough “paint” so the browser can hit‐test it */
-  pointer-events: all;   /* ← now clicks on this shape will fire */
+  opacity: 0.01;        /* just enough “paint” so the browser can hit-test it */
+  pointer-events: all;  /* ← necessary for clicks to fire on these shapes */
 }
-
-/* highlight whichever region was clicked */
+/* Highlight whichever region gets clicked */
 .region--selected path,
 .region--selected circle,
 .region--selected rect {
@@ -65,35 +74,65 @@ html, body { width: 100%; height: 100%; font-family: Georgia, serif; overflow-x:
   opacity: 1;
 }
 
-#body-map4 { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-
-/* highlight the selected region */
-.region--selected path,
-.region--selected circle,
-.region--selected rect {
-  fill: rgba(255,0,0,0.2);
-  opacity: 1;
+/* ─── Slide 4 Body‐Map ─── */
+#body-map4 {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* slide 4’s map is not clickable by design (unless you want it) */
 }
 
-.body-hint { margin-top: .8rem; font-size: 1rem; font-style: italic; text-align: center; }
+/* ───────── BODY‐HINT TEXT ───────── */
+.body-hint {
+  margin-top: .8rem;
+  font-size: 1rem;
+  font-style: italic;
+  text-align: center;
+}
 
-/* RIGHT COL (panel) */
+/* RIGHT COL (PANEL) */
 .panel-cell {
-  background: rgba(255,255,255,.15); backdrop-filter: blur(4px);
-  border-radius: 1rem; padding: 1.5rem;
+  background: rgba(255,255,255,.15);
+  backdrop-filter: blur(4px);
+  border-radius: 1rem;
+  padding: 1.5rem;
   display: flex; flex-direction: column;
-  color: #000; height: 100%; overflow: hidden;
+  color: #000;
+  height: 100%;
+  overflow: hidden;
 }
-.control-row { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-bottom: 1rem; }
-.control-row select { min-width: 180px; }
-.control-row button { padding: .25rem .6rem; }
+.control-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .6rem;
+  margin-bottom: 1rem;
+}
+.control-row select {
+  min-width: 180px;
+}
+.control-row button {
+  padding: .25rem .6rem;
+}
 .viz-block {
-  background: #fff; padding: 1.5rem 1.25rem; border-radius: 1rem;
+  background: #fff;
+  padding: 1.5rem 1.25rem;
+  border-radius: 1rem;
   box-shadow: 0 4px 10px rgba(0,0,0,.15);
-  flex: 1; display: flex; flex-direction: column; overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
-#plot { flex: none; margin-bottom: 1rem; }
-.details { font-size: .9rem; overflow-y: auto; }
+#plot {
+  flex: none;
+  margin-bottom: 1rem;
+}
+.details {
+  font-size: .9rem;
+  overflow-y: auto;
+}
 
 /* RESPONSIVE */
 @media(max-width:1024px) {
@@ -104,24 +143,32 @@ html, body { width: 100%; height: 100%; font-family: Georgia, serif; overflow-x:
 }
 
 .conclusion {
-  padding: 0 24px; max-width: 800px; margin: 0 auto;
+  padding: 0 24px;
+  max-width: 800px;
+  margin: 0 auto;
 }
-#heatmap { overflow-x: auto; max-width: 100%; }
 
+/* ─── SLIDE 3: HEATMAP STYLING ─── */
+/* ensure the heatmap scrolls horizontally if it overflows */
+#heatmap {
+  overflow-x: auto;
+  max-width: 100%;
+}
+/* style the tick labels in black instead of white */
 #slide3 #heatmap svg .x-axis text,
 #slide3 #heatmap svg .y-axis text {
-  fill: #000;           /* tick-labels in black */
-  font-size: 12px;      /* tweak as needed */
+  fill: #000;
+  font-size: 12px;
 }
-
 #slide3 #heatmap svg .x-axis path,
 #slide3 #heatmap svg .x-axis line,
 #slide3 #heatmap svg .y-axis path,
 #slide3 #heatmap svg .y-axis line {
-  stroke: #000;         /* axis lines & ticks in black */
+  stroke: #000;
   stroke-width: 1px;
 }
 
+/* ─── SLIDE 4 SPECIFIC STYLING ─── */
 #slide4 .viz-block {
   min-height: 400px;
   overflow-y: auto;
@@ -129,22 +176,18 @@ html, body { width: 100%; height: 100%; font-family: Georgia, serif; overflow-x:
   padding-top: 0;
   padding-bottom: 0;
 }
-
 #slide4 #chart {
   flex: none;
   align-items: center;
 }
-
 #slide4 .slide-grid {
   height: 95vh;
 }
-
 .viz-block-horizontal {
   display: flex;
   gap: 20px;
   align-items: flex-start;
 }
-
 .details-box {
   max-width: 250px;
   font-size: 14px;

@@ -30,35 +30,22 @@
       .style("font-family", "sans-serif");
   }
 
-  let allData = []; 
-  let lastHovered = null; 
+  let allData = [];
+  let lastHovered = null;
 
   const regionToGroup = {
-
-    // HEAD / NECK
-    "region_OthersBar":         "Others",
-    // THYROID
-    "region_Thyroid":           "Thyroid",
-    // BREAST
-    "region_Breast":            "Breast",
-    // VASCULAR (ARM + LEG)
-    "region_Vascular":          "Vascular",
-    // HEPATIC
-    "region_Hepatic":           "Hepatic",
-    // BILIARY/PANCREAS
-    "region_BiliaryPancreas":   "Biliary/Pancreas",
-    // STOMACH
-    "region_Stomach":           "Stomach",
-    // COLORECTAL
-    "region_Colorectal":        "Colorectal",
-    // MAJOR RESECTION
-    "region_MajorResection":    "Major resection",
-    // MINOR RESECTION
-    "region_MinorResection":    "Minor resection",
-    // TRANSPLANTATION
-    "region_Transplantation":   "Transplantation",
-    // OTHERS (catch‐all)
-    "region_Others":            "Others"
+    "region_OthersBar":        "Others",
+    "region_Thyroid":          "Thyroid",
+    "region_Breast":           "Breast",
+    "region_Vascular":         "Vascular",
+    "region_Hepatic":          "Hepatic",
+    "region_BiliaryPancreas":  "Biliary/Pancreas",
+    "region_Stomach":          "Stomach",
+    "region_Colorectal":       "Colorectal",
+    "region_MajorResection":   "Major resection",
+    "region_MinorResection":   "Minor resection",
+    "region_Transplantation":  "Transplantation",
+    "region_Others":           "Others"
   };
 
   function render(filteredData) {
@@ -67,7 +54,7 @@
     brushInfo.text("");
 
     const width  = 1000 - margin.left - margin.right;
-    const height = 700  - margin.top  - margin.bottom;
+    const height =  700 - margin.top  - margin.bottom;
 
     const svg = wrap.append("svg")
       .attr("width",  width + margin.left + margin.right)
@@ -78,7 +65,6 @@
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
     const metrics = ["death_score", "asa_score", "commonality_score", "anxiety_score"];
-
     const yDomain = filteredData.map(d => d.opname);
 
     const x = d3.scaleBand()
@@ -94,9 +80,10 @@
     const scoreMin = d3.min(allData, d => d.anxiety_score);
     const scoreMax = d3.max(allData, d => d.anxiety_score);
     const color = d3.scaleSequential()
-      .interpolator(d3.interpolateRdYlGn)
+      .interpolator(d3.interpolateViridis)
       .domain([scoreMax, scoreMin]);
 
+    // DRAW AXES
     svg.append("g")
       .attr("class", "x-axis")
       .attr("transform", "translate(0, 0)")
@@ -119,12 +106,14 @@
     const rects = svg.selectAll("rect")
       .data(cells)
       .join("rect")
-      .attr("x", d => x(d.metric))
-      .attr("y", d => y(d.opname))
+      .attr("x",      d => x(d.metric))
+      .attr("y",      d => y(d.opname))
       .attr("width",  x.bandwidth())
       .attr("height", y.bandwidth())
-      .style("fill",   d => color(d.value))
-      .style("stroke", "#fff")
+      .style("fill",  d => color(d.value))
+      .style("stroke","#fff")
+      .attr("tabindex", 0)
+      .attr("focusable", true)
       .on("mouseover", (event, d) => {
         lastHovered = d;
         tooltip.transition().duration(200).style("opacity", 1);
@@ -138,6 +127,40 @@
       .on("mouseout", () => {
         tooltip.transition().duration(500).style("opacity", 0);
         lastHovered = null;
+      })
+      .on("focus", (event, d) => {
+        lastHovered = d;
+        tooltip.transition().duration(200).style("opacity", 1);
+        tooltip.html(`
+          <b>${d.opname}</b><br>
+          ${d.metric}: ${isNaN(d.value) ? "N/A" : d.value.toFixed(3)}
+        `)
+          .style("left", (event.pageX + 10) + "px")
+          .style("top",  (event.pageY - 28) + "px");
+      })
+      .on("blur", () => {
+        tooltip.transition().duration(200).style("opacity", 0);
+        lastHovered = null;
+      })
+      .on("keydown", (event, d) => {
+        if (event.key === "Enter" || event.key === "Return") {
+          const v = d.allRow;
+          detailBox.html(`
+            <div style="
+                text-align: left;
+                padding: 10px;
+                border: 1px solid #ccc;
+                background: #f9f9f9;
+                border-radius: 6px;
+              ">
+              <b>${v.opname}</b><br>
+              Anxiety Score: ${isNaN(v.anxiety_score) ? "N/A" : v.anxiety_score.toFixed(3)}<br>
+              Death Score:   ${isNaN(v.death_score)     ? "N/A" : v.death_score.toFixed(3)}<br>
+              ASA Score:     ${isNaN(v.asa_score)       ? "N/A" : v.asa_score.toFixed(3)}<br>
+              Commonality:   ${isNaN(v.commonality_score)? "N/A" : v.commonality_score.toFixed(3)}
+            </div>
+          `);
+        }
       });
 
     const brush = d3.brush()
@@ -149,8 +172,6 @@
           return;
         }
         const [[x0, y0], [x1, y1]] = selection;
-
-        // Filter which cells fall fully inside the brush area
         const selected = cells.filter(d => {
           const cx = x(d.metric) + x.bandwidth()/2;
           const cy = y(d.opname) + y.bandwidth()/2;
@@ -183,14 +204,12 @@
 
     let filtered;
     if (choice === "All") {
-      filtered = allData.slice(); // copy entire array
+      filtered = allData.slice();
     } else {
       filtered = allData.filter(d => d.optype === choice);
     }
 
     filtered.sort((a, b) => b.anxiety_score - a.anxiety_score);
-
-    // Now draw:
     render(filtered);
   }
 
@@ -202,17 +221,14 @@
                          + 0.2 * d.commonality_score;
       }
     });
-
     allData = data;
 
     const optypes = Array.from(new Set(allData.map(d => d.optype))).sort();
-
     const dropdownOptions = ["All", ...optypes];
 
     dropdown.selectAll("option")
       .data(dropdownOptions)
-      .enter()
-      .append("option")
+      .join("option")
       .text(d => d);
 
     dropdown.on("change", updateFilter);
@@ -222,7 +238,7 @@
 
     d3.select("body").on("keydown", (event) => {
       if ((event.key === "Enter" || event.key === "Return") && lastHovered) {
-        const vals = lastHovered.allRow;
+        const v = lastHovered.allRow;
         detailBox.html(`
           <div style="
               text-align: left;
@@ -231,23 +247,24 @@
               background: #f9f9f9;
               border-radius: 6px;
             ">
-            <b>${vals.opname}</b><br>
-            Anxiety Score: ${isNaN(vals.anxiety_score) ? "N/A" : vals.anxiety_score.toFixed(3)}<br>
-            Death Score: ${isNaN(vals.death_score)     ? "N/A" : vals.death_score.toFixed(3)}<br>
-            ASA Score:   ${isNaN(vals.asa_score)       ? "N/A" : vals.asa_score.toFixed(3)}<br>
-            Commonality Score: ${isNaN(vals.commonality_score) ? "N/A" : vals.commonality_score.toFixed(3)}
+            <b>${v.opname}</b><br>
+            Anxiety Score: ${isNaN(v.anxiety_score) ? "N/A" : v.anxiety_score.toFixed(3)}<br>
+            Death Score:   ${isNaN(v.death_score)     ? "N/A" : v.death_score.toFixed(3)}<br>
+            ASA Score:     ${isNaN(v.asa_score)       ? "N/A" : v.asa_score.toFixed(3)}<br>
+            Commonality:   ${isNaN(v.commonality_score)? "N/A" : v.commonality_score.toFixed(3)}
           </div>
         `);
       }
     });
 
-    d3.selectAll("#body-map [id]").on("click", function(event) {
+    d3.selectAll("#body-map2 .region").on("click", function(event) {
+      // highlight the clicked region
+      d3.selectAll("#body-map2 .region").classed("region--selected", false);
+      d3.select(this).classed("region--selected", true);
+
       const regionID = d3.select(this).attr("id");
       const groupName = regionToGroup[regionID];
-      if (!groupName) {
-        return;
-      }
-
+      if (!groupName) return;
       dropdown.property("value", groupName);
       updateFilter();
     });
