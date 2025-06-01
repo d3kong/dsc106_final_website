@@ -1,53 +1,76 @@
-(function () {
-  const margin = { top: 100, right: 50, bottom: 30, left: 250 };
+(function() {
+  const margin = { top: 100, right: 50, bottom: 30, left: 150 };
 
-  // Main containers
-  const wrap      = d3.select("#heatmap");
+  const wrap = d3.select("#heatmap");
+
   const detailBox = d3.select("#heatmap-details");
 
-  // Use the dropdown placed in HTML
-  const dropdown = d3.select("#surgeryFilter").style("margin-bottom", "10px");
-  dropdown.selectAll("option")
-    .data(["Top 10", "Top 20", "Top 50", "All"] )
-    .join("option")
-      .attr("value", d => d)
-      .text(d => d);
+  const dropdown = wrap
+    .insert("select", ":first-child")
+    .attr("id", "optypeFilter")
+    .style("margin-bottom", "10px");
 
-  // Tooltip for hover
   const tooltip = d3.select("body")
     .append("div")
     .attr("class", "tooltip")
-    .style("position",       "absolute")
-    .style("background",     "#fff")
-    .style("padding",        "6px")
-    .style("border",         "1px solid #ccc")
-    .style("border-radius",  "4px")
+    .style("position", "absolute")
+    .style("background", "#fff")
+    .style("padding", "6px")
+    .style("border", "1px solid #ccc")
+    .style("border-radius", "4px")
     .style("pointer-events", "none")
-    .style("opacity",        0);
+    .style("opacity", 0);
 
-  // Brush-info pane
   let brushInfo = wrap.select("#brush-info");
   if (brushInfo.empty()) {
     brushInfo = wrap.append("div")
       .attr("id", "brush-info")
       .style("margin-top", "20px")
-      .style("font-size",  "14px")
-      .style("font-family","sans-serif");
+      .style("font-size", "14px")
+      .style("font-family", "sans-serif");
   }
 
-  let allData = [];
-  let lastHovered = null;
+  let allData = []; 
+  let lastHovered = null; 
 
-  function render(data) {
+  const regionToGroup = {
+
+    // HEAD / NECK
+    "region_OthersBar":         "Others",
+    // THYROID
+    "region_Thyroid":           "Thyroid",
+    // BREAST
+    "region_Breast":            "Breast",
+    // VASCULAR (ARM + LEG)
+    "region_Vascular":          "Vascular",
+    // HEPATIC
+    "region_Hepatic":           "Hepatic",
+    // BILIARY/PANCREAS
+    "region_BiliaryPancreas":   "Biliary/Pancreas",
+    // STOMACH
+    "region_Stomach":           "Stomach",
+    // COLORECTAL
+    "region_Colorectal":        "Colorectal",
+    // MAJOR RESECTION
+    "region_MajorResection":    "Major resection",
+    // MINOR RESECTION
+    "region_MinorResection":    "Minor resection",
+    // TRANSPLANTATION
+    "region_Transplantation":   "Transplantation",
+    // OTHERS (catch‐all)
+    "region_Others":            "Others"
+  };
+
+  function render(filteredData) {
     wrap.selectAll("svg").remove();
     detailBox.html("");
     brushInfo.text("");
 
     const width  = 1000 - margin.left - margin.right;
-    const height =  700 - margin.top  - margin.bottom;
+    const height = 700  - margin.top  - margin.bottom;
 
     const svg = wrap.append("svg")
-      .attr("width",  width  + margin.left + margin.right)
+      .attr("width",  width + margin.left + margin.right)
       .attr("height", height + margin.top  + margin.bottom)
       .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
       .attr("preserveAspectRatio", "xMidYMid meet")
@@ -55,7 +78,8 @@
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
     const metrics = ["death_score", "asa_score", "commonality_score", "anxiety_score"];
-    const yDomain = data.map(d => d.opname);
+
+    const yDomain = filteredData.map(d => d.opname);
 
     const x = d3.scaleBand()
       .domain(metrics)
@@ -67,84 +91,55 @@
       .range([0, height])
       .padding(0.05);
 
-    // Color scale based on full data anxiety range
     const scoreMin = d3.min(allData, d => d.anxiety_score);
     const scoreMax = d3.max(allData, d => d.anxiety_score);
     const color = d3.scaleSequential()
       .interpolator(d3.interpolateRdYlGn)
       .domain([scoreMax, scoreMin]);
 
-    // Axes with labels
     svg.append("g")
-      .attr("class","x-axis")
-      .attr("transform","translate(0,0)")
+      .attr("class", "x-axis")
+      .attr("transform", "translate(0, 0)")
       .call(d3.axisTop(x));
 
     svg.append("g")
-      .attr("class","y-axis")
+      .attr("class", "y-axis")
+      .attr("transform", "translate(0, 0)")
       .call(d3.axisLeft(y));
 
-    // Build cells
-    const cells = data.flatMap(d =>
-      metrics.map(m => ({ opname: d.opname, metric: m, value: d[m], allRow: d }))
+    const cells = filteredData.flatMap(d =>
+      metrics.map(m => ({
+        opname: d.opname,
+        metric: m,
+        value: d[m],
+        allRow: d
+      }))
     );
 
     const rects = svg.selectAll("rect")
       .data(cells)
       .join("rect")
-      .attr("x",      d => x(d.metric))
-      .attr("y",      d => y(d.opname))
+      .attr("x", d => x(d.metric))
+      .attr("y", d => y(d.opname))
       .attr("width",  x.bandwidth())
       .attr("height", y.bandwidth())
       .style("fill",   d => color(d.value))
       .style("stroke", "#fff")
       .on("mouseover", (event, d) => {
         lastHovered = d;
-        // show tooltip as before…
-        tooltip.transition().duration(200).style("opacity", 1)
-              .html(`<b>${d.opname}</b><br>${d.metric}: ${d.value.toFixed(3)}`)
-              .style("left", (event.pageX + 10) + "px")
-              .style("top",  (event.pageY - 28) + "px");
-
-        // new: give this rect keyboard focus
-        event.currentTarget.focus();
+        tooltip.transition().duration(200).style("opacity", 1);
+        tooltip.html(`
+          <b>${d.opname}</b><br>
+          ${d.metric}: ${isNaN(d.value) ? "N/A" : d.value.toFixed(3)}
+        `)
+          .style("left", (event.pageX + 10) + "px")
+          .style("top",  (event.pageY - 28) + "px");
       })
       .on("mouseout", () => {
-        tooltip.transition().duration(200).style("opacity", 0);
+        tooltip.transition().duration(500).style("opacity", 0);
         lastHovered = null;
       });
 
-    // ─── Keyboard access: Tab + Enter on each cell ───
-    rects
-      .attr("tabindex", 0)
-      .attr("focusable", true)
-      .on("focus", (event, d) => {
-        lastHovered = d;
-        tooltip.transition().duration(200).style("opacity", 1)
-               .html(`<b>${d.opname}</b><br>${d.metric}: ${d.value.toFixed(3)}`)
-               .style("left", (event.pageX + 10) + "px")
-               .style("top",  (event.pageY - 28) + "px");
-      })
-      .on("blur", () => {
-        tooltip.transition().duration(200).style("opacity", 0);
-        lastHovered = null;
-      })
-      .on("keydown", (event, d) => {
-        if (event.key === "Enter") {
-          const v = d.allRow;
-          detailBox.html(
-            `<div style="text-align:left; padding:10px; border:1px solid #ccc; background:#f9f9f9; border-radius:6px;">
-               <b>${v.opname}</b><br>
-               Death Score: ${v.death_score.toFixed(3)}<br>
-               ASA Score: ${v.asa_score.toFixed(3)}<br>
-               Commonality Score: ${v.commonality_score.toFixed(3)}<br>
-               Anxiety Score: ${v.anxiety_score.toFixed(3)}
-             </div>`
-          );
-        }
-      });
-
-    // Brush for multi-cell summary
     const brush = d3.brush()
       .extent([[0, 0], [width, height]])
       .on("end", ({ selection }) => {
@@ -154,23 +149,31 @@
           return;
         }
         const [[x0, y0], [x1, y1]] = selection;
+
+        // Filter which cells fall fully inside the brush area
         const selected = cells.filter(d => {
-          const cx = x(d.metric) + x.bandwidth() / 2;
-          const cy = y(d.opname) + y.bandwidth() / 2;
+          const cx = x(d.metric) + x.bandwidth()/2;
+          const cy = y(d.opname) + y.bandwidth()/2;
           return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
         });
+
         rects.classed("selected", d => {
-          const cx = x(d.metric) + x.bandwidth() / 2;
-          const cy = y(d.opname) + y.bandwidth() / 2;
+          const cx = x(d.metric) + x.bandwidth()/2;
+          const cy = y(d.opname) + y.bandwidth()/2;
           return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
         });
-        if (selected.length) {
+
+        if (selected.length > 0) {
           const avg = d3.mean(selected, d => d.value);
-          brushInfo.html(`<b>${selected.length}</b> cells selected<br>Average: <b>${avg.toFixed(3)}</b>`);
+          brushInfo.html(`
+            <b>${selected.length}</b> cells selected<br>
+            Average value: <b>${avg.toFixed(3)}</b>
+          `);
         } else {
           brushInfo.text("No cells selected.");
         }
       });
+
     svg.append("g").call(brush);
   }
 
@@ -178,43 +181,79 @@
     const choice = dropdown.property("value");
     if (!allData.length) return;
 
-    const sorted = [...allData].sort((a, b) => b.anxiety_score - a.anxiety_score);
     let filtered;
-    if (choice === "Top 10") filtered = sorted.slice(0, 10);
-    else if (choice === "Top 20") filtered = sorted.slice(0, 20);
-    else if (choice === "Top 50") filtered = sorted.slice(0, 50);
-    else filtered = sorted;
+    if (choice === "All") {
+      filtered = allData.slice(); // copy entire array
+    } else {
+      filtered = allData.filter(d => d.optype === choice);
+    }
 
+    filtered.sort((a, b) => b.anxiety_score - a.anxiety_score);
+
+    // Now draw:
     render(filtered);
   }
 
-  // Load and initialize
   d3.json("data/daniel.json").then(data => {
     data.forEach(d => {
-      if (d.anxiety_score === undefined) {
+      if (d.anxiety_score === undefined || isNaN(d.anxiety_score)) {
         d.anxiety_score = 0.6 * d.death_score
-                        + 0.2 * d.asa_score
-                        + 0.2 * d.commonality_score;
+                         + 0.2 * d.asa_score
+                         + 0.2 * d.commonality_score;
       }
     });
+
     allData = data;
-    updateFilter();
+
+    const optypes = Array.from(new Set(allData.map(d => d.optype))).sort();
+
+    const dropdownOptions = ["All", ...optypes];
+
+    dropdown.selectAll("option")
+      .data(dropdownOptions)
+      .enter()
+      .append("option")
+      .text(d => d);
+
     dropdown.on("change", updateFilter);
 
-    // Global Enter for detail pane
-    d3.select("body").on("keydown", event => {
-      if (event.key === "Enter" && lastHovered) {
-        const v = lastHovered.allRow;
-        detailBox.html(
-          `<div style="text-align:left; padding:10px; border:1px solid #ccc; background:#f9f9f9; border-radius:6px;">
-             <b>${v.opname}</b><br>
-             Death Score: ${v.death_score.toFixed(3)}<br>
-             ASA Score: ${v.asa_score.toFixed(3)}<br>
-             Commonality Score: ${v.commonality_score.toFixed(3)}<br>
-             Anxiety Score: ${v.anxiety_score.toFixed(3)}
-           </div>`
-        );
+    dropdown.property("value", "All");
+    updateFilter();
+
+    d3.select("body").on("keydown", (event) => {
+      if ((event.key === "Enter" || event.key === "Return") && lastHovered) {
+        const vals = lastHovered.allRow;
+        detailBox.html(`
+          <div style="
+              text-align: left;
+              padding: 10px;
+              border: 1px solid #ccc;
+              background: #f9f9f9;
+              border-radius: 6px;
+            ">
+            <b>${vals.opname}</b><br>
+            Anxiety Score: ${isNaN(vals.anxiety_score) ? "N/A" : vals.anxiety_score.toFixed(3)}<br>
+            Death Score: ${isNaN(vals.death_score)     ? "N/A" : vals.death_score.toFixed(3)}<br>
+            ASA Score:   ${isNaN(vals.asa_score)       ? "N/A" : vals.asa_score.toFixed(3)}<br>
+            Commonality Score: ${isNaN(vals.commonality_score) ? "N/A" : vals.commonality_score.toFixed(3)}
+          </div>
+        `);
       }
     });
-  }).catch(err => console.error("Failed to load heatmap data:", err));
+
+    d3.selectAll("#body-map [id]").on("click", function(event) {
+      const regionID = d3.select(this).attr("id");
+      const groupName = regionToGroup[regionID];
+      if (!groupName) {
+        return;
+      }
+
+      dropdown.property("value", groupName);
+      updateFilter();
+    });
+
+  }).catch(error => {
+    console.error("Error loading daniel.json:", error);
+  });
+
 })();

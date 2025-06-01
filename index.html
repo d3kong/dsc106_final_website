@@ -59,42 +59,40 @@
   </section>
 
   <!-- ────────────── SLIDE 3 – Daniel's Heatmap ────────────── -->
-  <section class="slide hidden" id="slide3">
-    <div class="slide-grid">
-      <div class="map-cell">
-        <div class="body-container" id="wrapper">
-          <img id="bodyImg" src="images/surgery_body.png" alt="body map" class="body-image" />
-          <svg id="body-map2" viewBox="0 0 494 610" preserveAspectRatio="xMidYMid meet">
-            <g transform="translate(0 56)">
-              <g id="head_neck" class="region"><circle cx="247" cy="133" r="46"/><rect x="225" y="170" width="44" height="32"/></g>
-              <g id="thorax" class="region"><path d="M195 196 Q247 158 299 196 L299 286 Q247 322 195 286 Z"/></g>
-              <g id="abdomen" class="region"><path d="M205 304 Q247 334 289 304 L289 374 Q247 404 205 374 Z"/></g>
-              <g id="pelvis" class="region"><path d="M215 392 Q247 422 279 392 L279 462 Q247 492 215 462 Z"/></g>
-            </g>
-          </svg>
-        </div>
-        <p class="body-hint">Click on the body to filter operation&nbsp;types</p>
+  <!-- ────────────── SLIDE 3 – Daniel’s Heatmap ────────────── -->
+<section class="slide hidden" id="slide3">
+  <div class="slide-grid">
+
+    <!-- LEFT COLUMN: Body map (same as slide2/4) -->
+    <div class="map-cell">
+      <div class="body-container">
+        <img src="images/surgery_body.png" class="body-image" alt="body map" />
+        <svg id="body-map2" viewBox="0 0 494 610" preserveAspectRatio="xMidYMid meet">
+          <g transform="translate(0 56)">
+            <g id="head_neck"  class="region"><circle cx="247" cy="133" r="46"/><rect x="225" y="170" width="44" height="32"/></g>
+            <g id="thorax"     class="region"><path d="M195 196 Q247 158 299 196 L299 286 Q247 322 195 286 Z"/></g>
+            <g id="abdomen"    class="region"><path d="M205 304 Q247 334 289 304 L289 374 Q247 404 205 374 Z"/></g>
+            <g id="pelvis"     class="region"><path d="M215 392 Q247 422 279 392 L279 462 Q247 492 215 462 Z"/></g>
+          </g>
+        </svg>
       </div>
-      <div class="panel-cell">
-        <h2>Patient Profiles: Anxiety Heatmap</h2>
-
-        <div class="control-row">
-          <label for="surgeryFilter">Show:</label>
-          <select id="surgeryFilter"></select>
-        </div>
-
-        <div class="viz-block">
-          <div id="heatmap" style="position: relative;"></div>
-
-          <div id="heatmap-details" class="details" style="margin-top:10px; font-family: sans-serif; font-size: 14px;">
-            <em>Hover over cells and press <kbd>Enter</kbd> to see details here.</em>
-          </div>
-        </div>
-
-        <p class="body-hint">Shows the different metrics that contribute to anxiety ranges for different surgery types.</p>
-      </div>
+      <p class="body-hint">Click on the body to filter operation types</p>
     </div>
-  </section>
+
+    <!-- RIGHT COLUMN: Daniel’s heatmap panel -->
+    <div class="panel-cell">
+      <h2>Patient Profiles: Anxiety Heatmap</h2>
+      <div id="heatmap" class="viz-block" style="position: relative;">
+      </div>
+      <div id="heatmap-details" class="details" style="margin-top:10px; font-family: sans-serif; font-size: 14px;">
+        <em>Hover over cells and press <kbd>Enter</kbd> to see details here.</em>
+      </div>
+      <p class="body-hint">Shows the different metrics that contribute to anxiety ranges for different surgeries</p>
+    </div>
+
+  </div>
+</section>
+
 
   <!-- ────────────── SLIDE 4 – Kate's Guide ────────────── -->
   <section class="slide hidden" id="slide4">

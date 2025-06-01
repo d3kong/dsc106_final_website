@@ -38,26 +38,34 @@ html, body { width: 100%; height: 100%; font-family: Georgia, serif; overflow-x:
   width: 100%; height: 100%; object-fit: contain; display: block;
   filter: invert(1) brightness(2) contrast(250%);
 }
-#body-map2 { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 
-#body-map4 { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+#body-map2 { position: absolute; inset: 0; width: 100%; height: 100%; }
 
-/* make region groups clickable */
+/* keep the pointer cursor on each region */
 .region {
   cursor: pointer;
-  pointer-events: all;
 }
 
-/* give invisible shapes a tiny fill so they register clicks */
+/* give each invisible shape a tiny bit of opacity and explicit pointer‐events */
 .region path,
 .region circle,
 .region rect {
   fill: transparent;
   stroke: transparent;
   stroke-width: 5;
-  opacity: 0.01;
-  pointer-events: all;
+  opacity: 0.01;         /* just enough “paint” so the browser can hit‐test it */
+  pointer-events: all;   /* ← now clicks on this shape will fire */
 }
+
+/* highlight whichever region was clicked */
+.region--selected path,
+.region--selected circle,
+.region--selected rect {
+  fill: rgba(255,0,0,0.2);
+  opacity: 1;
+}
+
+#body-map4 { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 
 /* highlight the selected region */
 .region--selected path,
