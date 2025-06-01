@@ -130,3 +130,19 @@ html, body { width: 100%; height: 100%; font-family: Georgia, serif; overflow-x:
 #slide4 .slide-grid {
   height: 95vh;
 }
+
+.viz-block-horizontal {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.details-box {
+  max-width: 250px;
+  font-size: 14px;
+  background-color: #eef2f4;
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  line-height: 1.4;
+}

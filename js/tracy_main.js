@@ -3,7 +3,7 @@ fetch("data/tracy.json")
   .then(data => {
     const outcomes = ["Survived", "Died"];
     const riskLevels = ["low", "medium", "high"];
-    const color = { Survived: "#4caf50", Died: "#f44336" };
+    const color = { Survived: "#597ac4", Died: "#f56e39" };
     const metrics = [
       { id: "age", label: "Age" },
       { id: "asa", label: "ASA Score" },
@@ -92,7 +92,7 @@ fetch("data/tracy.json")
 
     function drawBoxPlot(variable) {
       selectedBox = null;
-      d3.select("#detailsBox").html(`<strong>Filter by the mortality and risk level and/or use the body</strong> to see details`);
+      d3.select("#detailsBox").html(`<strong>Filter by mortality and risk level and use the body map</strong> to see details`);
 
       const svg = d3.select("#plot");
       const width = 300;
