@@ -1,2153 +1,2202 @@
 [
   {
     "opname": "Abdominoperineal resection",
-    "count": 15,
-    "avg_asa": 1.8,
-    "commonality_score": 0.9694501018329938,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.2,
-    "anxiety_score": 0.44778004073319755
+    "asa_score": 1.8,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.36
   },
   {
     "opname": "Adhesiolysis",
-    "count": 10,
-    "avg_asa": 2.1,
-    "commonality_score": 0.9796334012219959,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.275,
-    "anxiety_score": 0.4743533604887984
+    "asa_score": 2.1,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.42
   },
   {
     "opname": "Adrenalectomy",
-    "count": 23,
-    "avg_asa": 2.0869565217391304,
-    "commonality_score": 0.9531568228105907,
+    "optype": "Major resection",
     "death_score": 0.0,
-    "asa_score": 0.2717391304347826,
-    "anxiety_score": 0.46278446825467107
+    "asa_score": 2.0,
+    "commonality_score": 0.004,
+    "anxiety_score": 0.401
+  },
+  {
+    "opname": "Adrenalectomy",
+    "optype": "Others",
+    "death_score": 0.0,
+    "asa_score": 2.091,
+    "commonality_score": 0.004,
+    "anxiety_score": 0.419
   },
   {
     "opname": "Ampullectomy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Anal fistulotomy",
-    "count": 2,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47337067209775974
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Aneurysmal repair",
-    "count": 7,
-    "avg_asa": 2.5714285714285716,
-    "commonality_score": 0.9857433808553971,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.3928571428571429,
-    "anxiety_score": 0.5121544951993018
+    "asa_score": 2.571,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.515
   },
   {
     "opname": "Anterior resection",
-    "count": 245,
-    "avg_asa": 1.8326530612244898,
-    "commonality_score": 0.5010183299389002,
-    "death_score": 0.004081632653061225,
-    "asa_score": 0.20816326530612245,
-    "anxiety_score": 0.26408080136331513
+    "optype": "Colorectal",
+    "death_score": 0.004,
+    "asa_score": 1.833,
+    "commonality_score": 0.039,
+    "anxiety_score": 0.377
   },
   {
     "opname": "Aortofemoral bypass",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Aortoiliac bypass",
-    "count": 14,
-    "avg_asa": 2.5,
-    "commonality_score": 0.9714867617107943,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.375,
-    "anxiety_score": 0.5010947046843177
+    "asa_score": 2.5,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.5
   },
   {
     "opname": "Aortorenal bypass",
-    "count": 4,
-    "avg_asa": 1.75,
-    "commonality_score": 0.9918533604887984,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.1875,
-    "anxiety_score": 0.45299134419551934
+    "asa_score": 1.75,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.35
   },
   {
     "opname": "Appendectomy",
-    "count": 54,
-    "avg_asa": 1.7592592592592593,
-    "commonality_score": 0.890020366598778,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.18981481481481483,
-    "anxiety_score": 0.4129525910839557
+    "asa_score": 1.759,
+    "commonality_score": 0.009,
+    "anxiety_score": 0.354
   },
   {
     "opname": "Arteriovenous fistula",
-    "count": 29,
-    "avg_asa": 2.7586206896551726,
-    "commonality_score": 0.9409368635437881,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.43965517241379315,
-    "anxiety_score": 0.5082712971416532
+    "asa_score": 2.759,
+    "commonality_score": 0.005,
+    "anxiety_score": 0.553
   },
   {
     "opname": "Arteriovenous fistula thrombectomy",
-    "count": 6,
-    "avg_asa": 2.8333333333333335,
-    "commonality_score": 0.9877800407331976,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.45833333333333337,
-    "anxiety_score": 0.532612016293279
+    "asa_score": 2.833,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.567
   },
   {
     "opname": "Arteriovenous graft",
-    "count": 2,
-    "avg_asa": 1.5,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.125,
-    "anxiety_score": 0.4358706720977597
+    "asa_score": 1.5,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.3
   },
   {
     "opname": "Axillary lymph node dissection",
-    "count": 4,
-    "avg_asa": 1.75,
-    "commonality_score": 0.9918533604887984,
+    "optype": "Breast",
     "death_score": 0.0,
-    "asa_score": 0.1875,
-    "anxiety_score": 0.45299134419551934
+    "asa_score": 1.75,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.35
   },
   {
     "opname": "Bile duct anastomosis",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Biopsy",
-    "count": 49,
-    "avg_asa": 1.9183673469387754,
-    "commonality_score": 0.90020366598778,
-    "death_score": 0.02040816326530612,
-    "asa_score": 0.22959183673469385,
-    "anxiety_score": 0.435081466395112
+    "optype": "Breast",
+    "death_score": 0.0,
+    "asa_score": 1.0,
+    "commonality_score": 0.008,
+    "anxiety_score": 0.202
+  },
+  {
+    "opname": "Biopsy",
+    "optype": "Colorectal",
+    "death_score": 0.0,
+    "asa_score": 1.0,
+    "commonality_score": 0.008,
+    "anxiety_score": 0.202
+  },
+  {
+    "opname": "Biopsy",
+    "optype": "Minor resection",
+    "death_score": 0.0,
+    "asa_score": 1.939,
+    "commonality_score": 0.008,
+    "anxiety_score": 0.389
+  },
+  {
+    "opname": "Biopsy",
+    "optype": "Others",
+    "death_score": 0.067,
+    "asa_score": 2.0,
+    "commonality_score": 0.008,
+    "anxiety_score": 0.442
   },
   {
     "opname": "Bleeding control",
-    "count": 31,
-    "avg_asa": 2.838709677419355,
-    "commonality_score": 0.9368635437881874,
-    "death_score": 0.0967741935483871,
-    "asa_score": 0.45967741935483875,
-    "anxiety_score": 0.5416809013862427
+    "optype": "Others",
+    "death_score": 0.094,
+    "asa_score": 2.8,
+    "commonality_score": 0.005,
+    "anxiety_score": 0.617
+  },
+  {
+    "opname": "Bleeding control",
+    "optype": "Vascular",
+    "death_score": 0.0,
+    "asa_score": 4.0,
+    "commonality_score": 0.005,
+    "anxiety_score": 0.801
   },
   {
     "opname": "Breast reconstruction",
-    "count": 1,
-    "avg_asa": 1.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Breast",
     "death_score": 0.0,
-    "asa_score": 0.0,
-    "anxiety_score": 0.39918533604887985
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
   },
   {
     "opname": "Breast-conserving surgery",
-    "count": 291,
-    "avg_asa": 1.4604810996563573,
-    "commonality_score": 0.4073319755600815,
-    "death_score": 0.003436426116838488,
-    "asa_score": 0.11512027491408933,
-    "anxiety_score": 0.19849980053331095
+    "optype": "Breast",
+    "death_score": 0.003,
+    "asa_score": 1.46,
+    "commonality_score": 0.046,
+    "anxiety_score": 0.303
   },
   {
     "opname": "Bullectomy",
-    "count": 30,
-    "avg_asa": 1.5666666666666667,
-    "commonality_score": 0.9389002036659878,
+    "optype": "Minor resection",
     "death_score": 0.0,
-    "asa_score": 0.14166666666666666,
-    "anxiety_score": 0.4180600814663951
+    "asa_score": 1.567,
+    "commonality_score": 0.005,
+    "anxiety_score": 0.314
   },
   {
     "opname": "Cecectomy",
-    "count": 4,
-    "avg_asa": 1.75,
-    "commonality_score": 0.9918533604887984,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.1875,
-    "anxiety_score": 0.45299134419551934
+    "asa_score": 1.75,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.35
   },
   {
     "opname": "Central pancreatectomy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Cervical esophagostomy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Cesarean section",
-    "count": 20,
-    "avg_asa": 1.6,
-    "commonality_score": 0.9592668024439919,
-    "death_score": 0.05,
-    "asa_score": 0.15000000000000002,
-    "anxiety_score": 0.4437067209775968
+    "optype": "Others",
+    "death_score": 0.043,
+    "asa_score": 1.6,
+    "commonality_score": 0.004,
+    "anxiety_score": 0.347
   },
   {
     "opname": "Cholecystectomy",
-    "count": 491,
-    "avg_asa": 1.6476578411405296,
-    "commonality_score": 0.0,
-    "death_score": 0.004073319755600814,
-    "asa_score": 0.1619144602851324,
-    "anxiety_score": 0.04979633401221996
+    "optype": "Biliary/Pancreas",
+    "death_score": 0.004,
+    "asa_score": 1.648,
+    "commonality_score": 0.079,
+    "anxiety_score": 0.348
   },
   {
     "opname": "Choledochal cyst excision",
-    "count": 5,
-    "avg_asa": 1.4,
-    "commonality_score": 0.9898167006109979,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.09999999999999998,
-    "anxiety_score": 0.42592668024439917
+    "asa_score": 1.4,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.28
   },
   {
     "opname": "Choledochoscopic bile duct stone removal",
-    "count": 3,
-    "avg_asa": 1.3333333333333333,
-    "commonality_score": 0.9938900203665988,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.08333333333333331,
-    "anxiety_score": 0.4225560081466395
+    "asa_score": 1.333,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.267
   },
   {
     "opname": "Clagett procedure",
-    "count": 4,
-    "avg_asa": 2.75,
-    "commonality_score": 0.9918533604887984,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.4375,
-    "anxiety_score": 0.5279913441955194
+    "asa_score": 2.75,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.55
   },
   {
     "opname": "Cleaning of wound",
-    "count": 2,
-    "avg_asa": 2.5,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.375,
-    "anxiety_score": 0.5108706720977597
+    "asa_score": 2.5,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.5
   },
   {
     "opname": "Closure of arteriovenous fistula",
-    "count": 4,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9918533604887984,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.4717413441955194
+    "asa_score": 2.0,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Closure of bronchopleural fistula",
-    "count": 1,
-    "avg_asa": 3.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.5,
-    "anxiety_score": 0.5491853360488799
+    "asa_score": 3.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.6
   },
   {
     "opname": "Closure of wound",
-    "count": 13,
-    "avg_asa": 2.6153846153846154,
-    "commonality_score": 0.9735234215885947,
-    "death_score": 0.07692307692307693,
-    "asa_score": 0.40384615384615385,
-    "anxiety_score": 0.5336401378662071
+    "optype": "Others",
+    "death_score": 0.077,
+    "asa_score": 2.615,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.57
   },
   {
     "opname": "Colostomy",
-    "count": 19,
-    "avg_asa": 2.3684210526315788,
-    "commonality_score": 0.9613034623217923,
-    "death_score": 0.10526315789473684,
-    "asa_score": 0.3421052631578947,
-    "anxiety_score": 0.5187319112445063
+    "optype": "Colorectal",
+    "death_score": 0.053,
+    "asa_score": 2.389,
+    "commonality_score": 0.003,
+    "anxiety_score": 0.51
+  },
+  {
+    "opname": "Colostomy",
+    "optype": "Others",
+    "death_score": 1.0,
+    "asa_score": 2.0,
+    "commonality_score": 0.003,
+    "anxiety_score": 1.001
   },
   {
     "opname": "Colostomy repair",
-    "count": 5,
-    "avg_asa": 2.6,
-    "commonality_score": 0.9898167006109979,
+    "optype": "Colorectal",
     "death_score": 0.2,
-    "asa_score": 0.4,
-    "anxiety_score": 0.5759266802443992
+    "asa_score": 2.6,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.64
   },
   {
     "opname": "Completion mastectomy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Breast",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Completion thyroidectomy",
-    "count": 6,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9877800407331976,
+    "optype": "Thyroid",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.4701120162932791
+    "asa_score": 2.0,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Debridement of wound",
-    "count": 38,
-    "avg_asa": 3.3421052631578947,
-    "commonality_score": 0.9226069246435845,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.5855263157894737,
-    "anxiety_score": 0.5447006645942759
+    "asa_score": 3.342,
+    "commonality_score": 0.006,
+    "anxiety_score": 0.67
   },
   {
     "opname": "Debulking surgery",
-    "count": 19,
-    "avg_asa": 1.9473684210526316,
-    "commonality_score": 0.9613034623217923,
+    "optype": "Major resection",
     "death_score": 0.0,
-    "asa_score": 0.2368421052631579,
-    "anxiety_score": 0.4555740165076643
+    "asa_score": 1.75,
+    "commonality_score": 0.003,
+    "anxiety_score": 0.351
+  },
+  {
+    "opname": "Debulking surgery",
+    "optype": "Others",
+    "death_score": 0.0,
+    "asa_score": 2.091,
+    "commonality_score": 0.003,
+    "anxiety_score": 0.419
   },
   {
     "opname": "Decortication",
-    "count": 8,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9837067209775967,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.46848268839103874
+    "asa_score": 2.0,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Delorme's operation",
-    "count": 7,
-    "avg_asa": 1.8571428571428572,
-    "commonality_score": 0.9857433808553971,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.2142857142857143,
-    "anxiety_score": 0.4585830666278732
+    "asa_score": 1.857,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.372
   },
   {
     "opname": "Diagnostic laparoscopy",
-    "count": 33,
-    "avg_asa": 1.8484848484848484,
-    "commonality_score": 0.9327902240325866,
-    "death_score": 0.030303030303030304,
-    "asa_score": 0.2121212121212121,
-    "anxiety_score": 0.4458433623403074
+    "optype": "Minor resection",
+    "death_score": 0.0,
+    "asa_score": 1.667,
+    "commonality_score": 0.005,
+    "anxiety_score": 0.334
+  },
+  {
+    "opname": "Diagnostic laparoscopy",
+    "optype": "Others",
+    "death_score": 0.033,
+    "asa_score": 1.867,
+    "commonality_score": 0.005,
+    "anxiety_score": 0.394
   },
   {
     "opname": "Diagnostic pelviscopy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Minor resection",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Diagnostic procedure",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Minor resection",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Distal gastrectomy",
-    "count": 338,
-    "avg_asa": 1.6627218934911243,
-    "commonality_score": 0.3116089613034623,
-    "death_score": 0.005917159763313609,
-    "asa_score": 0.16568047337278108,
-    "anxiety_score": 0.1761228744622133
+    "optype": "Stomach",
+    "death_score": 0.006,
+    "asa_score": 1.663,
+    "commonality_score": 0.054,
+    "anxiety_score": 0.347
   },
   {
     "opname": "Distal pancreatectomy",
-    "count": 52,
-    "avg_asa": 1.8076923076923077,
-    "commonality_score": 0.8940936863543788,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.20192307692307693,
-    "anxiety_score": 0.4182143976186746
+    "asa_score": 1.808,
+    "commonality_score": 0.008,
+    "anxiety_score": 0.363
   },
   {
     "opname": "Diverticulectomy",
-    "count": 1,
-    "avg_asa": 1.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.0,
-    "anxiety_score": 0.39918533604887985
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
   },
   {
     "opname": "Donor hepatectomy",
-    "count": 68,
-    "avg_asa": 1.1176470588235294,
-    "commonality_score": 0.8615071283095723,
+    "optype": "Transplantation",
     "death_score": 0.0,
-    "asa_score": 0.02941176470588236,
-    "anxiety_score": 0.3534263807355937
+    "asa_score": 1.118,
+    "commonality_score": 0.011,
+    "anxiety_score": 0.226
   },
   {
     "opname": "Donor nephrectomy",
-    "count": 80,
-    "avg_asa": 1.2125,
-    "commonality_score": 0.8370672097759674,
+    "optype": "Transplantation",
     "death_score": 0.0,
-    "asa_score": 0.05312499999999998,
-    "anxiety_score": 0.35076438391038695
+    "asa_score": 1.212,
+    "commonality_score": 0.013,
+    "anxiety_score": 0.245
   },
   {
     "opname": "Electrocauterization",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Elosser operation",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Embolectomy",
-    "count": 10,
-    "avg_asa": 2.8,
-    "commonality_score": 0.9796334012219959,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.44999999999999996,
-    "anxiety_score": 0.5268533604887984
+    "asa_score": 2.8,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.56
   },
   {
     "opname": "Empyemectomy",
-    "count": 3,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9938900203665988,
+    "optype": "Minor resection",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47255600814663956
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Endarterectomy",
-    "count": 14,
-    "avg_asa": 2.5,
-    "commonality_score": 0.9714867617107943,
-    "death_score": 0.07142857142857142,
-    "asa_score": 0.375,
-    "anxiety_score": 0.5225232761128891
+    "optype": "Vascular",
+    "death_score": 0.071,
+    "asa_score": 2.5,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.543
   },
   {
     "opname": "Endovascular aneurysmal repair",
-    "count": 7,
-    "avg_asa": 2.142857142857143,
-    "commonality_score": 0.9857433808553971,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.2857142857142857,
-    "anxiety_score": 0.4800116380564446
+    "asa_score": 2.143,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.429
   },
   {
     "opname": "Enucleation of esophageal tumor",
-    "count": 2,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47337067209775974
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Enucleation of pancreas",
-    "count": 2,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47337067209775974
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Esophagectomy",
-    "count": 18,
-    "avg_asa": 2.0555555555555554,
-    "commonality_score": 0.9633401221995926,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.26388888888888884,
-    "anxiety_score": 0.46450271554650374
+    "asa_score": 2.056,
+    "commonality_score": 0.003,
+    "anxiety_score": 0.412
   },
   {
     "opname": "Excision",
-    "count": 223,
-    "avg_asa": 1.7443946188340806,
-    "commonality_score": 0.5458248472505092,
-    "death_score": 0.004484304932735426,
-    "asa_score": 0.18609865470852016,
-    "anxiety_score": 0.27550482679258037
+    "optype": "Biliary/Pancreas",
+    "death_score": 0.0,
+    "asa_score": 1.444,
+    "commonality_score": 0.036,
+    "anxiety_score": 0.296
+  },
+  {
+    "opname": "Excision",
+    "optype": "Breast",
+    "death_score": 0.0,
+    "asa_score": 1.5,
+    "commonality_score": 0.036,
+    "anxiety_score": 0.307
+  },
+  {
+    "opname": "Excision",
+    "optype": "Colorectal",
+    "death_score": 0.0,
+    "asa_score": 1.792,
+    "commonality_score": 0.036,
+    "anxiety_score": 0.365
+  },
+  {
+    "opname": "Excision",
+    "optype": "Major resection",
+    "death_score": 0.0,
+    "asa_score": 1.0,
+    "commonality_score": 0.036,
+    "anxiety_score": 0.207
+  },
+  {
+    "opname": "Excision",
+    "optype": "Minor resection",
+    "death_score": 0.0,
+    "asa_score": 2.0,
+    "commonality_score": 0.036,
+    "anxiety_score": 0.407
+  },
+  {
+    "opname": "Excision",
+    "optype": "Others",
+    "death_score": 0.006,
+    "asa_score": 1.786,
+    "commonality_score": 0.036,
+    "anxiety_score": 0.368
+  },
+  {
+    "opname": "Excision",
+    "optype": "Stomach",
+    "death_score": 0.0,
+    "asa_score": 2.0,
+    "commonality_score": 0.036,
+    "anxiety_score": 0.407
   },
   {
     "opname": "Exploration",
-    "count": 5,
-    "avg_asa": 1.8,
-    "commonality_score": 0.9898167006109979,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.2,
-    "anxiety_score": 0.4559266802443992
+    "asa_score": 1.8,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.36
   },
   {
     "opname": "Exploration of common bile duct",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Exploration of wound",
-    "count": 6,
-    "avg_asa": 2.3333333333333335,
-    "commonality_score": 0.9877800407331976,
-    "death_score": 0.16666666666666666,
-    "asa_score": 0.33333333333333337,
-    "anxiety_score": 0.5451120162932791
+    "optype": "Others",
+    "death_score": 0.167,
+    "asa_score": 2.333,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.567
   },
   {
     "opname": "Exploratory laparotomy",
-    "count": 211,
-    "avg_asa": 2.2748815165876777,
-    "commonality_score": 0.570264765784114,
-    "death_score": 0.061611374407582936,
-    "asa_score": 0.3187203791469194,
-    "anxiety_score": 0.3422054323799963
+    "optype": "Major resection",
+    "death_score": 0.0,
+    "asa_score": 1.9,
+    "commonality_score": 0.034,
+    "anxiety_score": 0.387
+  },
+  {
+    "opname": "Exploratory laparotomy",
+    "optype": "Others",
+    "death_score": 0.063,
+    "asa_score": 2.294,
+    "commonality_score": 0.034,
+    "anxiety_score": 0.503
   },
   {
     "opname": "Exploratory thoracotomy",
-    "count": 1,
-    "avg_asa": 3.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.5,
-    "anxiety_score": 0.5491853360488799
+    "asa_score": 3.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.6
   },
   {
     "opname": "Extended cholecystectomy",
-    "count": 16,
-    "avg_asa": 1.8125,
-    "commonality_score": 0.9674134419551935,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.203125,
-    "anxiety_score": 0.4479028767820774
+    "asa_score": 1.812,
+    "commonality_score": 0.003,
+    "anxiety_score": 0.363
   },
   {
     "opname": "Extended hemicolectomy",
-    "count": 22,
-    "avg_asa": 2.0454545454545454,
-    "commonality_score": 0.955193482688391,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.26136363636363635,
-    "anxiety_score": 0.46048648398444736
+    "asa_score": 2.045,
+    "commonality_score": 0.004,
+    "anxiety_score": 0.41
   },
   {
     "opname": "Extended hemihepatectomy",
-    "count": 26,
-    "avg_asa": 1.8846153846153846,
-    "commonality_score": 0.9470468431771895,
+    "optype": "Hepatic",
     "death_score": 0.0,
-    "asa_score": 0.22115384615384615,
-    "anxiety_score": 0.4451648911170296
+    "asa_score": 1.885,
+    "commonality_score": 0.004,
+    "anxiety_score": 0.378
   },
   {
     "opname": "Extended hysterectomy",
-    "count": 10,
-    "avg_asa": 1.5,
-    "commonality_score": 0.9796334012219959,
+    "optype": "Major resection",
     "death_score": 0.0,
-    "asa_score": 0.125,
-    "anxiety_score": 0.42935336048879835
+    "asa_score": 1.5,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.3
   },
   {
     "opname": "Extended total gastrectomy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Stomach",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Feeding jejunostomy",
-    "count": 2,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47337067209775974
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Femoro-femoral bypass",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Femoro-popliteal bypass",
-    "count": 3,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9938900203665988,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47255600814663956
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Fistulectomy",
-    "count": 26,
-    "avg_asa": 1.4615384615384615,
-    "commonality_score": 0.9470468431771895,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.11538461538461536,
-    "anxiety_score": 0.4134341218862604
+    "asa_score": 1.44,
+    "commonality_score": 0.004,
+    "anxiety_score": 0.289
+  },
+  {
+    "opname": "Fistulectomy",
+    "optype": "Stomach",
+    "death_score": 0.0,
+    "asa_score": 2.0,
+    "commonality_score": 0.004,
+    "anxiety_score": 0.401
   },
   {
     "opname": "Fundoplication",
-    "count": 3,
-    "avg_asa": 1.3333333333333333,
-    "commonality_score": 0.9938900203665988,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.08333333333333331,
-    "anxiety_score": 0.4225560081466395
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
+  },
+  {
+    "opname": "Fundoplication",
+    "optype": "Stomach",
+    "death_score": 0.0,
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Gastric bypass",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Stomach",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Gastric wedge resection",
-    "count": 42,
-    "avg_asa": 1.8095238095238095,
-    "commonality_score": 0.9144602851323829,
+    "optype": "Stomach",
     "death_score": 0.0,
-    "asa_score": 0.20238095238095238,
-    "anxiety_score": 0.4264983997672389
+    "asa_score": 1.81,
+    "commonality_score": 0.007,
+    "anxiety_score": 0.363
   },
   {
     "opname": "Gastrojejunostomy",
-    "count": 11,
-    "avg_asa": 2.1818181818181817,
-    "commonality_score": 0.9775967413441955,
+    "optype": "Stomach",
     "death_score": 0.0,
-    "asa_score": 0.2954545454545454,
-    "anxiety_score": 0.4796750601740418
+    "asa_score": 2.182,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.437
   },
   {
     "opname": "Gastrostomy",
-    "count": 1,
-    "avg_asa": 3.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Stomach",
     "death_score": 0.0,
-    "asa_score": 0.5,
-    "anxiety_score": 0.5491853360488799
+    "asa_score": 3.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.6
   },
   {
     "opname": "Hartmann procedure",
-    "count": 28,
-    "avg_asa": 2.107142857142857,
-    "commonality_score": 0.9429735234215886,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.2767857142857143,
-    "anxiety_score": 0.4602251236543497
+    "asa_score": 2.107,
+    "commonality_score": 0.004,
+    "anxiety_score": 0.422
   },
   {
     "opname": "Hemicolectomy",
-    "count": 189,
-    "avg_asa": 1.8148148148148149,
-    "commonality_score": 0.615071283095723,
-    "death_score": 0.015873015873015872,
-    "asa_score": 0.20370370370370372,
-    "anxiety_score": 0.3119015291113051
+    "optype": "Colorectal",
+    "death_score": 0.016,
+    "asa_score": 1.815,
+    "commonality_score": 0.03,
+    "anxiety_score": 0.378
   },
   {
     "opname": "Hemihepatectomy",
-    "count": 87,
-    "avg_asa": 2.0,
-    "commonality_score": 0.8228105906313645,
-    "death_score": 0.022988505747126436,
-    "asa_score": 0.25,
-    "anxiety_score": 0.4110207879766838
+    "optype": "Hepatic",
+    "death_score": 0.023,
+    "asa_score": 2.0,
+    "commonality_score": 0.014,
+    "anxiety_score": 0.416
   },
   {
     "opname": "Hemorrhoidectomy",
-    "count": 12,
-    "avg_asa": 1.8333333333333333,
-    "commonality_score": 0.9755600814663952,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.20833333333333331,
-    "anxiety_score": 0.4527240325865581
+    "asa_score": 1.833,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.367
   },
   {
     "opname": "Hepatic hilar resection",
-    "count": 8,
-    "avg_asa": 2.375,
-    "commonality_score": 0.9837067209775967,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.34375,
-    "anxiety_score": 0.49660768839103875
+    "asa_score": 2.0,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.4
+  },
+  {
+    "opname": "Hepatic hilar resection",
+    "optype": "Hepatic",
+    "death_score": 0.0,
+    "asa_score": 2.6,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.52
   },
   {
     "opname": "Hepaticojejunostomy",
-    "count": 2,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47337067209775974
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Hepatopancreaticoduodenectomy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Hernia repair",
-    "count": 159,
-    "avg_asa": 1.8553459119496856,
-    "commonality_score": 0.6761710794297353,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.2138364779874214,
-    "anxiety_score": 0.3346193751681205
+    "asa_score": 1.854,
+    "commonality_score": 0.026,
+    "anxiety_score": 0.376
+  },
+  {
+    "opname": "Hernia repair",
+    "optype": "Others",
+    "death_score": 0.0,
+    "asa_score": 2.0,
+    "commonality_score": 0.026,
+    "anxiety_score": 0.405
+  },
+  {
+    "opname": "Hernia repair",
+    "optype": "Stomach",
+    "death_score": 0.0,
+    "asa_score": 2.0,
+    "commonality_score": 0.026,
+    "anxiety_score": 0.405
   },
   {
     "opname": "Hysterectomy",
-    "count": 24,
-    "avg_asa": 1.4166666666666667,
-    "commonality_score": 0.9511201629327902,
+    "optype": "Major resection",
     "death_score": 0.0,
-    "asa_score": 0.10416666666666669,
-    "anxiety_score": 0.41169806517311613
+    "asa_score": 1.417,
+    "commonality_score": 0.004,
+    "anxiety_score": 0.284
   },
   {
     "opname": "Ileocecectomy",
-    "count": 11,
-    "avg_asa": 1.6363636363636365,
-    "commonality_score": 0.9775967413441955,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.15909090909090912,
-    "anxiety_score": 0.43876596926495093
+    "asa_score": 1.636,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.328
   },
   {
     "opname": "Ileocolectomy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Ileostomy",
-    "count": 16,
-    "avg_asa": 2.1875,
-    "commonality_score": 0.9674134419551935,
-    "death_score": 0.0625,
-    "asa_score": 0.296875,
-    "anxiety_score": 0.4947778767820774
+    "optype": "Colorectal",
+    "death_score": 0.067,
+    "asa_score": 2.133,
+    "commonality_score": 0.003,
+    "anxiety_score": 0.467
+  },
+  {
+    "opname": "Ileostomy",
+    "optype": "Others",
+    "death_score": 0.0,
+    "asa_score": 3.0,
+    "commonality_score": 0.003,
+    "anxiety_score": 0.601
   },
   {
     "opname": "Ileostomy repair",
-    "count": 108,
-    "avg_asa": 1.9537037037037037,
-    "commonality_score": 0.7800407331975561,
-    "death_score": 0.009259259259259259,
-    "asa_score": 0.23842592592592593,
-    "anxiety_score": 0.386321848834578
+    "optype": "Colorectal",
+    "death_score": 0.009,
+    "asa_score": 1.954,
+    "commonality_score": 0.017,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Ilioiliac bypass",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Incision and drainage",
-    "count": 21,
-    "avg_asa": 2.1904761904761907,
-    "commonality_score": 0.9572301425661914,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.29761904761904767,
-    "anxiety_score": 0.4721777713121909
+    "asa_score": 1.8,
+    "commonality_score": 0.003,
+    "anxiety_score": 0.361
+  },
+  {
+    "opname": "Incision and drainage",
+    "optype": "Others",
+    "death_score": 0.0,
+    "asa_score": 2.267,
+    "commonality_score": 0.003,
+    "anxiety_score": 0.454
+  },
+  {
+    "opname": "Incision and drainage",
+    "optype": "Vascular",
+    "death_score": 0.0,
+    "asa_score": 3.0,
+    "commonality_score": 0.003,
+    "anxiety_score": 0.601
   },
   {
     "opname": "Incision of rectal stricture",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Incisional hernia repair",
-    "count": 65,
-    "avg_asa": 1.9538461538461538,
-    "commonality_score": 0.8676171079429735,
-    "death_score": 0.015384615384615385,
-    "asa_score": 0.23846153846153845,
-    "anxiety_score": 0.4232006893310356
+    "optype": "Colorectal",
+    "death_score": 0.015,
+    "asa_score": 1.954,
+    "commonality_score": 0.01,
+    "anxiety_score": 0.402
   },
   {
     "opname": "Inguinal hernia",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Inguinal lymph node dissection",
-    "count": 7,
-    "avg_asa": 2.142857142857143,
-    "commonality_score": 0.9857433808553971,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.2857142857142857,
-    "anxiety_score": 0.4800116380564446
+    "asa_score": 2.143,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.429
   },
   {
     "opname": "Insertion of continuous ambulatory peritoneal dialysis catheter",
-    "count": 1,
-    "avg_asa": 3.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Stomach",
     "death_score": 0.0,
-    "asa_score": 0.5,
-    "anxiety_score": 0.5491853360488799
+    "asa_score": 3.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.6
   },
   {
     "opname": "Insertion of permanent catheter",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Internal mammary lymph node dissection",
-    "count": 1,
-    "avg_asa": 1.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.0,
-    "anxiety_score": 0.39918533604887985
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
+  },
+  {
+    "opname": "Intra-abdominal arterial bypass graft",
+    "optype": "Vascular",
+    "death_score": 1.0,
+    "asa_score": null,
+    "commonality_score": 0.0,
+    "anxiety_score": null
   },
   {
     "opname": "Ivor Lewis operation",
-    "count": 4,
-    "avg_asa": 2.25,
-    "commonality_score": 0.9918533604887984,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.3125,
-    "anxiety_score": 0.4904913441955194
+    "asa_score": 2.25,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.45
   },
   {
     "opname": "Kidney transplantation",
-    "count": 120,
-    "avg_asa": 2.6416666666666666,
-    "commonality_score": 0.7556008146639511,
+    "optype": "Transplantation",
     "death_score": 0.0,
-    "asa_score": 0.41041666666666665,
-    "anxiety_score": 0.42536532586558046
+    "asa_score": 2.642,
+    "commonality_score": 0.02,
+    "anxiety_score": 0.532
   },
   {
     "opname": "Ligation and stripping",
-    "count": 119,
-    "avg_asa": 1.6974789915966386,
-    "commonality_score": 0.7576374745417516,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.17436974789915966,
-    "anxiety_score": 0.35536591418644853
+    "asa_score": 1.697,
+    "commonality_score": 0.019,
+    "anxiety_score": 0.343
   },
   {
     "opname": "Liver bisegmentectomy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Hepatic",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Liver sectionectomy",
-    "count": 38,
-    "avg_asa": 1.9736842105263157,
-    "commonality_score": 0.9226069246435845,
+    "optype": "Hepatic",
     "death_score": 0.0,
-    "asa_score": 0.24342105263157893,
-    "anxiety_score": 0.4420690856469075
+    "asa_score": 1.974,
+    "commonality_score": 0.006,
+    "anxiety_score": 0.396
   },
   {
     "opname": "Liver segmentectomy",
-    "count": 91,
-    "avg_asa": 2.087912087912088,
-    "commonality_score": 0.814663951120163,
+    "optype": "Hepatic",
     "death_score": 0.0,
-    "asa_score": 0.271978021978022,
-    "anxiety_score": 0.4074589870414718
+    "asa_score": 2.088,
+    "commonality_score": 0.015,
+    "anxiety_score": 0.421
   },
   {
     "opname": "Liver transplantation",
-    "count": 102,
-    "avg_asa": 2.715686274509804,
-    "commonality_score": 0.7922606924643585,
-    "death_score": 0.029411764705882353,
-    "asa_score": 0.428921568627451,
-    "anxiety_score": 0.4544042769857435
+    "optype": "Transplantation",
+    "death_score": 0.028,
+    "asa_score": 2.716,
+    "commonality_score": 0.017,
+    "anxiety_score": 0.563
   },
   {
     "opname": "Liver tumorectomy",
-    "count": 2,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Hepatic",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47337067209775974
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Low anterior resection",
-    "count": 181,
-    "avg_asa": 1.6574585635359116,
-    "commonality_score": 0.6313645621181263,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.1643646408839779,
-    "anxiety_score": 0.3018552171124439
+    "asa_score": 1.657,
+    "commonality_score": 0.028,
+    "anxiety_score": 0.337
   },
   {
     "opname": "Lung bilobectomy",
-    "count": 13,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9735234215885947,
-    "death_score": 0.07692307692307693,
-    "asa_score": 0.25,
-    "anxiety_score": 0.48748629171236096
+    "optype": "Major resection",
+    "death_score": 0.071,
+    "asa_score": 2.0,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.443
   },
   {
     "opname": "Lung lobectomy",
-    "count": 324,
-    "avg_asa": 1.9814814814814814,
-    "commonality_score": 0.340122199592668,
-    "death_score": 0.006172839506172839,
-    "asa_score": 0.24537037037037035,
-    "anxiety_score": 0.21151184280003016
+    "optype": "Major resection",
+    "death_score": 0.006,
+    "asa_score": 1.981,
+    "commonality_score": 0.052,
+    "anxiety_score": 0.41
   },
   {
     "opname": "Lung segmentectomy",
-    "count": 2,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Minor resection",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47337067209775974
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Lung sgmentectomy",
-    "count": 59,
-    "avg_asa": 2.0338983050847457,
-    "commonality_score": 0.879837067209776,
+    "optype": "Minor resection",
     "death_score": 0.0,
-    "asa_score": 0.2584745762711864,
-    "anxiety_score": 0.4294771997652663
+    "asa_score": 2.034,
+    "commonality_score": 0.01,
+    "anxiety_score": 0.409
   },
   {
     "opname": "Lung transplantation",
-    "count": 7,
-    "avg_asa": 3.4285714285714284,
-    "commonality_score": 0.9857433808553971,
+    "optype": "Transplantation",
     "death_score": 0.0,
-    "asa_score": 0.6071428571428571,
-    "anxiety_score": 0.5764402094850161
+    "asa_score": 3.429,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.686
   },
   {
     "opname": "Lung wedge resection",
-    "count": 232,
-    "avg_asa": 1.8663793103448276,
-    "commonality_score": 0.5274949083503055,
+    "optype": "Minor resection",
     "death_score": 0.0,
-    "asa_score": 0.2165948275862069,
-    "anxiety_score": 0.2759764116159843
+    "asa_score": 1.858,
+    "commonality_score": 0.037,
+    "anxiety_score": 0.379
+  },
+  {
+    "opname": "Lung wedge resection",
+    "optype": "Others",
+    "death_score": 0.0,
+    "asa_score": 4.0,
+    "commonality_score": 0.037,
+    "anxiety_score": 0.807
+  },
+  {
+    "opname": "Lung wedge resection",
+    "optype": "Stomach",
+    "death_score": 0.0,
+    "asa_score": 1.8,
+    "commonality_score": 0.037,
+    "anxiety_score": 0.367
   },
   {
     "opname": "Macroplastique injection",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Minor resection",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Marsupialization",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Hepatic",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Mastectomy",
-    "count": 6,
-    "avg_asa": 1.1666666666666667,
-    "commonality_score": 0.9877800407331976,
-    "death_score": 0.16666666666666666,
-    "asa_score": 0.041666666666666685,
-    "anxiety_score": 0.4576120162932791
+    "optype": "Breast",
+    "death_score": 0.167,
+    "asa_score": 1.167,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.334
   },
   {
     "opname": "McDonald operation",
-    "count": 3,
-    "avg_asa": 1.6666666666666667,
-    "commonality_score": 0.9938900203665988,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.16666666666666669,
-    "anxiety_score": 0.44755600814663954
+    "asa_score": 1.667,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.333
   },
   {
     "opname": "Median pancreatectomy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Mediastinal lymph node dissection",
-    "count": 9,
-    "avg_asa": 2.111111111111111,
-    "commonality_score": 0.9816700610997964,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.2777777777777778,
-    "anxiety_score": 0.47600135777325187
+    "asa_score": 2.111,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.423
   },
   {
     "opname": "Metastasectomy",
-    "count": 98,
-    "avg_asa": 1.9795918367346939,
-    "commonality_score": 0.80040733197556,
+    "optype": "Minor resection",
     "death_score": 0.0,
-    "asa_score": 0.24489795918367346,
-    "anxiety_score": 0.39363232054532604
+    "asa_score": 1.98,
+    "commonality_score": 0.016,
+    "anxiety_score": 0.399
   },
   {
     "opname": "Modified Shirodkar operation",
-    "count": 2,
-    "avg_asa": 1.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.0,
-    "anxiety_score": 0.3983706720977597
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
   },
   {
     "opname": "Modified radical hysterectomy",
-    "count": 1,
-    "avg_asa": 1.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Major resection",
     "death_score": 0.0,
-    "asa_score": 0.0,
-    "anxiety_score": 0.39918533604887985
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
   },
   {
     "opname": "Modified radical neck dissection",
-    "count": 9,
-    "avg_asa": 1.8888888888888888,
-    "commonality_score": 0.9816700610997964,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.2222222222222222,
-    "anxiety_score": 0.4593346911065852
+    "asa_score": 1.889,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.378
   },
   {
     "opname": "Myomectomy",
-    "count": 12,
-    "avg_asa": 1.1666666666666667,
-    "commonality_score": 0.9755600814663952,
+    "optype": "Minor resection",
     "death_score": 0.0,
-    "asa_score": 0.041666666666666685,
-    "anxiety_score": 0.4027240325865581
+    "asa_score": 1.167,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.234
   },
   {
     "opname": "Nephrectomy",
-    "count": 17,
-    "avg_asa": 2.1176470588235294,
-    "commonality_score": 0.9653767820773931,
+    "optype": "Major resection",
     "death_score": 0.0,
-    "asa_score": 0.27941176470588236,
-    "anxiety_score": 0.46997424224272194
+    "asa_score": 1.538,
+    "commonality_score": 0.003,
+    "anxiety_score": 0.308
+  },
+  {
+    "opname": "Nephrectomy",
+    "optype": "Transplantation",
+    "death_score": 0.333,
+    "asa_score": 5.0,
+    "commonality_score": 0.003,
+    "anxiety_score": 1.201
+  },
+  {
+    "opname": "Nephrectomy",
+    "optype": "Vascular",
+    "death_score": 0.0,
+    "asa_score": 3.0,
+    "commonality_score": 0.003,
+    "anxiety_score": 0.601
   },
   {
     "opname": "Nephroureterectomy",
-    "count": 1,
-    "avg_asa": 1.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Major resection",
     "death_score": 0.0,
-    "asa_score": 0.0,
-    "anxiety_score": 0.39918533604887985
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
   },
   {
     "opname": "Oophorectomy",
-    "count": 2,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47337067209775974
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
+  },
+  {
+    "opname": "Oophorectomy",
+    "optype": "Minor resection",
+    "death_score": 0.0,
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Orchiectomy",
-    "count": 2,
-    "avg_asa": 1.5,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.125,
-    "anxiety_score": 0.4358706720977597
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
+  },
+  {
+    "opname": "Orchiectomy",
+    "optype": "Minor resection",
+    "death_score": 0.0,
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
   },
   {
     "opname": "Ovarian cancer staging operation",
-    "count": 1,
-    "avg_asa": 3.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Major resection",
     "death_score": 0.0,
-    "asa_score": 0.5,
-    "anxiety_score": 0.5491853360488799
+    "asa_score": 3.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.6
   },
   {
     "opname": "Ovarian cystectomy",
-    "count": 25,
-    "avg_asa": 1.24,
-    "commonality_score": 0.9490835030549898,
+    "optype": "Major resection",
     "death_score": 0.0,
-    "asa_score": 0.06,
-    "anxiety_score": 0.397633401221996
+    "asa_score": 1.24,
+    "commonality_score": 0.004,
+    "anxiety_score": 0.249
   },
   {
     "opname": "Pancreas transplantation",
-    "count": 1,
-    "avg_asa": 3.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Transplantation",
     "death_score": 0.0,
-    "asa_score": 0.5,
-    "anxiety_score": 0.5491853360488799
+    "asa_score": 3.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.6
   },
   {
     "opname": "Pancreatic cystojejunostomy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Pancreaticoduodenectomy",
-    "count": 19,
-    "avg_asa": 1.9473684210526316,
-    "commonality_score": 0.9613034623217923,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.2368421052631579,
-    "anxiety_score": 0.4555740165076643
+    "asa_score": 1.947,
+    "commonality_score": 0.003,
+    "anxiety_score": 0.39
   },
   {
     "opname": "Pancreaticojejunostomy",
-    "count": 1,
-    "avg_asa": 1.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.0,
-    "anxiety_score": 0.39918533604887985
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
   },
   {
     "opname": "Pancreatosplenectomy",
-    "count": 2,
-    "avg_asa": 1.5,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.125,
-    "anxiety_score": 0.4358706720977597
+    "asa_score": 1.5,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.3
   },
   {
     "opname": "Paraaortic lymph node dissection",
-    "count": 6,
-    "avg_asa": 1.8333333333333333,
-    "commonality_score": 0.9877800407331976,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.20833333333333331,
-    "anxiety_score": 0.4576120162932791
+    "asa_score": 1.833,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.367
   },
   {
     "opname": "Parathyroidectomy",
-    "count": 14,
-    "avg_asa": 1.7857142857142858,
-    "commonality_score": 0.9714867617107943,
+    "optype": "Thyroid",
     "death_score": 0.0,
-    "asa_score": 0.19642857142857145,
-    "anxiety_score": 0.44752327611288917
+    "asa_score": 1.786,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.358
   },
   {
     "opname": "Partial cystectomy",
-    "count": 1,
-    "avg_asa": 1.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Major resection",
     "death_score": 0.0,
-    "asa_score": 0.0,
-    "anxiety_score": 0.39918533604887985
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
   },
   {
     "opname": "Partial gastrectomy",
-    "count": 12,
-    "avg_asa": 1.6666666666666667,
-    "commonality_score": 0.9755600814663952,
+    "optype": "Stomach",
     "death_score": 0.0,
-    "asa_score": 0.16666666666666669,
-    "anxiety_score": 0.44022403258655807
+    "asa_score": 1.667,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.334
   },
   {
     "opname": "Partial pancreatectomy",
-    "count": 19,
-    "avg_asa": 2.0526315789473686,
-    "commonality_score": 0.9613034623217923,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.26315789473684215,
-    "anxiety_score": 0.4634687533497696
+    "asa_score": 2.053,
+    "commonality_score": 0.003,
+    "anxiety_score": 0.411
   },
   {
     "opname": "Pelvic tumorectomy",
-    "count": 10,
-    "avg_asa": 1.6,
-    "commonality_score": 0.9796334012219959,
+    "optype": "Major resection",
     "death_score": 0.0,
-    "asa_score": 0.15000000000000002,
-    "anxiety_score": 0.43685336048879836
+    "asa_score": 1.6,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.32
+  },
+  {
+    "opname": "Pelvic tumorectomy",
+    "optype": "Others",
+    "death_score": 0.0,
+    "asa_score": null,
+    "commonality_score": 0.002,
+    "anxiety_score": null
   },
   {
     "opname": "Percutaneous biopsy",
-    "count": 1,
-    "avg_asa": 3.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.5,
-    "anxiety_score": 0.5491853360488799
+    "asa_score": 3.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.6
   },
   {
     "opname": "Pericardial window operation",
-    "count": 3,
-    "avg_asa": 2.6666666666666665,
-    "commonality_score": 0.9938900203665988,
-    "death_score": 0.3333333333333333,
-    "asa_score": 0.41666666666666663,
-    "anxiety_score": 0.6225560081466395
+    "optype": "Others",
+    "death_score": 0.333,
+    "asa_score": 2.667,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.733
   },
   {
     "opname": "Peritoneal mass excision",
-    "count": 7,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9857433808553971,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.4692973523421589
+    "asa_score": 2.0,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Pleurectomy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Pleurodesis",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Pleuroscopy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Plication",
-    "count": 2,
-    "avg_asa": 1.5,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.125,
-    "anxiety_score": 0.4358706720977597
+    "asa_score": 1.5,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.3
   },
   {
     "opname": "Pneumonectomy",
-    "count": 9,
-    "avg_asa": 2.3333333333333335,
-    "commonality_score": 0.9816700610997964,
-    "death_score": 0.1111111111111111,
-    "asa_score": 0.33333333333333337,
-    "anxiety_score": 0.5260013577732519
+    "optype": "Major resection",
+    "death_score": 0.1,
+    "asa_score": 2.333,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.527
   },
   {
     "opname": "Proximal gastrectomy",
-    "count": 10,
-    "avg_asa": 1.8,
-    "commonality_score": 0.9796334012219959,
+    "optype": "Stomach",
     "death_score": 0.0,
-    "asa_score": 0.2,
-    "anxiety_score": 0.4518533604887984
+    "asa_score": 1.8,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.36
   },
   {
     "opname": "Pyeloplasty",
-    "count": 2,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Minor resection",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47337067209775974
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Pylorus preserving gastrectomy",
-    "count": 67,
-    "avg_asa": 1.5970149253731343,
-    "commonality_score": 0.8635437881873727,
+    "optype": "Stomach",
     "death_score": 0.0,
-    "asa_score": 0.14925373134328357,
-    "anxiety_score": 0.39019363467793416
+    "asa_score": 1.597,
+    "commonality_score": 0.011,
+    "anxiety_score": 0.322
   },
   {
     "opname": "Pylorus preserving pancreaticoduodenectomy",
-    "count": 122,
-    "avg_asa": 1.9344262295081966,
-    "commonality_score": 0.7515274949083504,
-    "death_score": 0.00819672131147541,
-    "asa_score": 0.23360655737704916,
-    "anxiety_score": 0.3731519815698976
+    "optype": "Biliary/Pancreas",
+    "death_score": 0.008,
+    "asa_score": 1.934,
+    "commonality_score": 0.019,
+    "anxiety_score": 0.396
   },
   {
     "opname": "Radical cholecystectomy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Radical cystectomy",
-    "count": 6,
-    "avg_asa": 1.8333333333333333,
-    "commonality_score": 0.9877800407331976,
+    "optype": "Major resection",
     "death_score": 0.0,
-    "asa_score": 0.20833333333333331,
-    "anxiety_score": 0.4576120162932791
+    "asa_score": 1.833,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.367
   },
   {
     "opname": "Radical excision of cervical lymph nodes",
-    "count": 2,
-    "avg_asa": 1.5,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.125,
-    "anxiety_score": 0.4358706720977597
+    "asa_score": 1.5,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.3
   },
   {
     "opname": "Radical excision of iliac lymph nodes",
-    "count": 4,
-    "avg_asa": 1.5,
-    "commonality_score": 0.9918533604887984,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.125,
-    "anxiety_score": 0.43424134419551935
+    "asa_score": 1.5,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.3
   },
   {
     "opname": "Radical hysterectomy",
-    "count": 40,
-    "avg_asa": 1.575,
-    "commonality_score": 0.9185336048879837,
+    "optype": "Major resection",
     "death_score": 0.0,
-    "asa_score": 0.14375,
-    "anxiety_score": 0.4105384419551935
+    "asa_score": 1.575,
+    "commonality_score": 0.006,
+    "anxiety_score": 0.316
   },
   {
     "opname": "Radical mastectomy",
-    "count": 1,
-    "avg_asa": 1.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Breast",
     "death_score": 0.0,
-    "asa_score": 0.0,
-    "anxiety_score": 0.39918533604887985
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
   },
   {
     "opname": "Radical parametrectomy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Major resection",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Radical prostatectomy",
-    "count": 58,
-    "avg_asa": 1.7413793103448276,
-    "commonality_score": 0.8818737270875764,
-    "death_score": 0.017241379310344827,
-    "asa_score": 0.1853448275862069,
-    "anxiety_score": 0.4135253529039961
+    "optype": "Major resection",
+    "death_score": 0.018,
+    "asa_score": 1.737,
+    "commonality_score": 0.009,
+    "anxiety_score": 0.36
+  },
+  {
+    "opname": "Radical prostatectomy",
+    "optype": "Stomach",
+    "death_score": 0.0,
+    "asa_score": 2.0,
+    "commonality_score": 0.009,
+    "anxiety_score": 0.402
   },
   {
     "opname": "Radical trachelectomy",
-    "count": 2,
-    "avg_asa": 1.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Major resection",
     "death_score": 0.0,
-    "asa_score": 0.0,
-    "anxiety_score": 0.3983706720977597
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
   },
   {
     "opname": "Rectal prolapse operation",
-    "count": 4,
-    "avg_asa": 1.75,
-    "commonality_score": 0.9918533604887984,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.1875,
-    "anxiety_score": 0.45299134419551934
+    "asa_score": 1.75,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.35
   },
   {
     "opname": "Regional lymph node dissection",
-    "count": 3,
-    "avg_asa": 1.3333333333333333,
-    "commonality_score": 0.9938900203665988,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.08333333333333331,
-    "anxiety_score": 0.4225560081466395
+    "asa_score": 1.333,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.267
   },
   {
     "opname": "Remnant total gastrectomy",
-    "count": 12,
-    "avg_asa": 1.8333333333333333,
-    "commonality_score": 0.9755600814663952,
+    "optype": "Stomach",
     "death_score": 0.0,
-    "asa_score": 0.20833333333333331,
-    "anxiety_score": 0.4527240325865581
+    "asa_score": 1.833,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.367
   },
   {
     "opname": "Removal of Hickman catheter",
-    "count": 1,
-    "avg_asa": 3.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.5,
-    "anxiety_score": 0.5491853360488799
+    "asa_score": 3.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.6
   },
   {
     "opname": "Removal of complicated graft",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Removal of continuous ambulatory peritoneal dialysis catheter",
-    "count": 8,
-    "avg_asa": 2.5,
-    "commonality_score": 0.9837067209775967,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.375,
-    "anxiety_score": 0.5059826883910388
+    "asa_score": 2.5,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.5
   },
   {
     "opname": "Removal of foreign body",
-    "count": 2,
-    "avg_asa": 2.5,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.375,
-    "anxiety_score": 0.5108706720977597
+    "asa_score": 2.5,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.5
   },
   {
     "opname": "Removal of permanent catheter",
-    "count": 4,
-    "avg_asa": 2.75,
-    "commonality_score": 0.9918533604887984,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.4375,
-    "anxiety_score": 0.5279913441955194
+    "asa_score": 2.75,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.55
   },
   {
     "opname": "Removal of staples",
-    "count": 1,
-    "avg_asa": 1.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.0,
-    "anxiety_score": 0.39918533604887985
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
   },
   {
     "opname": "Reposition of continuous ambulatory peritoneal dialysis catheter",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Stomach",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Resection of chest wall with reconstruction",
-    "count": 5,
-    "avg_asa": 2.2,
-    "commonality_score": 0.9898167006109979,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.30000000000000004,
-    "anxiety_score": 0.4859266802443992
+    "asa_score": 2.2,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.44
   },
   {
     "opname": "Resection of inferior vena cava",
-    "count": 2,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47337067209775974
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Resection of intestine",
-    "count": 1,
-    "avg_asa": 1.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Stomach",
     "death_score": 0.0,
-    "asa_score": 0.0,
-    "anxiety_score": 0.39918533604887985
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
   },
   {
     "opname": "Resection of lower limb artery",
-    "count": 1,
-    "avg_asa": 3.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.5,
-    "anxiety_score": 0.5491853360488799
+    "asa_score": 3.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.6
   },
   {
     "opname": "Resection of popliteal artery",
-    "count": 2,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47337067209775974
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Resection of rib",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Resection of sternum",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Revision of arteriovenous fistula",
-    "count": 4,
-    "avg_asa": 2.75,
-    "commonality_score": 0.9918533604887984,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.4375,
-    "anxiety_score": 0.5279913441955194
+    "asa_score": 2.75,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.55
   },
   {
     "opname": "Revision of small intestine anastomosis",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Stomach",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
+  },
+  {
+    "opname": "Rigid bronchoscopic excision",
+    "optype": "Others",
+    "death_score": 0.0,
+    "asa_score": null,
+    "commonality_score": 0.0,
+    "anxiety_score": null
   },
   {
     "opname": "Rigid bronchoscopy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Rrectocele repair",
-    "count": 2,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47337067209775974
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Salpingectomy",
-    "count": 3,
-    "avg_asa": 1.0,
-    "commonality_score": 0.9938900203665988,
+    "optype": "Minor resection",
     "death_score": 0.0,
-    "asa_score": 0.0,
-    "anxiety_score": 0.39755600814663955
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
   },
   {
     "opname": "Salpingo-oophorectomy",
-    "count": 28,
-    "avg_asa": 1.6071428571428572,
-    "commonality_score": 0.9429735234215886,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.1517857142857143,
-    "anxiety_score": 0.4227251236543497
+    "asa_score": 3.0,
+    "commonality_score": 0.004,
+    "anxiety_score": 0.601
+  },
+  {
+    "opname": "Salpingo-oophorectomy",
+    "optype": "Minor resection",
+    "death_score": 0.0,
+    "asa_score": 1.556,
+    "commonality_score": 0.004,
+    "anxiety_score": 0.312
   },
   {
     "opname": "Segmental resection of bile duct",
-    "count": 6,
-    "avg_asa": 2.1666666666666665,
-    "commonality_score": 0.9877800407331976,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.29166666666666663,
-    "anxiety_score": 0.48261201629327904
+    "asa_score": 2.167,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.434
   },
   {
     "opname": "Segmental resection of colon",
-    "count": 3,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9938900203665988,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47255600814663956
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Selective neck dissection",
-    "count": 2,
-    "avg_asa": 1.5,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.125,
-    "anxiety_score": 0.4358706720977597
+    "asa_score": 1.5,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.3
   },
   {
     "opname": "Sentinel lymph node mapping",
-    "count": 1,
-    "avg_asa": 1.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.0,
-    "anxiety_score": 0.39918533604887985
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
   },
   {
     "opname": "Simple mastectomy",
-    "count": 65,
-    "avg_asa": 1.6615384615384616,
-    "commonality_score": 0.8676171079429735,
+    "optype": "Breast",
     "death_score": 0.0,
-    "asa_score": 0.1653846153846154,
-    "anxiety_score": 0.39666222779257404
+    "asa_score": 1.662,
+    "commonality_score": 0.01,
+    "anxiety_score": 0.334
   },
   {
     "opname": "Simultaneous pancreas-kidney transplantation",
-    "count": 2,
-    "avg_asa": 3.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Transplantation",
     "death_score": 0.0,
-    "asa_score": 0.5,
-    "anxiety_score": 0.5483706720977597
+    "asa_score": 3.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.6
   },
   {
     "opname": "Sleeve lobectomy",
-    "count": 7,
-    "avg_asa": 2.2857142857142856,
-    "commonality_score": 0.9857433808553971,
-    "death_score": 0.14285714285714285,
-    "asa_score": 0.3214285714285714,
-    "anxiety_score": 0.5335830666278731
+    "optype": "Major resection",
+    "death_score": 0.143,
+    "asa_score": 2.286,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.543
   },
   {
     "opname": "Small bowel segmental resection",
-    "count": 20,
-    "avg_asa": 1.95,
-    "commonality_score": 0.9592668024439919,
+    "optype": "Stomach",
     "death_score": 0.0,
-    "asa_score": 0.2375,
-    "anxiety_score": 0.45495672097759676
+    "asa_score": 1.95,
+    "commonality_score": 0.003,
+    "anxiety_score": 0.391
   },
   {
     "opname": "Sphincteroplasty",
-    "count": 2,
-    "avg_asa": 1.5,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.125,
-    "anxiety_score": 0.4358706720977597
+    "asa_score": 1.5,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.3
   },
   {
     "opname": "Sphincterotomy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Spleen preserving distal pancreatectomy",
-    "count": 13,
-    "avg_asa": 1.6153846153846154,
-    "commonality_score": 0.9735234215885947,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.15384615384615385,
-    "anxiety_score": 0.43556321478928406
+    "asa_score": 1.615,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.323
   },
   {
     "opname": "Splenectomy",
-    "count": 17,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9653767820773931,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.46115071283095727
+    "asa_score": 2.0,
+    "commonality_score": 0.003,
+    "anxiety_score": 0.401
   },
   {
     "opname": "Staging laparotomy",
-    "count": 5,
-    "avg_asa": 1.8,
-    "commonality_score": 0.9898167006109979,
+    "optype": "Minor resection",
     "death_score": 0.0,
-    "asa_score": 0.2,
-    "anxiety_score": 0.4559266802443992
+    "asa_score": 1.8,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.36
   },
   {
     "opname": "Staging operation",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Minor resection",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Sternal fixation",
-    "count": 1,
-    "avg_asa": 3.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.5,
-    "anxiety_score": 0.5491853360488799
+    "asa_score": 3.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.6
   },
   {
     "opname": "Subtotal colectomy",
-    "count": 4,
-    "avg_asa": 1.5,
-    "commonality_score": 0.9918533604887984,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.125,
-    "anxiety_score": 0.43424134419551935
+    "asa_score": 1.5,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.3
   },
   {
     "opname": "Subtotal gastrectomy",
-    "count": 39,
-    "avg_asa": 1.7179487179487178,
-    "commonality_score": 0.9205702647657841,
+    "optype": "Stomach",
     "death_score": 0.0,
-    "asa_score": 0.17948717948717946,
-    "anxiety_score": 0.4220742597524675
+    "asa_score": 1.718,
+    "commonality_score": 0.006,
+    "anxiety_score": 0.345
   },
   {
     "opname": "Subtotal pancreatectomy",
-    "count": 2,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47337067209775974
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Subtotal parathyroidectomy",
-    "count": 6,
-    "avg_asa": 2.6666666666666665,
-    "commonality_score": 0.9877800407331976,
+    "optype": "Thyroid",
     "death_score": 0.0,
-    "asa_score": 0.41666666666666663,
-    "anxiety_score": 0.5201120162932791
+    "asa_score": 2.667,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.534
   },
   {
     "opname": "Thoracic sympathectomy",
-    "count": 9,
-    "avg_asa": 1.3333333333333333,
-    "commonality_score": 0.9816700610997964,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.08333333333333331,
-    "anxiety_score": 0.4176680244399186
+    "asa_score": 1.333,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.267
   },
   {
     "opname": "Thoracoplasty",
-    "count": 1,
-    "avg_asa": 3.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.5,
-    "anxiety_score": 0.5491853360488799
+    "asa_score": 3.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.6
   },
   {
     "opname": "Thymectomy",
-    "count": 42,
-    "avg_asa": 1.8333333333333333,
-    "commonality_score": 0.9144602851323829,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.20833333333333331,
-    "anxiety_score": 0.4282841140529532
+    "asa_score": 1.833,
+    "commonality_score": 0.007,
+    "anxiety_score": 0.368
   },
   {
     "opname": "Thyroglossal duct cyst excision",
-    "count": 1,
-    "avg_asa": 1.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.0,
-    "anxiety_score": 0.39918533604887985
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
   },
   {
     "opname": "Thyroid isthmectomy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Thyroid",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Thyroid lobectomy",
-    "count": 114,
-    "avg_asa": 1.4912280701754386,
-    "commonality_score": 0.7678207739307535,
+    "optype": "Thyroid",
     "death_score": 0.0,
-    "asa_score": 0.12280701754385964,
-    "anxiety_score": 0.3439704148354593
+    "asa_score": 1.491,
+    "commonality_score": 0.018,
+    "anxiety_score": 0.302
   },
   {
     "opname": "Thyroidectomy",
-    "count": 1,
-    "avg_asa": 1.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Thyroid",
     "death_score": 0.0,
-    "asa_score": 0.0,
-    "anxiety_score": 0.39918533604887985
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
   },
   {
     "opname": "Total colectomy",
-    "count": 9,
-    "avg_asa": 2.111111111111111,
-    "commonality_score": 0.9816700610997964,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.2777777777777778,
-    "anxiety_score": 0.47600135777325187
+    "asa_score": 2.111,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.423
   },
   {
     "opname": "Total esophagectomy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Total gastrectomy",
-    "count": 97,
-    "avg_asa": 1.711340206185567,
-    "commonality_score": 0.8024439918533605,
-    "death_score": 0.020618556701030927,
-    "asa_score": 0.17783505154639173,
-    "anxiety_score": 0.38051367921557094
+    "optype": "Stomach",
+    "death_score": 0.021,
+    "asa_score": 1.711,
+    "commonality_score": 0.015,
+    "anxiety_score": 0.358
   },
   {
     "opname": "Total hysterectomy",
-    "count": 4,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9918533604887984,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.4717413441955194
+    "asa_score": 2.0,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.4
+  },
+  {
+    "opname": "Total hysterectomy",
+    "optype": "Major resection",
+    "death_score": 0.0,
+    "asa_score": 2.0,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Total hysterectomy ",
-    "count": 6,
-    "avg_asa": 1.8333333333333333,
-    "commonality_score": 0.9877800407331976,
+    "optype": "Major resection",
     "death_score": 0.0,
-    "asa_score": 0.20833333333333331,
-    "anxiety_score": 0.4576120162932791
+    "asa_score": 1.833,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.367
   },
   {
     "opname": "Total mastectomy",
-    "count": 32,
-    "avg_asa": 1.65625,
-    "commonality_score": 0.9348268839103869,
+    "optype": "Breast",
     "death_score": 0.0,
-    "asa_score": 0.1640625,
-    "anxiety_score": 0.42314950356415476
+    "asa_score": 1.656,
+    "commonality_score": 0.005,
+    "anxiety_score": 0.332
   },
   {
     "opname": "Total pancreatectomy",
-    "count": 2,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47337067209775974
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Total proctocolectomy",
-    "count": 5,
-    "avg_asa": 1.6,
-    "commonality_score": 0.9898167006109979,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.15000000000000002,
-    "anxiety_score": 0.4409266802443992
+    "asa_score": 1.6,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.32
   },
   {
     "opname": "Total thyroidectomy",
-    "count": 112,
-    "avg_asa": 1.5714285714285714,
-    "commonality_score": 0.7718940936863543,
+    "optype": "Thyroid",
     "death_score": 0.0,
-    "asa_score": 0.14285714285714285,
-    "anxiety_score": 0.35161478033168464
+    "asa_score": 1.571,
+    "commonality_score": 0.018,
+    "anxiety_score": 0.318
   },
   {
     "opname": "Transanal endoscopic microsurgery",
-    "count": 13,
-    "avg_asa": 1.5384615384615385,
-    "commonality_score": 0.9735234215885947,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.13461538461538464,
-    "anxiety_score": 0.4297939840200533
+    "asa_score": 1.538,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.308
   },
   {
     "opname": "Transanal excision",
-    "count": 35,
-    "avg_asa": 1.8285714285714285,
-    "commonality_score": 0.9287169042769857,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.20714285714285713,
-    "anxiety_score": 0.4336296188536515
+    "asa_score": 1.829,
+    "commonality_score": 0.006,
+    "anxiety_score": 0.367
   },
   {
     "opname": "Transduodenal ampullectomy",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Biliary/Pancreas",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Transplantation of gracilis muscle",
-    "count": 2,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47337067209775974
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Transposition of basilic vein for arteriovenous fistula",
-    "count": 1,
-    "avg_asa": 3.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.5,
-    "anxiety_score": 0.5491853360488799
+    "asa_score": 3.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.6
   },
   {
     "opname": "Transurethral resection of bladder tumor",
-    "count": 32,
-    "avg_asa": 1.84375,
-    "commonality_score": 0.9348268839103869,
+    "optype": "Minor resection",
     "death_score": 0.0,
-    "asa_score": 0.2109375,
-    "anxiety_score": 0.4372120035641548
+    "asa_score": 1.833,
+    "commonality_score": 0.005,
+    "anxiety_score": 0.368
+  },
+  {
+    "opname": "Transurethral resection of bladder tumor",
+    "optype": "Others",
+    "death_score": 0.0,
+    "asa_score": 2.0,
+    "commonality_score": 0.005,
+    "anxiety_score": 0.401
   },
   {
     "opname": "Transverse colectomy",
-    "count": 3,
-    "avg_asa": 2.3333333333333335,
-    "commonality_score": 0.9938900203665988,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.33333333333333337,
-    "anxiety_score": 0.4975560081466396
+    "asa_score": 2.333,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.467
   },
   {
     "opname": "Transverse loop colostomy",
-    "count": 3,
-    "avg_asa": 2.3333333333333335,
-    "commonality_score": 0.9938900203665988,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.33333333333333337,
-    "anxiety_score": 0.4975560081466396
+    "asa_score": 2.333,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.467
   },
   {
     "opname": "Ultralow anterior resection",
-    "count": 17,
-    "avg_asa": 1.8823529411764706,
-    "commonality_score": 0.9653767820773931,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.22058823529411764,
-    "anxiety_score": 0.45232718341919254
+    "asa_score": 1.882,
+    "commonality_score": 0.003,
+    "anxiety_score": 0.377
   },
   {
     "opname": "Varicocelectomy",
-    "count": 1,
-    "avg_asa": 1.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.0,
-    "anxiety_score": 0.39918533604887985
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
   },
   {
     "opname": "Vascular bypass",
-    "count": 2,
-    "avg_asa": 3.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.5,
-    "anxiety_score": 0.5483706720977597
+    "asa_score": 3.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.6
   },
   {
     "opname": "Vascular repair",
-    "count": 2,
-    "avg_asa": 3.0,
-    "commonality_score": 0.9959266802443992,
+    "optype": "Vascular",
     "death_score": 0.5,
-    "asa_score": 0.5,
-    "anxiety_score": 0.6983706720977597
+    "asa_score": 3.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.9
   },
   {
     "opname": "Vessel graft",
-    "count": 1,
-    "avg_asa": 2.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Vascular",
     "death_score": 0.0,
-    "asa_score": 0.25,
-    "anxiety_score": 0.47418533604887986
+    "asa_score": 2.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.4
   },
   {
     "opname": "Wide excision",
-    "count": 28,
-    "avg_asa": 1.4642857142857142,
-    "commonality_score": 0.9429735234215886,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.11607142857142855,
-    "anxiety_score": 0.412010837940064
+    "asa_score": 1.464,
+    "commonality_score": 0.005,
+    "anxiety_score": 0.294
   },
   {
     "opname": "Wound revision",
-    "count": 5,
-    "avg_asa": 2.2,
-    "commonality_score": 0.9898167006109979,
+    "optype": "Others",
     "death_score": 0.0,
-    "asa_score": 0.30000000000000004,
-    "anxiety_score": 0.4859266802443992
+    "asa_score": 2.2,
+    "commonality_score": 0.001,
+    "anxiety_score": 0.44
   },
   {
     "opname": "anterior resection",
-    "count": 1,
-    "avg_asa": 1.0,
-    "commonality_score": 0.9979633401221996,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.0,
-    "anxiety_score": 0.39918533604887985
+    "asa_score": 1.0,
+    "commonality_score": 0.0,
+    "anxiety_score": 0.2
   },
   {
     "opname": "subtotal colectomy",
-    "count": 11,
-    "avg_asa": 1.8181818181818181,
-    "commonality_score": 0.9775967413441955,
+    "optype": "Colorectal",
     "death_score": 0.0,
-    "asa_score": 0.20454545454545453,
-    "anxiety_score": 0.45240233290131454
+    "asa_score": 1.818,
+    "commonality_score": 0.002,
+    "anxiety_score": 0.364
   }
 ]
