@@ -1,54 +1,98 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 html, body {
-  width: 100vw; height: 100vh;
+  width: 100vw;
+  height: 100vh;
   font-family: 'Georgia', serif;
-  background: #171717; color: #fff;
+  background: #171717;
+  color: #fff;
 }
 
 /* Title Slide Styles */
 #title-slide {
-  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background: linear-gradient(180deg, #25256b 0%, #b34d5a 100%);
-  z-index: 100; display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 #title-slide h1 {
-  font-size: 3rem; margin-bottom: 2rem; font-weight: bold; color: #fff;
-  letter-spacing: 1.5px; text-shadow: 0 4px 32px #0009;
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  font-weight: bold;
+  color: #fff;
+  letter-spacing: 1.5px;
+  text-shadow: 0 4px 32px #0009;
 }
 #enter-btn {
-  padding: 1rem 2.6rem; font-size: 1.2rem;
-  background: #fff; color: #25256b;
-  border: none; border-radius: 2rem; cursor: pointer;
-  font-weight: bold; letter-spacing: 0.5px;
+  padding: 1rem 2.6rem;
+  font-size: 1.2rem;
+  background: #fff;
+  color: #25256b;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  font-weight: bold;
+  letter-spacing: 0.5px;
   box-shadow: 0 2px 12px #0003;
   transition: background 0.2s, color 0.2s;
 }
-#enter-btn:hover { background: #e4e4e4; color: #b34d5a; }
+#enter-btn:hover {
+  background: #e4e4e4;
+  color: #b34d5a;
+}
 
 /* Main App Layout */
 #main-app {
   display: flex;
-  width: 100vw; height: 100vh;
+  width: 100vw;
+  height: 100vh;
   background: #181818;
   overflow: hidden;
 }
 
 /* Left (body map) */
 #left-column {
-  min-width: 230px; max-width: 310px; width: 250px;
+  min-width: 230px;
+  max-width: 310px;
+  width: 250px;
   background: #232323;
-  display: flex; flex-direction: column; align-items: center; padding: 28px 0;
-  box-shadow: 2px 0 10px rgba(0,0,0,0.09);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;             
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.09);
   z-index: 2;
 }
-#body-map-container { width: 100%; display: flex; flex-direction: column; align-items: center; }
+#body-map-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 #body-map {
-  width: 190px; height: 400px; margin: 1.2rem 0 0 0;
+  width: 200px;
+  height: 400px;
   display: block;
+  margin: 0;
 }
 .body-map-label {
-  color: #fff; margin: 1.3rem 0 0 0; font-size: 1.06rem; opacity: 0.7; text-align: center;
+  color: #fff;
+  margin: 1.3rem 0 0 0;
+  font-size: 1.06rem;
+  opacity: 0.7;
+  text-align: center;
   font-family: Georgia, serif;
 }
 
@@ -83,16 +127,77 @@ html, body {
 
 /* Visualization Cards */
 .visualization-section {
-  background: #232323; border-radius: 1.6rem;
-  padding: 2rem; min-height: 340px; box-shadow: 0 4px 18px rgba(0,0,0,0.14);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  background: #232323;
+  border-radius: 1.6rem;
+  padding: 2rem;
+  min-height: 340px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.14);
   margin-bottom: 2rem;
   overflow-x: auto;
+  color: #fff;
 }
-h2 { margin-bottom: 1.2rem; font-size: 1.5rem; font-family: Georgia, serif; color: #fff; }
+.visualization-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Story‐sections (slightly darker background, same fade/slide behavior) */
+.story-section {
+  background: #2a2a2a;
+}
+
+/* Ensure SVGs & text inside viz are white/centered */
+.visualization-section svg {
+  max-width: 100%;
+  height: auto;
+}
+.visualization-section text {
+  fill: #fff !important;
+}
+
+/* Left‐align any summary text inside viz if needed */
+.visualization-section p {
+  text-align: left;
+}
+
+/* Adjust axes lines to white if using D3 axes or grids */
+.visualization-section .axis path,
+.visualization-section .axis line,
+.visualization-section .grid line {
+  stroke: #fff !important;
+}
+
+h2 {
+  margin-bottom: 1.2rem;
+  font-size: 1.5rem;
+  font-family: Georgia, serif;
+  color: #fff;
+}
+
 @media (max-width: 900px) {
-  #left-column { min-width: 100px; max-width: 110px; }
-  #body-map, #body-map svg, #body-img { max-width: 100px; }
+  #left-column {
+    min-width: 100px;
+    max-width: 110px;
+  }
+  #body-map,
+  #body-map svg,
+  #body-img {
+    max-width: 100px;
+  }
 }
-::-webkit-scrollbar { width: 8px; background: #232323; }
-::-webkit-scrollbar-thumb { background: #353535; border-radius: 5px; }
-::-webkit-scrollbar-thumb:hover { background: #555; }
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  background: #232323;
+}
+::-webkit-scrollbar-thumb {
+  background: #353535;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

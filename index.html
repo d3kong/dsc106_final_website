@@ -19,21 +19,126 @@
   <div id="main-app">
     <div id="left-column">
       <div id="body-map-container">
-        <svg id="body-map" width="210" height="420" viewBox="0 0 210 420">
-          <image href="images/surgery_body.png" x="5" y="5" width="200" height="410" opacity="0.9"/>
+        <svg id="body-map" viewBox="0 0 210 420">
+          <image
+            href="images/body.png"
+            x="0"
+            y="0"
+            width="210"
+            height="420"
+            preserveAspectRatio="xMidYMid slice"
+            opacity="0.9"
+          />
           <!-- Clickable regions -->
-          <ellipse class="region" id="head_neck" cx="105" cy="50" rx="36" ry="45" fill="#888" fill-opacity="0.12" stroke="#aaa" stroke-width="2"/>
-          <ellipse class="region" id="thorax" cx="105" cy="130" rx="45" ry="55" fill="#888" fill-opacity="0.12" stroke="#aaa" stroke-width="2"/>
-          <ellipse class="region" id="abdomen" cx="105" cy="220" rx="48" ry="44" fill="#888" fill-opacity="0.12" stroke="#aaa" stroke-width="2"/>
-          <ellipse class="region" id="pelvis" cx="105" cy="295" rx="38" ry="42" fill="#888" fill-opacity="0.12" stroke="#aaa" stroke-width="2"/>
+          <ellipse class="region" id="head_neck" cx="105" cy="50" rx="36" ry="45"
+                   fill="#888" fill-opacity="0.12" stroke="#aaa" stroke-width="2"/>
+          <ellipse class="region" id="thorax" cx="105" cy="130" rx="45" ry="55"
+                   fill="#888" fill-opacity="0.12" stroke="#aaa" stroke-width="2"/>
+          <ellipse class="region" id="abdomen" cx="105" cy="220" rx="48" ry="44"
+                   fill="#888" fill-opacity="0.12" stroke="#aaa" stroke-width="2"/>
+          <ellipse class="region" id="pelvis" cx="105" cy="295" rx="38" ry="42"
+                   fill="#888" fill-opacity="0.12" stroke="#aaa" stroke-width="2"/>
         </svg>
-        <div class="body-map-label">Click on the body to filter<br>operation types</div>
+        <div class="body-map-label">
+          Click on the body to filter<br />operation types
+        </div>
       </div>
     </div>
+
     <div id="right-column">
+      <!-- Slide 1: Just the body + narrative -->
+      <section class="visualization-section story-section">
+        <h2>Surgeries Can Be Stressful</h2>
+        <p>Surgeries can be stressful—for both you and your patients.</p>
+        <p>
+          Even the most routine procedures carry their own risks, and some operations, by their very nature,
+          are significantly more complex or hazardous than others. Knowing what to expect and preparing
+          accordingly can make all the difference.
+        </p>
+        <p>
+          <em>Note:</em> Click on the area you're interested in to begin investigating the types of procedures
+          commonly performed there—and the associated risk levels.
+        </p>
+      </section>
+
+      <!-- Viz 1 (John–Wesley body map) -->
       <section id="viz1" class="visualization-section"></section>
+
+      <!-- Slide 2: Body and Tracy Stats -->
+      <section class="visualization-section story-section">
+        <h2>Identifying Risk Through Past Patients</h2>
+        <p>
+          Identifying trends in past patients that could be correlated to surgical mortality risk can optimize
+          preoperative decision-making and communication of potential risk to patients. Sorting different types
+          of operations into low, medium, and high risk categories helps predict potential complications and
+          prepares clinicians to face them.
+        </p>
+        <p>
+          Recognizing the demographics and patterns in clinical metrics that are often present in high-risk
+          patients can allow health professionals to tailor consultations to a specific patient, making it simpler
+          for them to explain to their patients what should be expected before, during, and after surgery,
+          allowing for increased transparency.
+        </p>
+        <p><strong>Tracy stat details:</strong></p>
+        <p>
+          You can start by selecting the metric that you’d like to explore further such as Age, ASA Score, or BMI.
+          You can then click on a legend item and/or axis label to filter the data and explore even deeper.
+          Once you select, you will see descriptive text with statistical summaries and key factors to be considered.
+        </p>
+      </section>
+
+      <!-- Viz 2 (Tracy’s boxplot) -->
       <section id="viz2" class="visualization-section"></section>
+
+      <!-- Slide 3: Body and Daniel Anxiety Stats -->
+      <section class="visualization-section story-section">
+        <h2>Perception Matters: Anxiety Heatmap</h2>
+        <p>
+          Some procedures may appear simple on paper—but perception matters.
+          Your patients walk in with questions—and some, with fear. Anxiety levels can rise dramatically based
+          on how rare a procedure is, or how closely it’s associated with mortality.
+        </p>
+        <p>
+          This heatmap visualizes that emotional layer. It shows how common a procedure is, how often it results
+          in death, and where patients tend to feel the most fear. It’s a reminder that part of your job isn’t just
+          explaining the science—it’s reading the room. Anticipating when a patient might need reassurance,
+          explanation, or space to process. Here, you can see where that’s most likely to happen.
+        </p>
+      </section>
+
+      <!-- Viz 3 (Daniel’s anxiety heatmap) -->
       <section id="viz3" class="visualization-section"></section>
+
+      <!-- Slide 4: Body and Kate Guide Stats -->
+      <section class="visualization-section story-section">
+        <h2>Planning the Conversation</h2>
+        <p>
+          Now that you’ve reviewed the risks and psychological impact, you’re ready to plan for the conversation that
+          matters most. For each surgery type, we’ve collected the most common preparation steps: anesthesia method,
+          IV location, and admission timing. These are summaries from real-world cases—what patients like yours
+          most often experience.
+        </p>
+        <p><strong>Kate stats details:</strong></p>
+        <p>
+          Input your patient's age, sex, height, and weight. You’ll receive a tailored profile showing what’s typical
+          in terms of lab results and surgical prep. It’s everything you need to guide the conversation—accurate,
+          concise, and patient-specific.
+        </p>
+      </section>
+
+      <!-- Viz 4 (Kate’s radar + summary) -->
+      <section id="viz4" class="visualization-section"></section>
+
+      <!-- Conclusion: Back to body, just text -->
+      <section class="visualization-section story-section">
+        <h2>Conclusion: Data Makes Surgical Care More Human</h2>
+        <p>
+          Surgical care begins long before the incision. By using data to predict risk, anticipate anxiety,
+          and prepare tailored guidance, you’re helping your patient face their operation not with fear—but
+          with clarity. This isn't just about outcomes. It's about making the journey to the operating room
+          more transparent, more informed, and more human.
+        </p>
+      </section>
     </div>
   </div>
 

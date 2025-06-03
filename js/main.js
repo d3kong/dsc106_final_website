@@ -1,5 +1,39 @@
 // main.js
 
+document.addEventListener("DOMContentLoaded", () => {
+  // 1) Set up IntersectionObserver for scrollytelling
+  const sections = document.querySelectorAll(".visualization-section");
+
+  const revealOnScroll = (entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  };
+
+  const observerOptions = {
+    root: null,
+    threshold: 0.5  // trigger when 50% of the section is visible
+  };
+
+  const observer = new IntersectionObserver(revealOnScroll, observerOptions);
+  sections.forEach(section => observer.observe(section));
+
+  // 2) Title‐slide → main‐app toggle
+  const titleSlide = document.getElementById("title-slide");
+  const mainApp    = document.getElementById("main-app");
+  mainApp.style.display = "none";
+  titleSlide.style.display = "flex";
+
+  document.getElementById("enter-btn").onclick = () => {
+    titleSlide.style.display = "none";
+    mainApp.style.display = "flex";
+  };
+});
+
+
 window.selectedRegion = null; // Shared filter for body region
 
 // Listen for region changes on body map
@@ -33,3 +67,4 @@ window.addEventListener("regionChange", function() {
   renderDanielViz("#viz2");
   renderKateViz("#viz3");
 });
+
