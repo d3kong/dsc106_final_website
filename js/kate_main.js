@@ -1,434 +1,165 @@
-let allData = [], labData = [];
-let filteredData = [];
-let selectedRegion = "";
+// kate_main.js
 
-const svg = d3.select("#chart");
-const width  = +svg.attr("width"),
-      height = +svg.attr("height");
-const radius = Math.min(width, height) / 2 - 60;
+function renderKateViz(containerSelector) {
+  // -- allData for case filtering and summary, labData for radar chart --
+  Promise.all([
+    d3.json("data/kate_card.json"),
+    d3.json("data/kate_chart.json")
+  ]).then(([allData, labData]) => {
+    const optypeToRegion = {
+      "Colorectal":      "abdomen",
+      "Stomach":         "abdomen",
+      "Major resection": "abdomen",
+      "Minor resection": "abdomen",
+      "Biliary/Pancreas":"thorax",
+      "Hepatic":         "thorax",
+      "Breast":          "thorax",
+      "Vascular":        "thorax",
+      "Thyroid":         "head_neck",
+      "Transplantation": "pelvis",
+      "Others":          "pelvis"
+    };
+    let region = window.selectedRegion;
 
-const g = svg.append("g")
-             .attr("transform", `translate(${width/2},${height/2})`);
+    // Sliders default values
+    let age = 50, height = 160, weight = 75;
 
-const optypeToRegion = {
-  "Colorectal":      "abdomen",
-  "Stomach":         "abdomen",
-  "Major resection": "abdomen",
-  "Minor resection": "abdomen",
-  "Biliary/Pancreas":"thorax",
-  "Hepatic":         "thorax",
-  "Breast":          "thorax",
-  "Vascular":        "thorax",
-  "Thyroid":         "head_neck",
-  "Transplantation": "pelvis",
-  "Others":          "pelvis"
-};
-
-// Controls & tooltips
-const ageSlider    = d3.select("#ageSlider"),
-      heightSlider = d3.select("#heightSlider"),
-      weightSlider = d3.select("#weightSlider"),
-      ageTip       = d3.select("#ageSliderTooltip"),
-      heightTip    = d3.select("#heightSliderTooltip"),
-      weightTip    = d3.select("#weightSliderTooltip");
-
-// Value display spans next to labels
-const ageValue    = d3.select("#ageValue"),
-      heightValue = d3.select("#heightValue"),
-      weightValue = d3.select("#weightValue");
-
-// Chart‐dot floating tooltip
-const chartTip = d3.select("body")
-  .append("div")
-  .attr("class","tooltip");
-
-// Slider bubble helper
-function showTip(slider, tip, val) {
-  const min = +slider.attr("min"),
-        max = +slider.attr("max"),
-        pct = (val - min) / (max - min),
-        w   = slider.node().offsetWidth,
-        x   = pct * w;
-  tip.style("left", `${x}px`)
-     .text(val)
-     .style("opacity", 1);
-}
-
-// Clinical groups for radar chart
-const clinical = {
-  "Blood Cell & Inflammation Markers": ["wbc","hb","hct","plt","esr","crp"],
-  "Liver & Protein Function":         ["tprot","alb","tbil","ast","alt","ammo"],
-  "Kidney Function & Metabolic Waste": ["bun","cr","gfr","ccr","lac"],
-  "Electrolytes & Metabolic Panel":   ["gluc","na","k","ica","cl","hco3"],
-  "Coagulation & Blood Gases":        ["ptinr","aptt","fib","ph","pco2","po2","be","sao2"]
-};
-
-const labInfo = {
-  wbc:  "White blood cell score",
-  hb:   "Hemoglobin score",
-  hct:  "Hematocrit score",
-  plt:  "Platelet score",
-  esr:  "Erythrocyte sedimentation score",
-  crp:  "C-reactive protein score",
-  tprot:"Total protein score",
-  alb:  "Albumin score",
-  tbil: "Total bilirubin score",
-  ast:  "Aspartate transferase score",
-  alt:  "Alanine transferase score",
-  ammo: "Ammonia score",
-  bun:  "Blood urea nitrogen score",
-  cr:   "Creatinine score",
-  gfr:  "Glomerular filtration score",
-  ccr:  "Creatinine clearance score",
-  lac:  "Lactate score",
-  gluc: "Glucose score",
-  na:   "Sodium score",
-  k:    "Potassium score",
-  ica:  "Ionized calcium score",
-  cl:   "Chloride score",
-  hco3: "Bicarbonate (HCO₃) score",
-  ptinr:"Prothrombin time INR score",
-  aptt: "Activated partial thromboplastin time score",
-  fib:  "Fibrinogen score",
-  ph:   "Blood pH score",
-  pco2: "Partial pressure CO₂ score",
-  po2:  "Partial pressure O₂ score",
-  be:   "Base excess score",
-  sao2: "Oxygen saturation score"
-};
-
-// Load both datasets then initialize
-Promise.all([
-  d3.json("data/kate_card.json"), // allData for case filtering and summary
-  d3.json("data/kate_chart.json")            // labData for radar chart
-]).then(([dashboardData, labTestData]) => {
-
-  allData = dashboardData;
-  labData = labTestData;
-
-  // Attach event listeners to controls
-  ageSlider.on("input", () => handleSlider("age"));
-  heightSlider.on("input", () => handleSlider("height"));
-  weightSlider.on("input", () => handleSlider("weight"));
-
-  // Initial update
-  handleSlider("age");
-  handleSlider("height");
-  handleSlider("weight");
-  updateAll();
-});
-
-d3.selectAll("#body-map4 .region")
-.style("cursor", "pointer")
-.on("click", function() {
-  selectedRegion = this.id;
-  selectedOptype = "";
-  d3.select("#optypeSelector").property("value","");
-  d3.selectAll(".region--selected").classed("region--selected", false);
-  d3.select(this).classed("region--selected", true);
-
-  updateAll();
-});
-
-
-function handleSlider(id) {
-  const slider = d3.select(`#${id}Slider`);
-  const value = +slider.property("value");
-
-  // Update display span next to slider
-  d3.select(`#${id}Value`).text(value);
-
-  updateAll();
-}
-
-function updateAll() {
-  updateSummary();
-  updateRadar();
-}
-
-function updateSummary() {
-  const minRequired = 0;
-  const summaryContainer = d3.select("#summary");
-  
-  // Clear previous content
-  summaryContainer.html("");
-  
-  const age = +ageSlider.property("value");
-  const height = +heightSlider.property("value");
-  const weight = +weightSlider.property("value");
-
-
-  const filteredData = allData.filter(d => {
-
-    if (selectedRegion) {
-      const mapped = optypeToRegion[d.optype];
-      if (!mapped || mapped !== selectedRegion) return false;
+    // Filter data by region
+    let cases = allData;
+    let labs = labData;
+    if (region) {
+      cases = cases.filter(d => optypeToRegion[d.optype] === region);
+      labs = labs.filter(d => optypeToRegion[d.optype] === region);
     }
 
-    //  Match age/height/weight within ±10
-    if (d.age < age - 10 || d.age > age + 10)       return false;
-    if (d.height < height - 10 || d.height > height + 10) return false;
-    if (d.weight < weight - 10 || d.weight > weight + 10) return false;
-    
-    return true;
-  });
-  
-  if (filteredData.length < minRequired) {
-    summaryContainer
-      .append("div")
-      .attr("class", "warning-message")
-      .text("⚠️ Not enough patients to summarize.");
-    return;
-  }
-  
-  // Compute summary values
-  const typeCounts = d3.rollup(filteredData, v => v.length, d => d.optype);
-  const sortedTypes = Array.from(typeCounts.entries()).sort((a,b) => b[1] - a[1]);
-  const commonSurgery = sortedTypes.length > 0 ? sortedTypes[0][0] : "N/A";
+    // UI
+    const container = d3.select(containerSelector);
+    container.html(`
+      <h2>Guided Preparation Tips</h2>
+      <div class="sliders">
+        <label>Age: <input type="range" id="kate-age" min="10" max="100" value="${age}"/> <span id="kate-age-val">${age}</span></label>
+        <label>Height (cm): <input type="range" id="kate-height" min="120" max="200" value="${height}"/> <span id="kate-height-val">${height}</span></label>
+        <label>Weight (kg): <input type="range" id="kate-weight" min="30" max="150" value="${weight}"/> <span id="kate-weight-val">${weight}</span></label>
+      </div>
+      <svg id="kate-radar" width="380" height="340"></svg>
+      <div id="summary" style="margin-top:18px"></div>
+    `);
 
-  const aneTypes = [...new Set(filteredData.map(d => d.ane_type).filter(t => t !== 'N/A'))];
-  const anesthesiaTypes = aneTypes.length > 0 ? aneTypes.join(", ") : "N/A";
-
-  const ivFields = ["iv1", "iv2", "aline1", "aline2", "cline1", "cline2"];
-  const ivLocationsSet = new Set();
-  filteredData.forEach(d => {
-    ivFields.forEach(field => {
-      if (d[field] && d[field] !== 'N/A') ivLocationsSet.add(d[field]);
+    // Listen to sliders
+    d3.select("#kate-age").on("input", function() {
+      age = +this.value;
+      d3.select("#kate-age-val").text(age);
+      update();
     });
-  });
-  const ivLocations = ivLocationsSet.size > 0 ? [...ivLocationsSet].join(", ") : "N/A";
-
-  const stayDuration = getAverageDuration("stay_duration");
-  const surgeryDuration = getAverageDuration("surgery_duration");
-  const anesthesiaDuration = getAverageDuration("anesthesia_duration");
-
-  // Create summary paragraphs dynamically
-  const summaries = [
-    { label: "Most Common Procedure:", value: commonSurgery },
-    { label: "Estimated Hospital Stay:", value: stayDuration },
-    { label: "Estimated Surgery Duration:", value: surgeryDuration },
-    { label: "Anesthesia Type(s) Typically Used:", value: anesthesiaTypes },
-    { label: "Average Anesthesia Time:", value: anesthesiaDuration },
-    { label: "Common IV Placement Site(s):", value: ivLocations }
-  ];
-
-  summaries.forEach(item => {
-    const p = summaryContainer.append("p");
-    p.append("strong").text(item.label + " ");
-    p.append("span").text(item.value);
-  });
-  
-  // ADD IN TEXT ABOUT PATIENTS
-  if (filteredData.length > 0) {
-    const avgAge = d3.mean(filteredData, d => +d.age);
-    const avgHeight = d3.mean(filteredData, d => +d.height);
-    const avgWeight = d3.mean(filteredData, d => +d.weight);
-  
-    const sentence = `Based on ${filteredData.length} similar patient(s): average age is ${avgAge.toFixed(0)} years, height is ${avgHeight.toFixed(0)} cm, and weight is ${avgWeight.toFixed(0)} kg.`;
-  
-    summaryContainer
-      .append("p")
-      .attr("class", "summary-text")
-      .text(sentence);
-  }
-
-  function getAverageDuration(key) {
-    const durations = filteredData
-      .map(d => d[key])
-      .filter(v => typeof v === "number" && !isNaN(v) && v > 0);
-  
-    if (durations.length === 0) return "N/A";
-  
-    const avgSeconds = durations.reduce((sum,val) => sum + val, 0) / durations.length;
-    return formatDurationFromSeconds(avgSeconds);
-  }
-  
-  function formatDurationFromSeconds(totalSeconds) {
-    if (isNaN(totalSeconds) || totalSeconds === 0) return "N/A";
-  
-    const days = Math.floor(totalSeconds / 86400);
-    const hours = Math.floor((totalSeconds % 86400) / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-  
-    let parts = [];
-    if (days) parts.push(`${days}d`);
-    if (hours) parts.push(`${hours}h`);
-    if (minutes || parts.length === 0) parts.push(`${minutes}m`);
-  
-    return parts.join(" ");
-  }
-}    
-
-function updateRadar() {
-  const radarContainer = d3.select(".chart-container");
-  const minRequired = 0;
-
-  const age = +ageSlider.node().value;
-  const height = +heightSlider.node().value;
-  const weight = +weightSlider.node().value;
-
-  ageTip.text(age);
-  heightTip.text(height);
-  weightTip.text(weight);
-
-  let filt = labData.filter(d =>
-      d.age >= age - 10 && d.age <= age + 10 &&
-      d.height >= height - 10 && d.height <= height + 10 &&
-      d.weight >= weight - 10 && d.weight <= weight + 10
-  );
-
-  if (selectedRegion) {
-    filt = filt.filter(d => {
-      const mapped = optypeToRegion[d.optype];
-      return mapped === selectedRegion;
+    d3.select("#kate-height").on("input", function() {
+      height = +this.value;
+      d3.select("#kate-height-val").text(height);
+      update();
     });
-  }
+    d3.select("#kate-weight").on("input", function() {
+      weight = +this.value;
+      d3.select("#kate-weight-val").text(weight);
+      update();
+    });
 
-  if (filt.length < minRequired) {
-      radarContainer
-          .append("div")
-          .attr("class", "warning-message")
-          .text("⚠️ Not enough patients to generate a chart.");
-      return;
-  }
+    update();
 
-  const testMeans = {};
-  Object.values(clinical).flat().forEach(test => {
-      const values = filt.map(d => +d[test]).filter(v => isFinite(v));
-      testMeans[test] = values.length ? d3.mean(values) : null;
-  });
+    function update() {
+      // Filter by age, height, weight
+      const filtLabs = labs.filter(d =>
+        d.age >= age - 10 && d.age <= age + 10 &&
+        d.height >= height - 10 && d.height <= height + 10 &&
+        d.weight >= weight - 10 && d.weight <= weight + 10
+      );
 
-  const groups = Object.keys(clinical);
-  const means = {};
-  groups.forEach(gp => {
-      const vals = clinical[gp]
-          .flatMap(key => filt.map(d => +d[key]).filter(v => isFinite(v)));
-      means[gp] = vals.length ? d3.mean(vals) : 0;
-  });
-
-  g.selectAll("*").remove();
-
-  const angleSlice = 2 * Math.PI / groups.length,
-          maxVal = d3.max(Object.values(means)) || 1;
-
-  groups.forEach((gp, i) => {
-      const ang = i * angleSlice - Math.PI / 2,
-              x = Math.cos(ang) * radius,
-              y = Math.sin(ang) * radius;
-
-      g.append("line")
-          .attr("x1", 0).attr("y1", 0)
-          .attr("x2", x).attr("y2", y)
-          .attr("stroke", "#ccc");
-
-      const labelGroup = g.append("g")
-          .attr("transform", `translate(${x * 1.3},${y * (i === 0 ? 1.1 : 1.3)})`);
-
-      const text = labelGroup.append("text")
-          .attr("text-anchor", "middle")
-          .attr("class", "axisLabel")
-          .style("font-weight", "bold")
-          .text(gp);
-
-      const bbox = text.node().getBBox();
-      labelGroup.insert("rect", "text")
-          .attr("x", bbox.x - 6)
-          .attr("y", bbox.y - 4)
-          .attr("width", bbox.width + 12)
-          .attr("height", bbox.height + 8)
-          .attr("rx", 4)
-          .attr("fill", "white")
-          .attr("stroke", "#999")
-          .attr("stroke-width", 1);
-  });
-
-  const radarLine = d3.lineRadial()
-      .radius((d, i) => radius * (means[d] / maxVal))
-      .angle((d, i) => i * angleSlice);
-
-  g.append("path")
-      .datum(groups)
-      .attr("d", radarLine)
-      .attr("fill", "steelblue")
-      .attr("fill-opacity", 0.3)
-      .attr("stroke", "steelblue");
-
-  groups.forEach((gp, i) => {
-      const ang = i * angleSlice - Math.PI / 2,
-              r0 = radius * (means[gp] / maxVal),
-              x = Math.cos(ang) * r0,
-              y = Math.sin(ang) * r0;
-
-      g.append("circle")
+      // Radar Chart
+      const svg = d3.select("#kate-radar");
+      svg.selectAll("*").remove();
+      const groups = [
+        "Blood Cell & Inflammation Markers",
+        "Liver & Protein Function",
+        "Kidney Function & Metabolic Waste",
+        "Electrolytes & Metabolic Panel",
+        "Coagulation & Blood Gases"
+      ];
+      const clinical = {
+        "Blood Cell & Inflammation Markers": ["wbc", "hb", "hct", "plt", "esr", "crp"],
+        "Liver & Protein Function": ["tprot", "alb", "tbil", "ast", "alt", "ammo"],
+        "Kidney Function & Metabolic Waste": ["bun", "cr", "gfr", "ccr", "lac"],
+        "Electrolytes & Metabolic Panel": ["gluc", "na", "k", "ica", "cl", "hco3"],
+        "Coagulation & Blood Gases": ["ptinr", "aptt", "fib", "ph", "pco2", "po2", "be", "sao2"]
+      };
+      const angleSlice = 2 * Math.PI / groups.length;
+      const radius = 110, centerX = 170, centerY = 170;
+      // Get means for each group
+      const means = {};
+      groups.forEach(gp => {
+        const vals = clinical[gp]
+          .flatMap(key => filtLabs.map(d => +d[key]).filter(v => isFinite(v)));
+        means[gp] = vals.length ? d3.mean(vals) : 0;
+      });
+      const maxVal = d3.max(Object.values(means)) || 1;
+      const radarLine = d3.lineRadial()
+        .radius((d, i) => radius * (means[d] / maxVal))
+        .angle((d, i) => i * angleSlice);
+      svg.append("path")
+        .datum(groups)
+        .attr("transform", `translate(${centerX},${centerY})`)
+        .attr("d", radarLine)
+        .attr("fill", "steelblue")
+        .attr("fill-opacity", 0.33)
+        .attr("stroke", "steelblue");
+      groups.forEach((gp, i) => {
+        const ang = i * angleSlice - Math.PI / 2;
+        const x = centerX + Math.cos(ang) * radius * (means[gp] / maxVal);
+        const y = centerY + Math.sin(ang) * radius * (means[gp] / maxVal);
+        svg.append("circle")
           .attr("cx", x).attr("cy", y)
-          .attr("r", 4)
-          .attr("fill", "steelblue")
-          .style("cursor", "pointer")
-          .on("mouseover", function (event) {
-              d3.select(this)
-                  .transition().duration(100)
-                  .attr("r", 6).attr("fill", "#3367d6");
+          .attr("r", 5)
+          .attr("fill", "steelblue");
+        svg.append("text")
+          .attr("x", centerX + Math.cos(ang) * (radius + 28))
+          .attr("y", centerY + Math.sin(ang) * (radius + 28))
+          .attr("text-anchor", "middle")
+          .attr("font-size", "12px")
+          .text(gp);
+      });
 
-              const labList = clinical[gp];
-              const rows = labList.map(name => {
-                  const desc = labInfo[name] || name;
-                  const val = testMeans[name];
-                  return `${desc}: ${val !== null ? val.toFixed(2) : "N/A"}`;
-              });
+      // Summary
+      const filteredData = cases.filter(d =>
+        d.age >= age - 10 && d.age <= age + 10 &&
+        d.height >= height - 10 && d.height <= height + 10 &&
+        d.weight >= weight - 10 && d.weight <= weight + 10
+      );
+      const typeCounts = d3.rollup(filteredData, v => v.length, d => d.optype);
+      const sortedTypes = Array.from(typeCounts.entries()).sort((a, b) => b[1] - a[1]);
+      const commonSurgery = sortedTypes.length > 0 ? sortedTypes[0][0] : "N/A";
+      const aneTypes = [...new Set(filteredData.map(d => d.ane_type).filter(t => t !== 'N/A'))];
+      const anesthesiaTypes = aneTypes.length > 0 ? aneTypes.join(", ") : "N/A";
+      const stayDuration = d3.mean(filteredData, d => +d.stay_duration) || 0;
+      const surgeryDuration = d3.mean(filteredData, d => +d.surgery_duration) || 0;
+      const anesthesiaDuration = d3.mean(filteredData, d => +d.anesthesia_duration) || 0;
+      const summary = `
+        <p><strong>Most Common Procedure:</strong> ${commonSurgery}</p>
+        <p><strong>Estimated Hospital Stay:</strong> ${formatDurationFromSeconds(stayDuration)}</p>
+        <p><strong>Estimated Surgery Duration:</strong> ${formatDurationFromSeconds(surgeryDuration)}</p>
+        <p><strong>Anesthesia Type(s) Typically Used:</strong> ${anesthesiaTypes}</p>
+        <p><strong>Average Anesthesia Time:</strong> ${formatDurationFromSeconds(anesthesiaDuration)}</p>
+        <p><strong>Based on ${filteredData.length} similar patient(s)</strong></p>
+      `;
+      container.select("#summary").html(summary);
 
-              chartTip.html(
-                  `<strong>${gp} Averaged</strong>: ${means[gp].toFixed(2)}<br/>
-                  <em>Includes:</em><br/>
-                  ${rows.join("<br/>")}<br/>
-                  <small style="display:block; margin-top:6px; color:gray;">
-                  All lab test values are normalized between 0 and 1 <br/>
-                  Values close to <strong>1</strong> are on the <strong>higher end</strong> of their reference range,<br/>
-                  while values close to <strong>0</strong> are on the <strong>lower end</strong>.
-                  </small>`
-              ).style("opacity", 1);
-          })
-          .on("mousemove", event => {
-              chartTip
-                  .style("top", `${event.pageY - 10}px`)
-                  .style("left", `${event.pageX + 10}px`);
-          })
-          .on("mouseout", function () {
-              d3.select(this)
-                  .transition().duration(100)
-                  .attr("r", 4).attr("fill", "steelblue");
-              chartTip.style("opacity", 0);
-          });
+      function formatDurationFromSeconds(totalSeconds) {
+        if (isNaN(totalSeconds) || totalSeconds === 0) return "N/A";
+        const days = Math.floor(totalSeconds / 86400);
+        const hours = Math.floor((totalSeconds % 86400) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        let parts = [];
+        if (days) parts.push(`${days}d`);
+        if (hours) parts.push(`${hours}h`);
+        if (minutes || parts.length === 0) parts.push(`${minutes}m`);
+        return parts.join(" ");
+      }
+    }
   });
 }
-
-
-// wire sliders
-ageSlider
-.on("input",    () => {
-    const v = +ageSlider.node().value;
-    ageValue.text(v);
-    showTip(ageSlider, ageTip, v);
-    updateRadar();
-})
-.on("change",   () => ageTip.style("opacity",0));
-ageSlider.on("input", updateSummary);
-
-heightSlider
-.on("input", () => {
-    const v = +heightSlider.node().value;
-    heightValue.text(v);
-    showTip(heightSlider, heightTip, v);
-    updateRadar();
-})
-.on("change",() => heightTip.style("opacity",0));
-heightSlider.on("input", updateSummary);
-
-weightSlider
-.on("input", () => {
-    const v = +weightSlider.node().value;
-    weightValue.text(v);
-    showTip(weightSlider, weightTip, v);
-    updateRadar();
-})
-.on("change",() => weightTip.style("opacity",0));
-weightSlider.on("input", updateSummary);
