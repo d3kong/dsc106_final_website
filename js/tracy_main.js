@@ -41,12 +41,17 @@ function renderTracyViz(containerSelector) {
       const container = d3.select(containerSelector);
       container.html(`
         <h2>Risk & Demographic Patterns</h2>
+        <p>
+          You can start by selecting the metric that you’d like to explore further such as Age, ASA Score, or BMI.
+          You can then click on a legend item and/or axis label to filter the data and explore even deeper.
+          Once you select, you will see descriptive text with statistical summaries and key factors to be considered.
+        </p>
         <label>
           Metric:
           <select id="metricSelector"></select>
         </label>
         <button id="resetButton" style="margin-left: 12px;">Reset</button>
-        <svg id="plot" width="320" height="360"></svg>
+        <svg id="plot" width="560" height="400"></svg>
         <div id="detailsBox" style="margin-top:1em;"></div>
       `);
 
@@ -88,6 +93,7 @@ function renderTracyViz(containerSelector) {
         updateDetailsBoxFromFilter();
       }
 
+
       // 6. When the metric dropdown changes, re‐draw with the new metric + current region
       metricSelector.on("change", () => {
         redrawPlot();
@@ -107,15 +113,15 @@ function renderTracyViz(containerSelector) {
       function drawBoxPlot(subset, variable) {
         // 8a. Update / clear the details box
         d3.select("#detailsBox").html(
-          `<strong>Filter by mortality and risk level and use the body map</strong> to see details`
+          `Choose a metric to filter by and use the body map to see details`
         );
 
         // 8b. Clear existing SVG contents
         const svg = container.select("#plot");
         svg.selectAll("*").remove();
 
-        const width  = 300;
-        const height = 350;
+        const width  = 560;
+        const height = 400;
         const margin = { top: 40, right: 10, bottom: 40, left: 40 };
         const boxWidth = 30;
 
@@ -225,11 +231,6 @@ function renderTracyViz(containerSelector) {
         const min = d3.min(sorted.filter(v => v >= q1 - 1.5 * iqr));
         const max = d3.max(sorted.filter(v => v <= q3 + 1.5 * iqr));
         return { min, q1, median, q3, max };
-      }
-
-      // 10. Details‐box placeholder
-      function updateDetailsBoxFromFilter() {
-        d3.select("#detailsBox").html("<em>Click a box to see stats.</em>");
       }
 
       // 11. Initial draw: use whatever window.currentMetric is, plus any pre‐set region

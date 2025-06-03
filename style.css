@@ -126,7 +126,7 @@ html, body {
 }
 
 /* Visualization Cards */
-.visualization-section {
+.chart-section {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
@@ -139,34 +139,29 @@ html, body {
   overflow-x: auto;
   color: #fff;
 }
-.visualization-section.visible {
+.chart-section.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Story‐sections (slightly darker background, same fade/slide behavior) */
-.story-section {
-  background: #2a2a2a;
-}
-
 /* Ensure SVGs & text inside viz are white/centered */
-.visualization-section svg {
+.charr-section svg {
   max-width: 100%;
   height: auto;
 }
-.visualization-section text {
+.chart-section text {
   fill: #fff !important;
 }
 
 /* Left‐align any summary text inside viz if needed */
-.visualization-section p {
+.chart-section p {
   text-align: left;
 }
 
 /* Adjust axes lines to white if using D3 axes or grids */
-.visualization-section .axis path,
-.visualization-section .axis line,
-.visualization-section .grid line {
+.chart-section .axis path,
+.chart-section .axis line,
+.chart-section .grid line {
   stroke: #fff !important;
 }
 
@@ -200,4 +195,22 @@ h2 {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+.story-section {
+  min-height: 30vh;
+  line-height: 140%;
+  padding: 2em;
+}
+
+#viz1 {
+  min-height: 75vh;
+}
+
+#viz2 {
+  min-height: 75vh;
+}
+
+#viz3 {
+  min-height: 145vh;
 }

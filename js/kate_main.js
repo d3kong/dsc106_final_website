@@ -66,6 +66,21 @@ function renderKateViz(containerSelector) {
       </svg>
 
       <div id="summary" style="margin-top:18px; text-align:left; color:#fff;"></div>
+
+      <br></br>
+      <p><strong>Note:</strong> Lab test results were normalized using reference ranges specific to each test. For each result, the normalized value was calculated as:</p>
+
+        <pre><code>
+        Normalized Value = (Result - Reference Min) / (Reference Max - Reference Min)
+        </code></pre>
+      <p>Values are scaled between 0 and 1, where:</p>
+        <ul>
+            <li style= "margin: 1em;"><strong>0</strong> represents the lower bound of the normal reference range,</li>
+            <li style= "margin: 1em;"><strong>1</strong> represents the upper bound,</li>
+            <li style= "margin: 1em;">Values outside the reference range are capped at 0 or 1 and do not indicate how far out of range the original value was.</li>
+        </ul>
+
+        <p>This normalization allows for comparability across different lab tests. For each user-defined group (based on age, height, and weight), normalized values were averaged to produce a composite score for each test.</p>
     `);
 
     // Update slider labels and redraw whenever a slider moves
