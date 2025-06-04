@@ -106,7 +106,7 @@ function renderTracyViz(containerSelector) {
 
           // Reset detail box
           d3.select("#detailsBox").html(`<strong>Click a boxplot</strong> or filter to see details`);
-          redrawPlot();
+          drawBoxPlot(data, currentMetric);
         });
 
       // ───────────────────────────────────────────────────────
