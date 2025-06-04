@@ -24,6 +24,35 @@ function renderDanielViz(containerSelector) {
       <h2>Patient Profiles: Anxiety Heatmap</h2>
       <div id="heatmap"></div>
       <div id="heatmap-details" style="margin-top:12px"></div>
+      <div class="legend" style="margin-top: 1rem; text-align: center; font-size: 0.9rem; color: #fff;">
+        <div style="display: inline-flex; align-items: center; margin-bottom: 0.5rem;">
+          <div style="width: 16px; height: 16px; background-color: #440154; border: 1px solid #fff; margin-right: 6px;"></div>
+          <div>Low Anxiety</div>
+        </div>
+        <div style="display: inline-flex; align-items: center; margin-bottom: 0.5rem;">
+          <div style="width: 16px; height: 16px; background-color: #21918c; border: 1px solid #fff; margin-right: 6px;"></div>
+          <div>Medium Anxiety</div>
+        </div>
+        <div style="display: inline-flex; align-items: center;">
+          <div style="width: 16px; height: 16px; background-color: #fde725; border: 1px solid #fff; margin-right: 6px;"></div>
+          <div>High Anxiety</div>
+        </div>
+      </div>
+      <p>Anxiety score calculated as: (0.6 • death_rate) + (0.2 • asa_score) + (0.2 • commonality_score)</p>
+      <p style="
+          margin-top: 0.8rem;
+          font-size: 0.9rem;
+          color: #fff;
+          font-style: italic;
+          text-align: center;
+          max-width: 240px;
+        ">
+        Each color block represents a procedure’s score: 
+        <b>death risk</b> (left), <b>ASA class</b> (next), 
+        <b>commonality</b> (third), and the combined 
+        <b>anxiety score</b> (far right).  Dark blue = low risk/anxiety, 
+        yellow = high risk/anxiety.  Click any body region to show only those surgeries.
+      </p>
     `);
 
     const wrap = container.select("#heatmap");
@@ -92,25 +121,6 @@ function renderDanielViz(containerSelector) {
            `);
          });
     }
-
-    // Build dropdown (no "All" option—only the individual optypes)
-    const dropdown = wrap.append("select")
-      .style("margin-bottom", "10px")
-      .on("change", function() {
-        const selectedOptype = this.value;
-        const subset = allData.filter(d => d.optype === selectedOptype);
-        render(subset);
-      });
-
-    dropdown.selectAll("option")
-      .data(optypes)
-      .join("option")
-      .attr("value", d => d)
-      .text(d => d);
-
-    // Set the dropdown’s default value to currentGroup, which is guaranteed
-    // to be one of the entries in the sorted `optypes` array.
-    dropdown.property("value", currentGroup);
 
     // Initial render: filter by whatever currentGroup is
     const initialFiltered = allData.filter(d => d.optype === currentGroup);
