@@ -7,8 +7,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const revealOnScroll = (entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        observer.unobserve(entry.target);
+        const el = entry.target;
+        el.classList.add("visible");
+        observer.unobserve(el);
+  
+        // Typewriter effect only on .story-section paragraphs
+        if (el.classList.contains("story-section")) {
+          const paragraphs = el.querySelectorAll("p");
+          paragraphs.forEach(p => {
+            const text = p.textContent;
+            typewriterEffect(p, text, 12); // adjust speed here
+          });
+        }
       }
     });
   };
@@ -68,3 +78,36 @@ window.addEventListener("regionChange", function() {
   renderKateViz("#viz3");
 });
 
+
+function typewriterEffect(element, text, delay = 5) {
+  if (element.dataset.typed === "true") return;
+  element.textContent = '';
+  let i = 0;
+  function type() {
+    if (i < text.length) {
+      element.textContent += text.charAt(i);
+      i++;
+      setTimeout(type, delay);
+    }
+  }
+  type();
+}
+
+let t = 0;
+const maxMove = 20; // max pixel movement
+
+function animatePupils() {
+  // Use sine and cosine for smooth, looped motion
+  const moveX = maxMove * Math.sin(t);
+
+  d3.select("#pupil-left")
+    .attr("cx", 12 + moveX);
+
+  d3.select("#pupil-right")
+    .attr("cx", 137 + moveX);
+
+  t += 0.03; // speed of oscillation
+  requestAnimationFrame(animatePupils);
+}
+
+animatePupils(); // Start the loop
