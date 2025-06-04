@@ -45,7 +45,6 @@ function renderDanielViz(containerSelector) {
           color: #fff;
           font-style: italic;
           text-align: center;
-          max-width: 240px;
         ">
         Each color block represents a procedure’s score: 
         <b>death risk</b> (left), <b>ASA class</b> (next), 
