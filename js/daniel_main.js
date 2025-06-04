@@ -27,15 +27,15 @@ function renderDanielViz(containerSelector) {
       <div class="legend" style="margin-top: 1rem; text-align: center; font-size: 0.9rem; color: #fff;">
         <div style="display: inline-flex; align-items: center; margin-bottom: 0.5rem;">
           <div style="width: 16px; height: 16px; background-color: #440154; border: 1px solid #fff; margin-right: 6px;"></div>
-          <div>Low Anxiety</div>
+          <div>Low Levels</div>
         </div>
         <div style="display: inline-flex; align-items: center; margin-bottom: 0.5rem;">
           <div style="width: 16px; height: 16px; background-color: #21918c; border: 1px solid #fff; margin-right: 6px;"></div>
-          <div>Medium Anxiety</div>
+          <div>Medium Levels</div>
         </div>
         <div style="display: inline-flex; align-items: center;">
           <div style="width: 16px; height: 16px; background-color: #fde725; border: 1px solid #fff; margin-right: 6px;"></div>
-          <div>High Anxiety</div>
+          <div>High Levels</div>
         </div>
       </div>
       <p>Anxiety score calculated as: (0.6 • death_rate) + (0.2 • asa_score) + (0.2 • commonality_score)</p>
