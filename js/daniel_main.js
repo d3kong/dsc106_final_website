@@ -50,7 +50,10 @@ function renderDanielViz(containerSelector) {
         </div>
       </div>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 <<<<<<< HEAD
       <p>Anxiety score calculated as: (0.6 • death_rate) + (0.2 • asa_score) + (0.2 • commonality_score)</p>
       <p class="theme-text" style="
@@ -65,6 +68,9 @@ function renderDanielViz(containerSelector) {
   yellow = high risk/anxiety.  Click any body region to show only those surgeries.
 </p>
 
+=======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
       <p style="color: #fff;">
