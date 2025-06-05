@@ -5,10 +5,37 @@
   <title>Surgical Insight: Risk & Demographics Dashboard</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    /* Optional quick style for theme dropdown positioning */
+    #theme-container {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-family: sans-serif;
+    }
+    /* Dark mode style for the dropdown container if needed */
+    body.dark-mode #theme-container {
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+    }
+  </style>
 </head>
 <body>
   <!-- TITLE SLIDE -->
-  <div id="title-slide">
+  <div id="title-slide" style="display: flex; flex-direction: column; align-items: center; position: relative; min-height: 100vh; justify-content: center;">
+    <div id="theme-container">
+      <label for="theme-select">Theme:</label>
+      <select id="theme-select">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+        <option value="system">System (auto)</option>
+      </select>
+    </div>
+
     <div class="title-overlay">
       <img src="images/title_head.png" alt="Face" id="face-image" />
       <svg id="pupils" width="160" height="100" viewBox="0 0 160 100">
@@ -16,7 +43,7 @@
         <circle id="pupil-right" cx="137" cy="18" r="15" fill="black" />
       </svg>
     </div>
-    
+
     <h1>Pre-operative Mental Preparation</h1>
     <h2>Surgical Risk & Communication</h2>
     <h2>Kate Feng · Tracy Vu · Daniel Kong · John Wesley Pabalate</h2>
@@ -24,7 +51,7 @@
   </div>
 
   <!-- MAIN DASHBOARD (hidden at first) -->
-  <div id="main-app">
+  <div id="main-app" style="display:none; flex-direction: row;">
     <div id="left-column">
       <div id="body-map-container">
         <svg id="body-map" viewBox="0 0 210 420">

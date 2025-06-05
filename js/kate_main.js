@@ -65,7 +65,7 @@ function renderKateViz(containerSelector) {
            style="display: block; margin: 0 auto; background: none;">
       </svg>
 
-      <div id="summary" style="margin-top:18px; text-align:left; color:#fff;"></div>
+      <div id="summary" style="margin-top:18px; text-align:left;"></div>
 
       <br></br>
       <p><strong>Note:</strong> Lab test results were normalized using reference ranges specific to each test. For each result, the normalized value was calculated as:</p>

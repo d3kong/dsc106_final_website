@@ -1,14 +1,16 @@
+/* Reset & base */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
 html, body {
   width: 100vw;
   height: 100vh;
   font-family: 'Georgia', serif;
-  background: #171717;
-  color: #fff;
+  background-color: white; /* light mode background */
+  color: black;            /* light mode text */
 }
 
 /* Title Slide Styles */
@@ -25,6 +27,7 @@ html, body {
   align-items: center;
   justify-content: center;
 }
+
 #title-slide h1 {
   font-size: 3rem;
   margin-bottom: 2rem;
@@ -77,6 +80,7 @@ html, body {
   transition: background 0.2s, color 0.2s;
   transform: translateY(-3rem);
 }
+
 #enter-btn:hover {
   background: #e4e4e4;
   color: #b34d5a;
@@ -87,7 +91,7 @@ html, body {
   display: flex;
   width: 100vw;
   height: 100vh;
-  background: #181818;
+  background: #f5f5f5; /* light background for main app */
   overflow: hidden;
 }
 
@@ -96,7 +100,7 @@ html, body {
   min-width: 230px;
   max-width: 310px;
   width: 250px;
-  background: #232323;
+  background: #fafafa;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -105,6 +109,7 @@ html, body {
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.09);
   z-index: 2;
 }
+
 #body-map-container {
   width: 100%;
   display: flex;
@@ -112,14 +117,16 @@ html, body {
   justify-content: center;
   align-items: center;
 }
+
 #body-map {
   width: 200px;
   height: 400px;
   display: block;
   margin: 0;
 }
+
 .body-map-label {
-  color: #fff;
+  color: #333;
   margin: 1.3rem 0 0 0;
   font-size: 1.06rem;
   opacity: 0.7;
@@ -132,15 +139,16 @@ html, body {
   fill: #12ffef33;
   opacity: 0.07;
   cursor: pointer;
-  stroke: #d4fcfc;
+  stroke: #50a3a3;
   stroke-width: 1.7;
   transition: opacity 0.18s, stroke 0.18s;
   pointer-events: all;
 }
+
 .region:hover,
 .region.region--selected {
   opacity: 0.45 !important;
-  stroke: #50ffe5;
+  stroke: #12ffef;
   stroke-width: 4;
 }
 
@@ -149,7 +157,7 @@ html, body {
   flex: 1 1 0%;
   height: 100vh;
   overflow-y: auto;
-  background: #181818;
+  background: #fff;
   padding: 2rem 2.5rem;
   display: flex;
   flex-direction: column;
@@ -161,27 +169,29 @@ html, body {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  background: #232323;
+  background: #fafafa;
   border-radius: 1.6rem;
   padding: 2rem;
   min-height: 340px;
   box-shadow: 0 4px 18px rgba(0,0,0,0.14);
   margin-bottom: 2rem;
   overflow-x: auto;
-  color: #fff;
+  color: #333;
 }
+
 .chart-section.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Ensure SVGs & text inside viz are white/centered */
+/* Ensure SVGs & text inside viz are dark & centered */
 .chart-section svg {
   max-width: 100%;
   height: auto;
 }
+
 .chart-section text {
-  fill: #fff !important;
+  fill: #333 !important;
 }
 
 /* Left‐align any summary text inside viz if needed */
@@ -189,18 +199,18 @@ html, body {
   text-align: left;
 }
 
-/* Adjust axes lines to white if using D3 axes or grids */
+/* Adjust axes lines to dark color if using D3 axes or grids */
 .chart-section .axis path,
 .chart-section .axis line,
 .chart-section .grid line {
-  stroke: #fff !important;
+  stroke: #333 !important;
 }
 
 h2 {
   margin-bottom: 1.2rem;
   font-size: 1.5rem;
   font-family: Georgia, serif;
-  color: #fff;
+  color: #333;
 }
 
 @media (max-width: 900px) {
@@ -218,14 +228,16 @@ h2 {
 /* Custom scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
-  background: #232323;
+  background: #e0e0e0;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #353535;
+  background: #a0a0a0;
   border-radius: 5px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #777;
 }
 
 .story-section {
@@ -244,4 +256,116 @@ h2 {
 
 #viz3 {
   min-height: 145vh;
+}
+
+
+#theme-container {
+  position: fixed;
+  top: 12px;    /* space from top */
+  right: 12px;  /* space from right */
+  background: transparent;
+  z-index: 1000;
+  font-family: sans-serif;
+  font-size: 14px;
+  color: var(--text-color, #000); /* fallback to black */
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Optional: style select and label */
+#theme-container label {
+  font-weight: 600;
+}
+
+#theme-container select {
+  padding: 3px 6px;
+  font-size: 14px;
+}
+
+/* ===== DARK MODE OVERRIDES ===== */
+
+body.dark-mode {
+  background-color: #121212;
+  color: white;
+}
+
+body.dark-mode #main-app {
+  background-color: #222;
+}
+
+body.dark-mode #left-column {
+  background: #232323;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode #right-column {
+  background: #181818;
+}
+
+body.dark-mode .body-map-label {
+  color: #ccc;
+  opacity: 0.8;
+}
+
+body.dark-mode .region {
+  stroke: #ccc;
+  fill-opacity: 0.2;
+}
+
+body.dark-mode .region:hover,
+body.dark-mode .region.region--selected {
+  stroke: #50ffe5;
+  opacity: 0.45 !important;
+  stroke-width: 4;
+}
+
+body.dark-mode .chart-section {
+  background: #232323;
+  color: white;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.6);
+}
+
+body.dark-mode .chart-section svg {
+  fill: white !important;
+}
+
+body.dark-mode .chart-section .axis path,
+body.dark-mode .chart-section .axis line,
+body.dark-mode .chart-section .grid line {
+  stroke: white !important;
+}
+
+body.dark-mode h2 {
+  color: white;
+}
+
+body.dark-mode #enter-btn {
+  background: #181818;
+  color: #50ffe5;
+  box-shadow: 0 2px 12px #0009;
+}
+
+body.dark-mode #enter-btn:hover {
+  background: #50ffe5;
+  color: #181818;
+}
+
+
+body.dark-mode #summary {
+  color: white;
+}
+
+body:not(.dark-mode) #summary {
+  color: black;
+}
+
+/* Light mode */
+.theme-text {
+  color: #000;
+}
+
+/* Dark mode */
+body.dark-mode .theme-text {
+  color: #fff;
 }

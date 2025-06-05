@@ -49,6 +49,24 @@ function renderDanielViz(containerSelector) {
           <span>High</span>
         </div>
       </div>
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+      <p>Anxiety score calculated as: (0.6 • death_rate) + (0.2 • asa_score) + (0.2 • commonality_score)</p>
+      <p class="theme-text" style="
+    margin-top: 0.8rem;
+    font-size: 0.9rem;
+    font-style: italic;
+  ">
+  Each color block represents a procedure’s score: 
+  <b>death risk</b> (left), <b>ASA class</b> (next), 
+  <b>commonality</b> (third), and the combined 
+  <b>anxiety score</b> (far right).  Dark blue = low risk/anxiety, 
+  yellow = high risk/anxiety.  Click any body region to show only those surgeries.
+</p>
+
+=======
+>>>>>>> Stashed changes
       <p style="color: #fff;">
         Anxiety score calculated as: (0.6 &bull; death_rate) + (0.2 &bull; asa_score) + (0.2 &bull; commonality_score)
       </p>
@@ -64,6 +82,7 @@ function renderDanielViz(containerSelector) {
         Dark blue = low risk/anxiety, yellow = high risk/anxiety.
         Click any body region to show only those surgeries.
       </p>
+>>>>>>> 2ab5fb8a3269ed3ad79a67e6c4a35cd789349665
     `);
 
     const wrap = container.select("#heatmap");

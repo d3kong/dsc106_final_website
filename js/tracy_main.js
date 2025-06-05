@@ -1,3 +1,4 @@
+
 // tracy_main.js
 
 function renderTracyViz(containerSelector) {

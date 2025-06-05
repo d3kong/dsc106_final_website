@@ -1,5 +1,3 @@
-// main.js
-
 document.addEventListener("DOMContentLoaded", () => {
   // 1) Set up IntersectionObserver for scrollytelling
   const sections = document.querySelectorAll(".visualization-section");
@@ -10,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const el = entry.target;
         el.classList.add("visible");
         observer.unobserve(el);
-  
+
         // Typewriter effect only on .story-section paragraphs
         if (el.classList.contains("story-section")) {
           const paragraphs = el.querySelectorAll("p");
@@ -41,6 +39,49 @@ document.addEventListener("DOMContentLoaded", () => {
     titleSlide.style.display = "none";
     mainApp.style.display = "flex";
   };
+
+  // --- THEME SELECT SETUP ---
+
+  const themeSelect = document.getElementById("theme-select");
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      document.body.classList.add('dark-mode');
+    } else if (theme === 'light') {
+      document.body.classList.remove('dark-mode');
+    } else if (theme === 'system') {
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark-mode');
+      } else {
+        document.body.classList.remove('dark-mode');
+      }
+    }
+  }
+
+  // Initialize theme from saved preference or default to system
+  let savedTheme = localStorage.getItem('theme') || 'system';
+  if (themeSelect) {
+    themeSelect.value = savedTheme;
+  }
+  applyTheme(savedTheme);
+
+  // Listen for dropdown changes
+  if (themeSelect) {
+    themeSelect.addEventListener('change', () => {
+      const selectedTheme = themeSelect.value;
+      localStorage.setItem('theme', selectedTheme);
+      applyTheme(selectedTheme);
+    });
+  }
+
+  // Listen for system theme changes (only if system mode is selected)
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (themeSelect && themeSelect.value === 'system') {
+        applyTheme('system');
+      }
+    });
+  }
 });
 
 
