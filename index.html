@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="style.css" />
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
-    /* Optional quick style for theme dropdown positioning */
     #theme-container {
       position: absolute;
       top: 10px;
@@ -17,7 +16,6 @@
       border-radius: 5px;
       font-family: sans-serif;
     }
-    /* Dark mode style for the dropdown container if needed */
     body.dark-mode #theme-container {
       background: rgba(0, 0, 0, 0.7);
       color: #fff;
@@ -98,7 +96,10 @@
       </section>
 
       <!-- Viz 1 (Tracy’s boxplot) -->
-      <section id="viz1" class="visualization-section chart-section"></section>
+      <section id="viz1" class="visualization-section chart-section">
+        <!-- Tracy's Swarm Plot Container -->
+        <div id="tracy-swarm-container" style="margin-bottom:32px;"></div>
+      </section>
 
       <!-- Slide 2: Body and Daniel Anxiety Stats -->
       <section class="visualization-section story-section">
