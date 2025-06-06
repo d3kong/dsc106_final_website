@@ -1,371 +1,329 @@
-/* Reset & base */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* ========================================================================
+   style.css
+   - Removed all dark/light toggling rules
+   - `.chart-section` is visible by default so charts appear immediately
+   ======================================================================== */
 
-html, body {
-  width: 100vw;
-  height: 100vh;
-  font-family: 'Georgia', serif;
-  background-color: white; /* light mode background */
-  color: black;            /* light mode text */
-}
+/* ─────────────────────────────────────────────────────────────────────────
+   RESET & BASE
+   ───────────────────────────────────────────────────────────────────────── */
+   * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  html, body {
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Georgia', serif;
+    background-color: white; /* story‐page background stays white */
+    color: black;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────────────────
+     SCROLLBAR STYLING (shared)
+     ───────────────────────────────────────────────────────────────────────── */
+  ::-webkit-scrollbar {
+    width: 8px;
+    background: #e0e0e0;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #a0a0a0;
+    border-radius: 5px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #777;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────────────────
+     STORY‐PAGE STYLES (index.html → narrative + title slide)
+     ───────────────────────────────────────────────────────────────────────── */
+  
+  /* Hide narrative until “Enter Story” is clicked */
+  #narrative-container {
+    display: none;
+    flex-direction: column;
+    padding: 2em;
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  /* Title Slide (fixed, full‐screen) */
+  #title-slide {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(180deg, rgb(116, 116, 190) 0%, #b34d5a 100%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #title-slide h1 {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: 1.5px;
+    text-shadow: 0 4px 32px #0009;
+    transform: translateY(-3rem);
+  }
+  
+  #title-slide h2 {
+    transform: translateY(-3rem);
+    color: #fff;
+    margin-bottom: 0;
+  }
 
-/* Title Slide Styles */
-#title-slide {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(180deg, rgb(116, 116, 190) 0%, #b34d5a 100%);
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-#title-slide h1 {
-  font-size: 3rem;
-  margin-bottom: 2rem;
-  font-weight: bold;
-  color: #fff;
-  letter-spacing: 1.5px;
-  text-shadow: 0 4px 32px #0009;
-  transform: translateY(-3rem);
-}
-
-#title-slide h2 {
-  transform: translateY(-3rem);
-}
-
-.title-overlay {
-  position: absolute;
-  left: -2%;
-  top: 43%;
-  transform: translateY(-20%);
-  z-index: 2;
-}
-
-/* Face image styling */
-#face-image {
-  max-width: 30em;
-  height: auto;
-}
-
-/* Pupil SVG on top of image */
-#pupils {
-  position: absolute;
-  top: 20em;
-  left: 10.5em;
-  pointer-events: none;
-  z-index: 1;
-  overflow: visible; /* ensure it doesn't clip contents */
-}
-
-#enter-btn {
-  padding: 1rem 2.6rem;
-  font-size: 1.2rem;
-  background: #fff;
-  color: #25256b;
-  border: none;
-  border-radius: 2rem;
-  cursor: pointer;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 12px #0003;
-  transition: background 0.2s, color 0.2s;
-  transform: translateY(-3rem);
-}
-
-#enter-btn:hover {
-  background: #e4e4e4;
-  color: #b34d5a;
-}
-
-/* Main App Layout */
-#main-app {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  background: #f5f5f5; /* light background for main app */
-  overflow: hidden;
-}
-
-/* Left (body map) */
-#left-column {
-  min-width: 230px;
-  max-width: 310px;
-  width: 250px;
-  background: #fafafa;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0;             
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.09);
-  z-index: 2;
-}
-
-#body-map-container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-#body-map {
-  width: 200px;
-  height: 400px;
-  display: block;
-  margin: 0;
-}
-
-.body-map-label {
-  color: #333;
-  margin: 1.3rem 0 0 0;
-  font-size: 1.06rem;
-  opacity: 0.7;
-  text-align: center;
-  font-family: Georgia, serif;
-}
-
-/* Body Map regions */
-.region {
-  fill: #12ffef33;
-  opacity: 0.07;
-  cursor: pointer;
-  stroke: #50a3a3;
-  stroke-width: 1.7;
-  transition: opacity 0.18s, stroke 0.18s;
-  pointer-events: all;
-}
-
-.region:hover,
-.region.region--selected {
-  opacity: 0.45 !important;
-  stroke: #12ffef;
-  stroke-width: 4;
-}
-
-/* Right (scrollable visualizations) */
-#right-column {
-  flex: 1 1 0%;
-  height: 100vh;
-  overflow-y: auto;
-  background: #fff;
-  padding: 2rem 2.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-/* Visualization Cards */
-.chart-section {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  background: #fafafa;
-  border-radius: 1.6rem;
-  padding: 2rem;
-  min-height: 340px;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.14);
-  margin-bottom: 2rem;
-  overflow-x: auto;
-  color: #333;
-}
-
-.chart-section.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Ensure SVGs & text inside viz are dark & centered */
-.chart-section svg {
-  max-width: 100%;
-  height: auto;
-}
-
-.chart-section text {
-  fill: #333 !important;
-}
-
-/* Left‐align any summary text inside viz if needed */
-.chart-section p {
-  text-align: left;
-}
-
-/* Adjust axes lines to dark color if using D3 axes or grids */
-.chart-section .axis path,
-.chart-section .axis line,
-.chart-section .grid line {
-  stroke: #333 !important;
-}
-
-h2 {
-  margin-bottom: 1.2rem;
-  font-size: 1.5rem;
-  font-family: Georgia, serif;
-  color: #333;
-}
-
-@media (max-width: 900px) {
+  #title-slide h4 {
+    transform: translateY(-5rem);
+    transform: translateX(4rem);
+    margin-top: 0;
+    color: #fff;
+    max-width: 50em;
+    text-align: left;
+  }
+  
+  .title-overlay {
+    position: absolute;
+    left: -2%;
+    top: 43%;
+    transform: translateY(-20%);
+    z-index: 2;
+  }
+  
+  /* Face image styling */
+  #face-image {
+    max-width: 30em;
+    height: auto;
+  }
+  
+  /* Pupil SVG on top of image */
+  #pupils {
+    position: absolute;
+    top: 20em;
+    left: 10.5em;
+    pointer-events: none;
+    z-index: 1;
+    overflow: visible; /* ensure it doesn't clip contents */
+  }
+  
+  #enter-btn {
+    padding: 1rem 2.6rem;
+    font-size: 1.2rem;
+    background: #fff;
+    color: #25256b;
+    border: none;
+    border-radius: 2rem;
+    cursor: pointer;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 12px #0003;
+    transition: background 0.2s, color 0.2s;
+    margin-top: 2rem;
+  }
+  
+  #enter-btn:hover {
+    background: #e4e4e4;
+    color: #b34d5a;
+  }
+  
+  /* Story Sections (fade + slide in) */
+  .visualization-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  
+  .visualization-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* “Try It Yourself” button styling */
+  #try-btn {
+    margin-top: 1em;
+    padding: 1em 2em;
+    font-size: 1rem;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  #try-btn:hover {
+    background: #0056b3;
+  }
+  
+  /* Story headers */
+  h2 {
+    margin-bottom: 1.2rem;
+    font-size: 1.5rem;
+    font-family: Georgia, serif;
+    color: #333;
+  }
+  
+  /* Space for each story section on the page */
+  .story-section {
+    min-height: 30vh;
+    line-height: 140%;
+    padding: 2em;
+  }
+  
+  /* We gave the first placeholder viz extra vertical space so the user scrolls more */
+  #viz1 {
+    min-height: 105vh;
+  }
+  #viz2 {
+    min-height: 100vh;
+  }
+  #viz3 {
+    min-height: 145vh;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────────────────
+     DASHBOARD‐PAGE STYLES (dashboard.html → body‐map + charts)
+     ───────────────────────────────────────────────────────────────────────── */
+  
+  /* Main App Layout: two‐column */
+  #main-app {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background: #1e1e1e; /* dark background for the entire dashboard */
+    overflow: hidden;
+  }
+  
+  /* LEFT COLUMN (body‐map) */
   #left-column {
-    min-width: 100px;
-    max-width: 110px;
+    min-width: 230px;
+    max-width: 310px;
+    width: 250px;
+    background: #2b2b2b; /* slightly lighter dark for left column */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.6);
+    z-index: 2;
   }
-  #body-map,
-  #body-map svg,
-  #body-img {
-    max-width: 100px;
+  
+  #body-map-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
-}
-
-/* Custom scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
-  background: #e0e0e0;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #a0a0a0;
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #777;
-}
-
-.story-section {
-  min-height: 30vh;
-  line-height: 140%;
-  padding: 2em;
-}
-
-#viz1 {
-  min-height: 115vh;
-}
-
-#viz2 {
-  min-height: 65vh;
-}
-
-#viz3 {
-  min-height: 145vh;
-}
-
-
-#theme-container {
-  position: fixed;
-  top: 12px;    /* space from top */
-  right: 12px;  /* space from right */
-  background: transparent;
-  z-index: 1000;
-  font-family: sans-serif;
-  font-size: 14px;
-  color: var(--text-color, #000); /* fallback to black */
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-/* Optional: style select and label */
-#theme-container label {
-  font-weight: 600;
-}
-
-#theme-container select {
-  padding: 3px 6px;
-  font-size: 14px;
-}
-
-/* ===== DARK MODE OVERRIDES ===== */
-
-body.dark-mode {
-  background-color: #121212;
-  color: white;
-}
-
-body.dark-mode #main-app {
-  background-color: #222;
-}
-
-body.dark-mode #left-column {
-  background: #232323;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
-}
-
-body.dark-mode #right-column {
-  background: #181818;
-}
-
-body.dark-mode .body-map-label {
-  color: #ccc;
-  opacity: 0.8;
-}
-
-body.dark-mode .region {
-  stroke: #ccc;
-  fill-opacity: 0.2;
-}
-
-body.dark-mode .region:hover,
-body.dark-mode .region.region--selected {
-  stroke: #50ffe5;
-  opacity: 0.45 !important;
-  stroke-width: 4;
-}
-
-body.dark-mode .chart-section {
-  background: #232323;
-  color: white;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.6);
-}
-
-body.dark-mode .chart-section svg {
-  fill: white !important;
-}
-
-body.dark-mode .chart-section .axis path,
-body.dark-mode .chart-section .axis line,
-body.dark-mode .chart-section .grid line {
-  stroke: white !important;
-}
-
-body.dark-mode h2 {
-  color: white;
-}
-
-body.dark-mode #enter-btn {
-  background: #181818;
-  color: #50ffe5;
-  box-shadow: 0 2px 12px #0009;
-}
-
-body.dark-mode #enter-btn:hover {
-  background: #50ffe5;
-  color: #181818;
-}
-
-
-body.dark-mode #summary {
-  color: white;
-}
-
-body:not(.dark-mode) #summary {
-  color: black;
-}
-
-/* Light mode */
-.theme-text {
-  color: #000;
-}
-
-/* Dark mode */
-body.dark-mode .theme-text {
-  color: #fff;
-}
+  
+  #body-map {
+    width: 200px;
+    height: 400px;
+    display: block;
+    margin: 0;
+  }
+  
+  .body-map-label {
+    color: #ccc;
+    margin: 1.3rem 0 0 0;
+    font-size: 1.06rem;
+    opacity: 0.8;
+    text-align: center;
+    font-family: Georgia, serif;
+  }
+  
+  /* Body‐map regions */
+  .region {
+    fill: #50e5d8;
+    opacity: 0.07;
+    cursor: pointer;
+    stroke: #50e5d8;
+    stroke-width: 1.7;
+    transition: opacity 0.18s, stroke 0.18s;
+    pointer-events: all;
+  }
+  
+  .region:hover,
+  .region.region--selected {
+    opacity: 0.45 !important;
+    stroke: #50e5d8;
+    stroke-width: 4;
+  }
+  
+  /* RIGHT COLUMN (charts) */
+  #right-column {
+    flex: 1 1 0%;
+    height: 100vh;
+    overflow-y: auto;
+    background: #2e2e2e; /* dark gray for chart background area */
+    padding: 2rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  /* Visualization Cards (make them visible by default) */
+  .chart-section {
+    /* Visible immediately (no fade‐in needed) */
+    opacity: 1;
+    transform: none;
+  
+    background: #3c3c3c; /* mid‐dark gray card background */
+    border-radius: 1.6rem;
+    padding: 2rem;
+    min-height: 340px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.6);
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    color: #ddd; /* light text inside cards */
+  }
+  
+  /* Ensure SVGs & text inside viz are light-colored */
+  .chart-section svg {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .chart-section text {
+    fill: #ddd !important;
+  }
+  
+  /* Left-align any summary text inside viz if needed */
+  .chart-section p {
+    text-align: left;
+    color: #ddd;
+  }
+  
+  /* Axes lines in D3 charts should be #ddd */
+  .chart-section .axis path,
+  .chart-section .axis line,
+  .chart-section .grid line {
+    stroke: #ddd !important;
+  }
+  
+  /* Chart headers */
+  h3 {
+    margin-bottom: 0.75rem;
+    font-family: Georgia, serif;
+    color: #f0f0f0;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 900px) {
+    #left-column {
+      min-width: 100px;
+      max-width: 110px;
+    }
+    #body-map {
+      max-width: 100px;
+      height: auto;
+    }
+  }
+  
