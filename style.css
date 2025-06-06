@@ -327,3 +327,9 @@
     }
   }
   
+  
+#right-column > p {
+  color: #f0f0f0;
+  font-family: Georgia, serif;
+  margin-bottom: 1rem;
+}

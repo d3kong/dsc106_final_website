@@ -1,6 +1,7 @@
 // tracy_main.js – Swarm Plot that fills its container (#viz1)
 
 function drawTracySwarm(data) {
+  const symbol = d3.symbol();
   const container = document.getElementById("tracy-swarm-container");
   if (!container) return;
   container.innerHTML = "";
@@ -76,7 +77,7 @@ function drawTracySwarm(data) {
 
   // Y-axis: outcome 0 or 1, padded so circles fit
   const y = d3.scaleLinear()
-    .domain([-0.1, 1.1])
+    .domain([1.1, -0.5])
     .range([height - radius, radius]);
 
   // Draw axes
@@ -88,9 +89,12 @@ function drawTracySwarm(data) {
       .attr("dy", "1.5em");
 
   svg.append("g")
-    .call(d3.axisLeft(y).ticks(2).tickFormat(d => d === 1 ? "Yes" : "No"))
+    .call(d3.axisLeft(y)
+      .tickValues([0, 1])
+      .tickFormat(d => d === 1 ? "Yes" : "No"))
     .selectAll("text")
       .attr("font-size", "1rem");
+
 
   // Force simulation to position points in a swarm
   const simulation = d3.forceSimulation(plotData)
@@ -161,14 +165,14 @@ function drawTracySwarm(data) {
     .attr("y", -10)
     .attr("text-anchor", "middle")
     .style("font-size", "1rem")
-    .text("X: Low-risk vs High-risk Surgery · Y: Death in Hospital (Yes/No) · Color: ASA Score");
+    // .text("X: Low-risk vs High-risk Surgery · Y: Death in Hospital (Yes/No) · Color: ASA Score");
 
   svg.append("text")
     .attr("x", width / 2)
     .attr("y", height + 50)
     .attr("text-anchor", "middle")
     .attr("font-size", "1rem")
-    .text("Surgery");
+    .text("Surgery (Low vs. High Risk)");
 
   svg.append("text")
     .attr("transform", "rotate(-90)")
