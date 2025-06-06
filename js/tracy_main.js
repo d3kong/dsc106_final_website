@@ -1,18 +1,28 @@
 // tracy_main.js – Swarm Plot that fills its container (#viz1)
 
-const lowRisk = "Cholecystectomy";
-const highRisk = "Exploratory laparotomy";
-const surgeries = [lowRisk, highRisk];
-
-// Color scale for ASA (convert numeric ASA to string)
-const asaColors = d3.scaleOrdinal()
-  .domain(["1","2","3","4","5"])
-  .range(["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]);
-
 function drawTracySwarm(data) {
   const container = document.getElementById("tracy-swarm-container");
   if (!container) return;
   container.innerHTML = "";
+
+  // Get selected region and surgeries
+  const region = window.selectedRegion || "abdomen"; // default to abdomen
+  const regionSurgeries = window.regionToSurgeries[region];
+
+  // If region or mapping is missing, show nothing
+  if (!regionSurgeries) {
+    container.innerHTML = "<div style='color:#aaa'>Select a region.</div>";
+    return;
+  }
+
+  const lowRisk = regionSurgeries.low;
+  const highRisk = regionSurgeries.high;
+  const surgeries = [lowRisk, highRisk];
+
+  // Color scale for ASA (convert numeric ASA to string)
+  const asaColors = d3.scaleOrdinal()
+    .domain(["1","2","3","4","5"])
+    .range(["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]);
 
   // Filter to our two surgeries, ensure ASA & death_inhosp exist
   const filtered = (data || []).filter(d =>
@@ -41,14 +51,9 @@ function drawTracySwarm(data) {
 
   // Compute dynamic dimensions
   const margin = { top: 70, right: 30, bottom: 70, left: 70 };
-
-  // Get container’s inner width/height from CSS
-  // (clientWidth includes padding but not margin/border)
   const rect = container.getBoundingClientRect();
   const fullWidth  = rect.width;
   const fullHeight = rect.height;
-
-  // Deduct margins to get drawing area
   const width  = fullWidth  - margin.left - margin.right;
   const height = fullHeight - margin.top  - margin.bottom;
 
@@ -213,6 +218,3 @@ window.renderTracyViz = function(selector) {
       console.error("Error loading tracy.json:", err);
     });
 };
-
-// Initial render
-window.renderTracyViz("#viz1");

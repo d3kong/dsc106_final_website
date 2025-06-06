@@ -1,22 +1,26 @@
 // daniel_main.js – Heatmap: “Clinical Complexity by ASA & Surgery”
-// Renamed variables with a “d” prefix to avoid collisions with other scripts.
-// Expose window.renderDanielViz, but do NOT call it here–dashboard_main.js will do that.
 
 (function() {
-  const dLowRisk   = "Cholecystectomy";
-  const dHighRisk  = "Exploratory laparotomy";
-  const dSurgeries = [dLowRisk, dHighRisk];
-  const dAsaLevels = ["1","2","3","4","5"];
-
-  // Color scale for average death_score
   function drawDanielHeatmap(data) {
     const container = document.getElementById("heatmap-container");
     if (!container) return;
     container.innerHTML = "";
 
-    // Filter to our two surgeries, ensure ASA & death_inhosp exist
+    // Get selected region and surgeries
+    const region = window.selectedRegion || "abdomen"; // default to abdomen
+    const regionSurgeries = window.regionToSurgeries[region];
+    if (!regionSurgeries) {
+      container.innerHTML = "<div style='color:#aaa'>Select a region.</div>";
+      return;
+    }
+    const lowRisk = regionSurgeries.low;
+    const highRisk = regionSurgeries.high;
+    const dSurgeries = [lowRisk, highRisk];
+    const dAsaLevels = ["1","2","3","4","5"];
+
+    // Filter to our two surgeries, ensure ASA & death_score exist
     const filtered = (data || []).filter(d =>
-      (d.opname === dLowRisk || d.opname === dHighRisk) &&
+      dSurgeries.includes(d.opname) &&
       d.asa_score !== undefined &&
       d.death_score !== undefined
     );
@@ -211,8 +215,8 @@
       .text("High");
   }
 
-  // Expose global function; dashboard_main.js will call this
-  window.renderDanielViz = function(containerSelector) {
+  // Integration with main.js
+  window.renderDanielViz = function(selector) {
     d3.json("data/daniel.json")
       .then(data => {
         try {
