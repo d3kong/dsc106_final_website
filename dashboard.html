@@ -47,9 +47,8 @@
       <section id="viz1" class="chart-section">
         <h3>Chart 1: Risk vs. ASA (Swarm Plot)</h3>
         <div
-          id="tracy-swarm-container"
-          style="width: 100%; height: 90vh; display: flex; align-items: center; justify-content: center; background: #4a4a4a;"
-        >
+          id="swarm-container"
+          style="width: 100%; height: 90vh; display: flex; align-items: center; justify-content: center; background: #4a4a4a;">
           <span style="color: #999;">[Swarm Chart will render here]</span>
         </div>
       </section>
@@ -66,7 +65,6 @@
 
       <!-- Viz 2: Heatmap Placeholder -->
       <section id="viz2" class="chart-section">
-        <h3>Chart 2: Pre-Op Stress Signals (Heatmap)</h3>
         <div
           id="heatmap-container"
           style="width: 100%; height: 90vh; display: flex; align-items: center; justify-content: center; background: #4a4a4a;"
@@ -77,9 +75,8 @@
 
       <!-- Viz 3: Radar Chart Placeholder -->
       <section id="viz3" class="chart-section">
-        <h3>Chart 3: Tailoring the Conversation (Radar)</h3>
-        <div id="radar-container">
-          <span style="color: #999;">[Radar Chart will render here]</span>
+        <div id="radar-container"
+        style="background: #4a4a4a; padding: 2em;"></div>
         </div>
       </section>   
       
@@ -87,9 +84,9 @@
   </div>
 
   <!-- ───── DASHBOARD PAGE SCRIPTS ───── -->
+  <script src="js/dashboard_main.js"></script>
   <script src="js/tracy_main.js"></script>
   <script src="js/daniel_main.js"></script>
   <script src="js/kate_main.js"></script>
-  <script src="js/dashboard_main.js"></script>
 </body>
 </html>

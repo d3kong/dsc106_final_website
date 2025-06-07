@@ -1,38 +1,23 @@
-// daniel_main.js
-
 (function(){
-  //── 1) map each <area> region ID to exactly two surgeries to compare ─────────────
-  const regionToSurgeries = {
-    head_neck: { low: "Thyroid lobectomy",        high: "Total thyroidectomy"     },
-    thorax:    { low: "Breast-conserving surgery", high: "Mastectomy"             },
-    abdomen:   { low: "Cholecystectomy",           high: "Exploratory laparotomy"  },
-    pelvis:    { low: "Ileostomy repair",         high: "Low anterior resection"   }
-  };
+  let allCases = null;
 
   //── 2) main drawing routine ────────────────────────────────────────────────────────
-  function drawDanielHeatmap(data){
+  function drawDanielHeatmap(){
+    console.log("Drawing for region:", window.selectedRegion);
+
     const container = d3.select("#heatmap-container");
-    container.html("");  // clear out old
+    container.html("");
 
     // pick current region (default → "abdomen")
     const region = window.selectedRegion || "abdomen";
-    const pair   = regionToSurgeries[region];
-    if(!pair){
-      container
-        .append("div")
-        .style("color","#ccc")
-        .text("Click any body region to filter operations.");
-      return;
-    }
+    const mapping   = regionToSurgeries[region];
+    const surgeries = [ mapping.low, mapping.high ];
 
-    // two columns = low & high surgery names
-    const cols = [ pair.low, pair.high ];
     // y axis = ASA levels 1–5
     const rows = ["1","2","3","4","5"];
 
-    // filter data down to just those two ops with valid ASA & death
-    const filtered = data.filter(d =>
-      cols.includes(d.opname) &&
+    const filtered = allCases.filter(d =>
+      surgeries.includes(d.opname) &&
       d.asa_score   != null &&
       d.death_score != null
     );
@@ -53,7 +38,7 @@
     // build cells array
     const cells = [];
     rows.forEach(asa => {
-      cols.forEach(op => {
+      surgeries.forEach(op => {
         const val = avgDeath[asa]?.[op] ?? 0;
         cells.push({ asa, op, value: val });
       });
@@ -67,7 +52,7 @@
           H      = fullH - margin.top  - margin.bottom;
 
     //── scales ───────────────────────────────────────────────────────────────────────
-    const x = d3.scaleBand().domain(cols).range([0, W]).padding(0.1);
+    const x = d3.scaleBand().domain(surgeries).range([0, W]).padding(0.1);
     const y = d3.scaleBand().domain(rows).range([0, H]).padding(0.1);
 
     // **only** compute max from filtered two ops
@@ -107,7 +92,7 @@
       .attr("text-anchor","middle")
       .style("font-size","1rem")
       .style("fill","#ddd")
-      .text("X: Surgery (Low vs High Risk) · Y: ASA Level · Color: Avg 30-day Mortality");
+      .text("X: Surgery (Low vs High Risk) · Y: ASA Level · Color: Average Mortality Rate");
 
     // tooltip div
     let tooltip = d3.select("body").select(".daniel-tooltip");
@@ -198,21 +183,17 @@
   //── on load: fetch data & draw initial, wire up clicks ────────────────────────────
   document.addEventListener("DOMContentLoaded", () => {
     d3.json("data/daniel.json")
-      .then(drawDanielHeatmap)
-      .catch(err => {
-        d3.select("#heatmap-container")
-          .style("color","crimson")
-          .text("Failed to load data: " + err);
-        console.error(err);
-      });
+    .then(data => {
+      allCases = data;
+      drawDanielHeatmap();
+    })
+    .catch(err => {
+      d3.select("#heatmap-container")
+        .html(`<div style="color:#faa">Error loading data: ${err.message}</div>`);
+    });
 
-    d3.selectAll("#body-map .region").on("click", function(){
-      // clear old selection, highlight this one
-      d3.selectAll("#body-map .region").classed("region--selected", false);
-      d3.select(this).classed("region--selected", true);
-
-      window.selectedRegion = d3.select(this).attr("id");
-      d3.json("data/daniel.json").then(drawDanielHeatmap);
+    window.addEventListener("regionChange", () => {
+      drawDanielHeatmap();
     });
   });
 })();

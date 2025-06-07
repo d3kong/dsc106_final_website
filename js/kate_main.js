@@ -4,6 +4,7 @@
 
   //── main draw function ─────────────────────────────────────────────────
   function drawKateRadar() {
+    console.log("Drawing for region:", window.selectedRegion);
     if (!allCases) return;
     const container = d3.select("#radar-container").html("");
 
@@ -14,19 +15,18 @@
 
     // BUIDL LAYOUT: Sliders on top, charts side by side, table at bottom
     container.html(`
-      <h2>Guided Preparation Tips</h2>
+      <h2 style="color: #f0f0f0; text-align: center">Guided Preparation Tips</h2>
       <div id="sliders">
         <label>Age:
-          <input id="kate-age" type="range" min="10" max="100" value="${age}" />
-          <span id="kate-age-val">${age}</span>
+          <input id="kate-age" type="number" min="10" max="100" value="${age}" style="width: 50px; text-align: center;" />
         </label>
-        <label>Height:
-          <input id="kate-height" type="range" min="120" max="200" value="${height}" />
-          <span id="kate-height-val">${height}</span>
+
+        <label>Height (cm):
+          <input id="kate-height" type="number" min="120" max="200" value="${height}" style="width: 50px; text-align: center;" />
         </label>
-        <label>Weight:
-          <input id="kate-weight" type="range" min="30" max="150" value="${weight}" />
-          <span id="kate-weight-val">${weight}</span>
+
+        <label>Weight (kg):
+          <input id="kate-weight" type="number" min="30" max="150" value="${weight}" style="width: 50px; text-align: center;" />
         </label>
       </div>
       <div id="charts">
@@ -36,15 +36,32 @@
       <div id="summary"></div>
     `);
 
-    // Wire up slider events
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
     d3.select("#kate-age").on("input", function() {
-      age = +this.value; d3.select("#kate-age-val").text(age); drawKateRadar();
+      let val = +this.value;
+      if (isNaN(val)) return;  // ignore invalid input
+      age = clamp(val, 10, 100);
+      d3.select("#kate-age").property("value", age); // reset to clamped value if needed
+      drawKateRadar();
     });
+    
     d3.select("#kate-height").on("input", function() {
-      height = +this.value; d3.select("#kate-height-val").text(height); drawKateRadar();
+      let val = +this.value;
+      if (isNaN(val)) return;
+      height = clamp(val, 120, 200);
+      d3.select("#kate-height").property("value", height);
+      drawKateRadar();
     });
+
     d3.select("#kate-weight").on("input", function() {
-      weight = +this.value; d3.select("#kate-weight-val").text(weight); drawKateRadar();
+      let val = +this.value;
+      if (isNaN(val)) return;
+      weight = clamp(val, 30, 150);
+      d3.select("#kate-weight").property("value", weight);
+      drawKateRadar();
     });
 
     // FILTER DATA by surgery and sliders
@@ -128,12 +145,20 @@
   function drawSingleRadar(sel, title, dims, means) {
     const maxVal = d3.max(Object.values(means))||1;
     const angle  = 2*Math.PI/dims.length;
+
+    const svgWidth = 530;
+    const svgHeight = 450;
+    const cx = svgWidth / 2;
+    const cy = svgHeight / 2;
+    const r = 170;  
+
     const svg = d3.select(sel).html(`<h3 style="text-align:center;color:#fff">${title}</h3>`)
       .append("svg")
-        .attr("viewBox","0 0 380 380")
-        .attr("width",380).attr("height",380)
-        .style("display","block").style("margin","0 auto");
-    const cx=190, cy=190, r=150;
+      .attr("viewBox", `0 0 ${svgWidth} ${svgHeight}`)
+      .attr("width", svgWidth)
+      .attr("height", svgHeight)
+      .style("display", "block")
+      .style("margin", "0 auto");
 
     // tooltip
     let tooltip = d3.select("body").select(".kate-tooltip");
@@ -219,12 +244,8 @@
           .html(`<div style="color:#faa">Error loading data: ${err.message}</div>`);
       });
 
-    // tie into body‐map clicks for region changes
-    d3.selectAll("#body-map .region").on("click", function() {
-      window.selectedRegion = d3.select(this).attr("id");
-      d3.selectAll("#body-map .region").classed("region--selected", false);
-      d3.select(this).classed("region--selected", true);
-      drawKateRadar();
-    });
+      window.addEventListener("regionChange", () => {
+        drawKateRadar();
+      });
   });
 })();

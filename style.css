@@ -177,14 +177,10 @@
   }
   
   /* We gave the first placeholder viz extra vertical space so the user scrolls more */
-  #viz1 {
-    min-height: 105vh;
-  }
-  #viz2 {
-    min-height: 100vh;
-  }
-  #viz3 {
-    min-height: 145vh;
+  #viz1, #viz2, #viz3 {
+    min-height: auto; /* or simply remove these rules */
+    height: auto;
+    overflow: visible;
   }
   
   /* ─────────────────────────────────────────────────────────────────────────
@@ -335,62 +331,45 @@
 #radar-container {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  padding: 0 2rem;
+  width: 100%;
+  padding: 0 1rem;
 }
 
-#radar-container > h2 {
-  color: #fff;
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-/* Sliders row */
+/* Sliders stay full-width at top */
 #radar-container #sliders {
   display: flex;
   justify-content: center;
   gap: 2rem;
   margin-bottom: 1.5rem;
-  color: #fff;
-}
-#radar-container #sliders label {
-  font-size: 0.95rem;
-}
-#radar-container #sliders input {
-  margin-left: 0.4em;
 }
 
-/* Charts row */
+/* Charts container: 2 columns, wrap on narrow screens */
 #radar-container #charts {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
+  gap: 1rem;
   margin-bottom: 1.5rem;
 }
+
+/* Give each radar plenty of room */
 #radar-container #charts > div {
-  flex: 1 1 500px;
-  max-width: 550px;
+  background: #3c3c3c;
+  padding: 1rem;
+  border-radius: 0.8rem;
 }
 
-/* Summary + table */
+/* Summary full-width at bottom */
 #radar-container #summary {
+  margin-top: 2rem;
   color: #ddd;
   font-size: 0.9rem;
   overflow-x: auto;
-  margin-top: 2rem;
 }
-#radar-container table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1em;
-}
-#radar-container th,
-#radar-container td {
-  padding: 6px;
-  border-bottom: 1px solid #555;
-}
-#radar-container th {
-  text-align: left;
+
+#radar-container #radar-title {
+  text-align: center;
+  font-size: 1.5rem;
   font-weight: bold;
+  color: #fff;
+  margin-bottom: 1rem;
 }

@@ -44,14 +44,18 @@ const regionTooltipInfo = {
 window.selectedRegion = null;
 
 // ---- BODY MAP CLICK HANDLER ----
-d3.selectAll("#body-map .region")
-  .on("click", function() {
-    const clickedId = d3.select(this).attr("id");
-    window.selectedRegion = clickedId;
+document.addEventListener("DOMContentLoaded", () => {
+  d3.selectAll("#body-map .region").on("click", function() {
+    window.selectedRegion = d3.select(this).attr("id");
+    console.log("Clicked region:", window.selectedRegion);
+
     d3.selectAll("#body-map .region").classed("region--selected", false);
     d3.select(this).classed("region--selected", true);
+
+    // Dispatch your custom event for others to listen
     window.dispatchEvent(new Event("regionChange"));
   });
+});
 
 // ---- BODY MAP TOOLTIP HANDLERS ----
 let bodymapTooltip = d3.select("body").select(".bodymap-tooltip");
@@ -101,13 +105,3 @@ window.resetRegion = function() {
   d3.selectAll("#body-map .region").classed("region--selected", false);
   window.dispatchEvent(new Event("regionChange"));
 };
-
-// ---- INITIAL DASHBOARD RENDER ----
-document.addEventListener("DOMContentLoaded", () => {
-  renderTracyViz("#viz1");
-});
-
-// ---- RERENDER ON REGION CHANGE ----
-window.addEventListener("regionChange", () => {
-  renderTracyViz("#viz1");
-});

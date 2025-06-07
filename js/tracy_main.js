@@ -1,129 +1,107 @@
-// tracy_main.js – Swarm Plot that fills its container (#viz1)
+(function() {
+  let allCases = null;
 
-function drawTracySwarm(data) {
-  const symbol = d3.symbol();
-  const container = document.getElementById("tracy-swarm-container");
-  if (!container) return;
-  container.innerHTML = "";
+  function drawTracySwarm(data) {
+    if (!allCases) return;
+    const container = document.getElementById("swarm-container");
+    if (!container) return;
+    container.innerHTML = "";
 
-  // Get selected region and surgeries
-  const region = window.selectedRegion || "abdomen"; // default to abdomen
-  const regionSurgeries = window.regionToSurgeries[region];
+    // Get selected region and surgeries
+    const region = window.selectedRegion || "abdomen";
+    const mapping = window.regionToSurgeries[region];
+    const surgeries = [mapping.low, mapping.high];
 
-  // If region or mapping is missing, show nothing
-  if (!regionSurgeries) {
-    container.innerHTML = "<div style='color:#aaa'>Select a region.</div>";
-    return;
-  }
-
-  const lowRisk = regionSurgeries.low;
-  const highRisk = regionSurgeries.high;
-  const surgeries = [lowRisk, highRisk];
-
-  // Color scale for ASA (convert numeric ASA to string)
-  const asaColors = d3.scaleOrdinal()
+    // 4) prep ASA color scale
+    const asaColors = d3.scaleOrdinal()
     .domain(["1","2","3","4","5"])
-    .range(["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]);
+    .range(["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd"]);
 
-  // Filter to our two surgeries, ensure ASA & death_inhosp exist
-  const filtered = (data || []).filter(d =>
-    (d.opname === lowRisk || d.opname === highRisk) &&
-    d.asa !== undefined &&
-    d.death_inhosp !== undefined
-  );
-
-  if (filtered.length === 0) {
-    container.innerHTML = "<div style='color:#aaa'>No data available for those surgeries.</div>";
-    return;
-  }
-
-  // Map to plotting objects
-  const plotData = filtered.map(d => {
-    const asaVal = String(Math.round(d.asa)); // e.g. 2.0 → "2"
-    const outcome = +d.death_inhosp;          // 0 or 1
-    return {
+    // 5) filter & map your data
+    const plotData = (data || [])
+    .filter(d =>
+      surgeries.includes(d.opname) &&
+      d.asa         != null &&
+      d.intraop_ebl != null
+    )
+    .map(d => ({
       surgery: d.opname,
-      asa: asaVal,
-      outcome: outcome,
-      age: d.age,
-      sex: d.sex
-    };
-  });
+      asa:     String(Math.round(d.asa)),
+      ebl:     +d.intraop_ebl,
+      age:     d.age,
+      sex:     d.sex
+    }));
 
-  // Compute dynamic dimensions
-  const margin = { top: 70, right: 30, bottom: 70, left: 70 };
-  const rect = container.getBoundingClientRect();
-  const fullWidth  = rect.width;
-  const fullHeight = rect.height;
-  const width  = fullWidth  - margin.left - margin.right;
-  const height = fullHeight - margin.top  - margin.bottom;
+    if (plotData.length === 0) {
+    container.innerHTML = "<div style='color:#aaa'>No data for that region.</div>";
+    return;
+    }
 
-  // Create SVG sized to fill the container
-  const svg = d3.select(container)
+    // 6) compute dimensions
+    const margin = { top:70, right:30, bottom:70, left:70 };
+    const { width: fullW, height: fullH } = container.getBoundingClientRect();
+    const width  = fullW  - margin.left - margin.right;
+    const height = fullH - margin.top  - margin.bottom;
+
+    // 7) create SVG
+    const svg = d3.select(container)
     .append("svg")
-      .attr("width", fullWidth)
-      .attr("height", fullHeight)
+      .attr("width", fullW)
+      .attr("height", fullH)
     .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-  // Circle radius
-  const radius = 6;
-
-  // X-axis: surgeries, with padding so circles stay inside
-  const x = d3.scalePoint()
+    // 8) scales & axes
+    const radius = 5;
+    const x = d3.scalePoint()
     .domain(surgeries)
     .range([radius, width - radius])
     .padding(0.5);
 
-  // Y-axis: outcome 0 or 1, padded so circles fit
-  const y = d3.scaleLinear()
-    .domain([1.1, -0.5])
+    const maxEbl = d3.max(plotData, d => d.ebl);
+    const y = d3.scaleSymlog()
+    .domain([0, maxEbl])
+    .constant(10)
     .range([height - radius, radius]);
 
-  // Draw axes
-  svg.append("g")
+    svg.append("g")
     .attr("transform", `translate(0,${height})`)
     .call(d3.axisBottom(x).tickSize(0))
     .selectAll("text")
-      .attr("font-size", "1rem")
-      .attr("dy", "1.5em");
+      .attr("font-size","1rem").attr("dy","1.5em");
 
-  svg.append("g")
-    .call(d3.axisLeft(y)
-      .tickValues([0, 1])
-      .tickFormat(d => d === 1 ? "Yes" : "No"))
+    svg.append("g")
+    .call(d3.axisLeft(y).ticks(6).tickFormat(d3.format(",.0f")))
     .selectAll("text")
-      .attr("font-size", "1rem");
+      .attr("font-size","1rem");
 
-
-  // Force simulation to position points in a swarm
-  const simulation = d3.forceSimulation(plotData)
-    .force("x", d3.forceX(d => x(d.surgery)).strength(1))
-    .force("y", d3.forceY(d => y(d.outcome)).strength(1))
-    .force("collide", d3.forceCollide(radius * 1.1))
+    // 9) force-swarm
+    const sim = d3.forceSimulation(plotData)
+    .force("x",       d3.forceX(d => x(d.surgery)).strength(1))
+    .force("y",       d3.forceY(d => y(d.ebl)).strength(1))
+    .force("collide", d3.forceCollide(radius * 1.05))
     .stop();
+    for (let i = 0; i < 200; ++i) sim.tick();
 
-  for (let i = 0; i < 200; i++) simulation.tick();
-
-  // Tooltip (reuse or create)
-  let tooltip = d3.select("body").select(".tracy-tooltip");
-  if (tooltip.empty()) {
+    // 10) tooltip setup
+    let tooltip = d3.select("body").select(".tracy-tooltip");
+    if (tooltip.empty()) {
     tooltip = d3.select("body")
       .append("div")
-      .attr("class", "tracy-tooltip")
-      .style("position", "absolute")
-      .style("background", "#fff")
-      .style("padding", "8px 14px")
-      .style("border", "1.5px solid #999")
-      .style("border-radius", "8px")
-      .style("pointer-events", "none")
-      .style("font-size", "15px")
-      .style("display", "none")
-      .style("z-index", "9999");
-  }
+      .attr("class","tracy-tooltip")
+      .style("position","absolute")
+      .style("background","#fff")
+      .style("padding","8px 14px")
+      .style("border","1.5px solid #999")
+      .style("border-radius","8px")
+      .style("pointer-events","none")
+      .style("font-size","15px")
+      .style("display","none")
+      .style("z-index","9999");
+    }
 
-  // Draw points
-  svg.append("g")
+    // 11) draw circles
+    svg.append("g")
     .selectAll("circle")
     .data(plotData)
     .join("circle")
@@ -131,94 +109,74 @@ function drawTracySwarm(data) {
       .attr("cy", d => d.y)
       .attr("r", radius)
       .attr("fill", d => asaColors(d.asa))
-      .attr("stroke", "#333")
-      .attr("stroke-width", 1.2)
-      .on("mouseover", function(event, d) {
-        d3.select(this).attr("stroke-width", 2.5);
-        tooltip.style("display", "block")
-          .html(
-            `<strong>Surgery:</strong> ${d.surgery}<br>
-             <strong>ASA Score:</strong> ${d.asa}<br>
-             <strong>Death in Hosp.:</strong> ${d.outcome === 1 ? "Yes" : "No"}<br>
-             <strong>Age:</strong> ${d.age || "N/A"}<br>
-             <strong>Sex:</strong> ${d.sex || "N/A"}`
-          )
-          .style("left", (event.pageX + 15) + "px")
-          .style("top", (event.pageY - 18) + "px");
-      })
-      .on("mouseout", function() {
-        d3.select(this).attr("stroke-width", 1.2);
-        tooltip.style("display", "none");
-      });
+      .attr("stroke","#333")
+      .attr("stroke-width",1)
+    .on("mouseover", function(event, d) {
+      d3.select(this).attr("stroke-width",2);
+      tooltip
+        .style("display","block")
+        .html(`
+          <strong>Surgery:</strong> ${d.surgery}<br>
+          <strong>ASA:</strong> ${d.asa}<br>
+          <strong>EBL:</strong> ${d.ebl.toLocaleString()} ml<br>
+          <strong>Age:</strong> ${d.age||"N/A"}<br>
+          <strong>Sex:</strong> ${d.sex||"N/A"}
+        `)
+        .style("left",(event.pageX+15)+"px")
+        .style("top",(event.pageY-18)+"px");
+    })
+    .on("mouseout", function() {
+      d3.select(this).attr("stroke-width",1);
+      tooltip.style("display","none");
+    });
 
-  // Titles and labels
-  svg.append("text")
-    .attr("x", width / 2)
-    .attr("y", -35)
-    .attr("text-anchor", "middle")
-    .style("font-size", "1.45rem")
-    .style("font-weight", "bold")
-    .text("How Risk Grows with ASA");
+    // 12) titles & legend
+    svg.append("text")
+    .attr("x", width/2).attr("y",-35)
+    .attr("text-anchor","middle")
+    .style("font-size","1.45rem").style("font-weight","bold")
+    .text("Blood Loss vs. ASA Score");
 
-  svg.append("text")
-    .attr("x", width / 2)
-    .attr("y", -10)
-    .attr("text-anchor", "middle")
-    .style("font-size", "1rem")
-    // .text("X: Low-risk vs High-risk Surgery · Y: Death in Hospital (Yes/No) · Color: ASA Score");
-
-  svg.append("text")
-    .attr("x", width / 2)
-    .attr("y", height + 50)
-    .attr("text-anchor", "middle")
-    .attr("font-size", "1rem")
+    svg.append("text")
+    .attr("x", width/2).attr("y", height+50)
+    .attr("text-anchor","middle")
+    .style("font-size","1rem")
     .text("Surgery (Low vs. High Risk)");
 
-  svg.append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("x", -height / 2)
-    .attr("y", -50)
-    .attr("text-anchor", "middle")
-    .attr("font-size", "1rem")
-    .text("Death in Hospital");
+    svg.append("text")
+    .attr("transform","rotate(-90)")
+    .attr("x",-height/2).attr("y",-50)
+    .attr("text-anchor","middle")
+    .style("font-size","1rem")
+    .text("Estimated Blood Loss (ml)");
 
-  // Legend for ASA colors
-  const legend = svg.append("g")
-    .attr("transform", `translate(${width - 100}, -20)`);
-  ["1","2","3","4","5"].forEach((asa, i) => {
+    const legend = svg.append("g").attr("transform",`translate(${width-100}, -20)`);
+    ["1","2","3","4","5"].forEach((asa,i) => {
     legend.append("circle")
-      .attr("cx", 0)
-      .attr("cy", i * 20)
-      .attr("r", 6)
-      .attr("fill", asaColors(asa))
-      .attr("stroke", "#333");
+      .attr("cx",0).attr("cy",i*20).attr("r",radius)
+      .attr("fill", asaColors(asa)).attr("stroke","#333");
     legend.append("text")
-      .attr("x", 12)
-      .attr("y", i * 20 + 4)
-      .attr("font-size", "0.9rem")
+      .attr("x",12).attr("y",i*20+4)
+      .attr("font-size","0.9rem")
       .text(`ASA ${asa}`);
-  });
-}
-
-// Integration with main.js
-window.renderTracyViz = function(selector) {
-  d3.json("data/tracy.json")
-    .then(data => {
-      try {
-        drawTracySwarm(data);
-      } catch (e) {
-        const container = document.getElementById("tracy-swarm-container");
-        if (container) {
-          container.innerHTML = "<div style='color:#faa'>Could not render Tracy's chart: " + e.message + "</div>";
-        }
-        console.error("Tracy visualization error:", e);
-      }
-    })
-    .catch(err => {
-      const container = document.getElementById("tracy-swarm-container");
-      if (container) {
-        container.innerHTML = "<div style='color:#faa'>Could not load tracy.json: " + err.message + "</div>";
-      }
-      console.error("Error loading tracy.json:", err);
     });
-};
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    d3.json("data/tracy.json")
+      .then(data => {
+        allCases = data;
+        drawTracySwarm(allCases);
+      })
+      .catch(err => {
+        d3.select("#swarm-container")
+          .html(`<div style="color:#faa">Error loading data: ${err.message}</div>`);
+      });
+
+      window.addEventListener("regionChange", () => {
+        console.log("Region changed to:", window.selectedRegion);
+        drawTracySwarm(allCases);
+      });
+  });
+
+})();
