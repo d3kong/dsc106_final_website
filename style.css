@@ -269,13 +269,11 @@
     gap: 1rem;
   }
   
-  /* Visualization Cards (make them visible by default) */
   .chart-section {
-    /* Visible immediately (no fade‐in needed) */
     opacity: 1;
     transform: none;
   
-    background: #3c3c3c; /* mid‐dark gray card background */
+    background: #3c3c3c;
     border-radius: 1.6rem;
     padding: 2rem;
     min-height: 340px;
@@ -326,8 +324,7 @@
       height: auto;
     }
   }
-  
-  
+
 #right-column > p {
   color: #f0f0f0;
   font-family: Georgia, serif;

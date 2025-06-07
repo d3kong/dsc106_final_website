@@ -1,7 +1,3 @@
-// dashboard_main.js
-
-// -----------------------------------------------------------------------------
-// Surgery grouping for region-based filtering in all charts
 window.regionToSurgeries = {
   head_neck: {
     low: "Thyroid lobectomy",
@@ -20,10 +16,7 @@ window.regionToSurgeries = {
     high: "Low anterior resection"
   }
 };
-// -----------------------------------------------------------------------------
 
-// -----------------------------------------------------------------------------
-// Tooltip info: region label + low/high risk surgery for tooltip display
 const regionTooltipInfo = {
   head_neck: {
     label: "Head/Neck",
