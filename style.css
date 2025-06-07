@@ -330,3 +330,67 @@
   font-family: Georgia, serif;
   margin-bottom: 1rem;
 }
+
+/* ── Kate’s Radar Module ──────────────────────────────────────────────── */
+#radar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0 2rem;
+}
+
+#radar-container > h2 {
+  color: #fff;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Sliders row */
+#radar-container #sliders {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  color: #fff;
+}
+#radar-container #sliders label {
+  font-size: 0.95rem;
+}
+#radar-container #sliders input {
+  margin-left: 0.4em;
+}
+
+/* Charts row */
+#radar-container #charts {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+#radar-container #charts > div {
+  flex: 1 1 500px;
+  max-width: 550px;
+}
+
+/* Summary + table */
+#radar-container #summary {
+  color: #ddd;
+  font-size: 0.9rem;
+  overflow-x: auto;
+  margin-top: 2rem;
+}
+#radar-container table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1em;
+}
+#radar-container th,
+#radar-container td {
+  padding: 6px;
+  border-bottom: 1px solid #555;
+}
+#radar-container th {
+  text-align: left;
+  font-weight: bold;
+}

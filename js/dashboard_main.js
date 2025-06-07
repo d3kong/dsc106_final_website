@@ -105,13 +105,9 @@ window.resetRegion = function() {
 // ---- INITIAL DASHBOARD RENDER ----
 document.addEventListener("DOMContentLoaded", () => {
   renderTracyViz("#viz1");
-  renderDanielViz("#viz2");
-  renderKateViz("#viz3");
 });
 
 // ---- RERENDER ON REGION CHANGE ----
 window.addEventListener("regionChange", () => {
   renderTracyViz("#viz1");
-  renderDanielViz("#viz2");
-  renderKateViz("#viz3");
 });
