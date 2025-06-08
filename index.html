@@ -5,6 +5,19 @@
   <title>Data-Driven Surgical Care: ASA 4 Patient Story</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    .scroll-indicator {
+      text-align: center;
+      font-size: 2rem;
+      color: #888;
+      margin: 1rem 0;
+      animation: bounce 1.5s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(10px); }
+    }
+  </style>
 </head>
 <body>
   <!-- ───── TITLE SLIDE (hook + project title) ───── -->
@@ -16,8 +29,7 @@
         <circle id="pupil-right" cx="137" cy="18" r="15" fill="black" />
       </svg>
     </div>
-  <!-- siren overlay -->
-  <div class="siren-overlay"></div>
+    <div class="siren-overlay"></div>
 
     <h1>Data-Driven Surgical Care</h1>
     <h3>When Every Decision Counts: The ASA 4 Patient</h3>
@@ -28,60 +40,50 @@
   <!-- ───── NARRATIVE CONTAINER (revealed after “Enter”) ───── -->
   <div id="narrative-container">
     <!-- BACK BUTTON -->
-    <button id="back-btn">
-      ← Back to Title
-    </button>
+    <button id="back-btn">← Back to Title</button>
 
     <!-- ─── Story Part 1: ASA 4 Patient Introduction ─── -->
     <section id="story-asa4" class="visualization-section story-section">
       <h2>Meet the High-Risk Patient</h2>
-      <p>
-        Meet Daniel, a 68-year-old man facing a difficult question: Should he undergo exploratory laparotomy—a surgery often used to diagnose or address abdominal emergencies? With long-standing heart disease, uncontrolled diabetes, and COPD, Daniel has been classified as ASA 4, meaning he lives with a constant threat to life from systemic illness.</p>
-        
-        <p>This ASA score isn’t just a label—it’s a signal that routine surgeries can become dangerous quickly. The same procedure might look completely different for someone healthier. So how do we decide what’s safe, and how to move forward?
-      </p>
+      <p>Meet Daniel, a 68-year-old man facing a difficult question: Should he undergo exploratory laparotomy—a surgery often used to diagnose or address abdominal emergencies? With long-standing heart disease, uncontrolled diabetes, and COPD, Daniel has been classified as ASA 4, meaning he lives with a constant threat to life from systemic illness.</p>
+      <p>This ASA score isn’t just a label—it’s a signal that routine surgeries can become dangerous quickly. The same procedure might look completely different for someone healthier. So how do we decide what’s safe, and how to move forward?</p>
+      <div class="scroll-indicator">↓</div>
     </section>
 
     <!-- ─── Story Part 2: Identifying Risk ─── -->
     <section class="visualization-section story-section">
       <h2>Identifying Risk Through Past Patients</h2>
       <div class="text-chart-wrapper">
-      <p>
-        Our first chart—a swarm plot—compares surgical outcomes across ASA levels. Along the X-axis are surgeries grouped by low- and high-risk types; the Y-axis shows estimated blood loss (EBL). What we see isn’t that ASA 4 patients always bleed more—but that higher-risk surgeries attract more ASA 4 patients, and the blood loss in these cases varies dramatically. In Daniel’s case, exploratory laparotomy shows a wide range of blood loss values for patients like him. That variability is dangerous. This chart reveals the unpredictability of high-risk surgeries for patients at the edge of systemic stability.
-      </p>
-      <div class="mini-chart" id="swarm-chart-mini"></div>
+        <p>Our first chart—a swarm plot—compares surgical outcomes across ASA levels. Along the X-axis are surgeries grouped by low- and high-risk types; the Y-axis shows estimated blood loss (EBL). What we see isn’t that ASA 4 patients always bleed more—but that higher-risk surgeries attract more ASA 4 patients, and the blood loss in these cases varies dramatically. In Daniel’s case, exploratory laparotomy shows a wide range of blood loss values for patients like him. That variability is dangerous. This chart reveals the unpredictability of high-risk surgeries for patients at the edge of systemic stability.</p>
+        <div class="mini-chart" id="swarm-chart-mini"></div>
       </div>
-
+      <div class="scroll-indicator">↓</div>
     </section>
 
     <!-- ─── Story Part 3: Perception Matters ─── -->
     <section class="visualization-section story-section">
       <h2>Perception Matters: Pre-Op Stress Signals</h2>
       <div class="text-chart-wrapper">
-      <p>
-        Next, we use a heatmap to scan how mortality shifts with ASA level for each surgery. Exploratory laparotomy stands out: as ASA rises, so does death rate—marked by progressively brighter cells. This heatmap doesn’t just compare surgeries—it exposes how risk escalates for patients like Daniel. While ASA 1 and 2 patients may tolerate this surgery well, the mortality curve climbs steeply at ASA 4. For Daniel, this visual becomes a decision-making guide: is this a tolerable risk, or are there alternatives with a safer profile?
-      </p>
-      <div class="mini-chart" id="heatmap-chart-mini"></div>
-    </div>
+        <p>Next, we use a heatmap to scan how mortality shifts with ASA level for each surgery. Exploratory laparotomy stands out: as ASA rises, so does death rate—marked by progressively brighter cells. This heatmap doesn’t just compare surgeries—it exposes how risk escalates for patients like Daniel. While ASA 1 and 2 patients may tolerate this surgery well, the mortality curve climbs steeply at ASA 4. For Daniel, this visual becomes a decision-making guide: is this a tolerable risk, or are there alternatives with a safer profile?</p>
+        <div class="mini-chart" id="heatmap-chart-mini"></div>
+      </div>
+      <div class="scroll-indicator">↓</div>
     </section>
 
     <!-- ─── Story Part 4: Planning the Conversation ─── -->
     <section class="visualization-section story-section">
       <h2>Planning the Conversation</h2>
       <div class="text-chart-wrapper">
-      <p>
-        Risk isn’t just medical—it’s emotional and logistical too. Our third visualization, a radar chart, maps five key areas that shape how doctors communicate with Daniel: Medical Complexity, Recovery Support Needs, Decision Clarity, Emotional Sensitivity, and Information Depth. For Daniel, the chart shows sharp spikes in complexity and clarity—he needs a detailed explanation, careful reassurance, and support planning for a longer, riskier recovery. This isn’t just about delivering facts—it’s about delivering care in the right voice, at the right depth, for the right patient.
-      </p>
-      <div class="mini-chart" id="radar-chart-mini"></div>
-    </div>
+        <p>Risk isn’t just medical—it’s emotional and logistical too. Our third visualization, a radar chart, maps five key areas that shape how doctors communicate with Daniel: Medical Complexity, Recovery Support Needs, Decision Clarity, Emotional Sensitivity, and Information Depth. For Daniel, the chart shows sharp spikes in complexity and clarity—he needs a detailed explanation, careful reassurance, and support planning for a longer, riskier recovery. This isn’t just about delivering facts—it’s about delivering care in the right voice, at the right depth, for the right patient.</p>
+        <div class="mini-chart" id="radar-chart-mini"></div>
+      </div>
+      <div class="scroll-indicator">↓</div>
     </section>
 
     <!-- ─── Story Part 5: Conclusion & Call-to-Action ─── -->
     <section class="visualization-section story-section">
       <h2>Conclusion: Data Makes Surgical Care More Human</h2>
-      <p>
-        Daniel’s case reveals a crucial truth: the same surgery can mean radically different things depending on the patient’s ASA level. What’s survivable for one may be lethal for another. Now, it’s your turn—use the dashboard to explore other regions of the body. Each chart will update to reflect new contexts. You’ll see that risk isn’t fixed—it shifts with anatomy, comorbidities, and ASA scores. With the right data, you can spot the turning points earlier, guide patients more honestly, and ultimately make surgical care more human, especially for those—like Daniel—on the edge of fragility.
-      </p>
+      <p>Daniel’s case reveals a crucial truth: the same surgery can mean radically different things depending on the patient’s ASA level. What’s survivable for one may be lethal for another. Now, it’s your turn—use the dashboard to explore other regions of the body. Each chart will update to reflect new contexts. You’ll see that risk isn’t fixed—it shifts with anatomy, comorbidities, and ASA scores. With the right data, you can spot the turning points earlier, guide patients more honestly, and ultimately make surgical care more human, especially for those—like Daniel—on the edge of fragility.</p>
       <button id="try-btn">Try It Yourself ↗</button>
     </section>
   </div>
