@@ -1,6 +1,8 @@
 // daniel_main.js
 
 (function(){
+  let allCases = null;
+
   //── 1) map each <area> region ID to exactly two surgeries to compare ─────────────
   const regionToSurgeries = {
     head_neck: { low: "Thyroid lobectomy",        high: "Total thyroidectomy"     },
@@ -10,7 +12,7 @@
   };
 
   //── 2) main drawing routine ────────────────────────────────────────────────────────
-  function drawDanielHeatmap(data){
+  function drawDanielHeatmap(){
     const container = d3.select("#heatmap-container");
     container.html("");
 
@@ -28,11 +30,10 @@
     // two columns = low & high surgery names
     const cols = [ pair.low, pair.high ];
     // y axis = ASA levels 1–5
-    // const rows = ["1","2","3","4","5"];
     const rows = ["5","4","3","2","1"];
 
     // filter data down to just those two ops with valid ASA & death
-    const filtered = data.filter(d =>
+    const filtered = allCases.filter(d =>
       cols.includes(d.opname) &&
       d.asa_score   != null &&
       d.death_score != null
@@ -166,74 +167,116 @@
         tooltip.style("display","none");
       });
 
-    //—— gradient legend ————————————————————————————————————————
-    const defs = svg.append("defs"),
-          grad = defs.append("linearGradient")
-                     .attr("id", "deathGrad")
-                     .attr("x1", "0%").attr("y1", "0%")
-                     .attr("x2", "100%").attr("y2", "0%");
+    // //—— gradient legend ————————————————————————————————————————
+    // const defs = svg.append("defs"),
+    // grad = defs.append("linearGradient")
+    //           .attr("id","deathGrad")
+    //           .attr("x1","0%").attr("y1","0%")
+    //           .attr("x2","100%").attr("y2","0%");
 
-    const nStops = 20;                     // sample Viridis at 20 points
-    for (let i = 0; i <= nStops; i++) {
-      const t = i / nStops;               // 0 … 1
-      grad.append("stop")
-          .attr("offset", `${t * 100}%`)
-          .attr("stop-color", color(t * localMax));
-    }
+    // // only two stops: start at 0, end at localMax
+    // grad.append("stop")
+    // .attr("offset","0%")
+    // .attr("stop-color", color(0));
+    // grad.append("stop")
+    // .attr("offset","100%")
+    // .attr("stop-color", color(localMax));
 
-    const legendW = 240, legendH = 12,
-          lx = (W - legendW) / 2,
-          ly = H + 40;
+    // const legendW = 240, legendH = 12,
+    // lx = (W - legendW)/2, 
+    // ly = H + 40;
 
-    svg.append("rect")
-       .attr("x", lx).attr("y", ly)
-       .attr("width", legendW).attr("height", legendH)
-       .style("fill", "url(#deathGrad)")
-       .style("stroke", "#333");
+    // svg.append("rect")
+    // .attr("x", lx).attr("y", ly)
+    // .attr("width", legendW).attr("height", legendH)
+    // .style("fill","url(#deathGrad)")
+    // .style("stroke","#333");
 
-    // min / max labels
-    svg.append("text")
-       .attr("x", lx).attr("y", ly + legendH + 16)
-       .attr("font-size", "0.9rem")
-       .attr("fill", "#eee")
-       .text("0 %");
 
-    svg.append("text")
-       .attr("x", lx + legendW).attr("y", ly + legendH + 16)
-       .attr("text-anchor", "end")
-       .attr("font-size", "0.9rem")
-       .attr("fill", "#eee")
-       .text(`${(localMax * 100).toFixed(1)} %`);
+    // // min / max labels
+    // svg.append("text")
+    //    .attr("x", lx).attr("y", ly + legendH + 16)
+    //    .attr("font-size", "0.9rem")
+    //    .attr("fill", "#eee")
+    //    .text("0 %");
 
-    // explanatory blurb
-    svg.append("text")
-       .attr("x", W / 2).attr("y", ly + legendH + 40)
-       .attr("text-anchor", "middle")
-       .style("font-size", "0.9rem")
-       .style("fill", "#aaa")
-       .style("font-style", "italic")
-       .text("Purple = 0 % → Yellow = highest observed mortality");
+    // svg.append("text")
+    //    .attr("x", lx + legendW).attr("y", ly + legendH + 16)
+    //    .attr("text-anchor", "end")
+    //    .attr("font-size", "0.9rem")
+    //    .attr("fill", "#eee")
+    //    .text(`${(localMax * 100).toFixed(1)} %`);
+
+    // // explanatory blurb
+    // svg.append("text")
+    //    .attr("x", W / 2).attr("y", ly + legendH + 40)
+    //    .attr("text-anchor", "middle")
+    //    .style("font-size", "0.9rem")
+    //    .style("fill", "#aaa")
+    //    .style("font-style", "italic")
+    //    .text("Purple = 0 % → Yellow = highest observed mortality");
+
+    const defs = svg.append("defs");
+const grad = defs.append("linearGradient")
+  .attr("id", "deathGrad")
+  .attr("x1", "0%").attr("y1", "0%")
+  .attr("x2", "100%").attr("y2", "0%");
+
+// sample Viridis at 20 evenly spaced stops
+const nStops = 20;
+for (let i = 0; i <= nStops; i++) {
+  const t = i / nStops;                // 0 … 1
+  grad.append("stop")
+    .attr("offset", `${t * 100}%`)
+    .attr("stop-color", color(t * localMax));
+}
+
+const legendW = 240,        // or 150 if you prefer smaller
+      legendH = 12,         // or 10
+      lx = (W - legendW) / 2,
+      ly = H + 40;          // or H + 35
+
+svg.append("rect")
+  .attr("x", lx)
+  .attr("y", ly)
+  .attr("width", legendW)
+  .attr("height", legendH)
+  .style("fill", "url(#deathGrad)")
+  .style("stroke", "#333");  // or "#444"
+
+// min label
+svg.append("text")
+  .attr("x", lx)
+  .attr("y", ly + legendH + 16)
+  .attr("font-size", "0.9rem")
+  .attr("fill", "#eee")
+  .text("0 %");
+
+// max label
+svg.append("text")
+  .attr("x", lx + legendW)
+  .attr("y", ly + legendH + 16)
+  .attr("text-anchor", "end")
+  .attr("font-size", "0.9rem")
+  .attr("fill", "#eee")
+  .text(`${(localMax * 100).toFixed(1)} %`);
   }
 
 
   //── on load: fetch data & draw initial, wire up clicks ────────────────────────────
   document.addEventListener("DOMContentLoaded", () => {
     d3.json("data/daniel.json")
-      .then(drawDanielHeatmap)
-      .catch(err => {
-        d3.select("#heatmap-container")
-          .style("color","crimson")
-          .text("Failed to load data: " + err);
-        console.error(err);
-      });
+    .then(data => {
+      allCases = data;
+      drawDanielHeatmap();
+    })
+    .catch(err => {
+      d3.select("#heatmap-container")
+        .html(`<div style="color:#faa">Error loading data: ${err.message}</div>`);
+    });
 
-    d3.selectAll("#body-map .region").on("click", function(){
-      // clear old selection, highlight this one
-      d3.selectAll("#body-map .region").classed("region--selected", false);
-      d3.select(this).classed("region--selected", true);
-
-      window.selectedRegion = d3.select(this).attr("id");
-      d3.json("data/daniel.json").then(drawDanielHeatmap);
+    window.addEventListener("regionChange", () => {
+      drawDanielHeatmap();
     });
   });
 })();
