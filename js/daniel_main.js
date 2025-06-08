@@ -1,23 +1,38 @@
+// daniel_main.js
+
 (function(){
-  let allCases = null;
+  //── 1) map each <area> region ID to exactly two surgeries to compare ─────────────
+  const regionToSurgeries = {
+    head_neck: { low: "Thyroid lobectomy",        high: "Total thyroidectomy"     },
+    thorax:    { low: "Breast-conserving surgery", high: "Mastectomy"             },
+    abdomen:   { low: "Cholecystectomy",           high: "Exploratory laparotomy"  },
+    pelvis:    { low: "Ileostomy repair",         high: "Low anterior resection"   }
+  };
 
   //── 2) main drawing routine ────────────────────────────────────────────────────────
-  function drawDanielHeatmap(){
-    console.log("Drawing for region:", window.selectedRegion);
-
+  function drawDanielHeatmap(data){
     const container = d3.select("#heatmap-container");
     container.html("");
 
     // pick current region (default → "abdomen")
     const region = window.selectedRegion || "abdomen";
-    const mapping   = regionToSurgeries[region];
-    const surgeries = [ mapping.low, mapping.high ];
+    const pair   = regionToSurgeries[region];
+    if(!pair){
+      container
+        .append("div")
+        .style("color","#ccc")
+        .text("Click any body region to filter operations.");
+      return;
+    }
 
+    // two columns = low & high surgery names
+    const cols = [ pair.low, pair.high ];
     // y axis = ASA levels 1–5
-    const rows = ["5","4","3","2","1"];
+    const rows = ["1","2","3","4","5"];
 
-    const filtered = allCases.filter(d =>
-      surgeries.includes(d.opname) &&
+    // filter data down to just those two ops with valid ASA & death
+    const filtered = data.filter(d =>
+      cols.includes(d.opname) &&
       d.asa_score   != null &&
       d.death_score != null
     );
@@ -35,27 +50,23 @@
       avgDeath[asa] = Object.fromEntries(grp);
     });
 
-    // build cells array
     const cells = [];
     rows.forEach(asa => {
-      surgeries.forEach(op => {
+      cols.forEach(op => {
         const val = avgDeath[asa]?.[op] ?? 0;
         cells.push({ asa, op, value: val });
       });
     });
 
-    //── sizing ────────────────────────────────────────────────────────────────────────
     const margin = { top: 60, right: 20, bottom: 80, left: 60 },
           fullW  = container.node().clientWidth,
           fullH  = 480,
           W      = fullW - margin.left - margin.right,
           H      = fullH - margin.top  - margin.bottom;
 
-    //── scales ───────────────────────────────────────────────────────────────────────
-    const x = d3.scaleBand().domain(surgeries).range([0, W]).padding(0.1);
+    const x = d3.scaleBand().domain(cols).range([0, W]).padding(0.1);
     const y = d3.scaleBand().domain(rows).range([0, H]).padding(0.1);
 
-    // **only** compute max from filtered two ops
     const localMax = d3.max(cells, d => d.value) || 1;
     const color    = d3.scaleSequential(d3.interpolateViridis)
                        .domain([0, localMax]);
@@ -73,13 +84,10 @@
       .attr("transform", `translate(0,${H})`)
       .call(d3.axisBottom(x))
       .selectAll("text")
-        .attr("dy","1.2em")
-        .attr("font-size","1rem").attr("font-family", "'Georgia', serif");
+        .attr("dy","1.2em");
 
     svg.append("g")
-      .call(d3.axisLeft(y))
-      .selectAll("text")
-        .attr("font-size","1rem").attr("font-family", "'Georgia', serif");;
+      .call(d3.axisLeft(y));
 
     // title / subtitle
     svg.append("text")
@@ -95,7 +103,23 @@
       .attr("text-anchor","middle")
       .style("font-size","1rem")
       .style("fill","#ddd")
-      .text("X: Surgery (Low vs High Risk) · Y: ASA Level · Color: Average Mortality Rate");
+      .text("X: Surgery (Low vs High Risk) · Y: ASA Level · Color: Avg Mortality");
+
+    const descriptionHTML =
+      `Higher <strong>ASA levels</strong> (rows) indicate sicker patients, and follow along the
+      gradient to see that as the bars' colors get brighter (i.e. more yellow) the higher the
+      mortality rates are across the differnt operations. Mortality rates vary from region to region, and
+      each visualization's color is scaled to the region's max mortality rate`;
+
+    container.append("div")
+      .attr("class","heatmap-note")
+      .style("max-width","1250px")
+      .style("margin","20px auto 0")
+      .style("font-size","0.95rem")
+      .style("line-height","1.4")
+      .style("color","#eee")
+      .style("text-align","center")
+      .html(descriptionHTML);
 
     // tooltip div
     let tooltip = d3.select("body").select(".daniel-tooltip");
@@ -141,62 +165,74 @@
         tooltip.style("display","none");
       });
 
-    //── gradient legend beneath the chart ───────────────────────────────────────────
+    //—— gradient legend ————————————————————————————————————————
     const defs = svg.append("defs"),
-          grad = defs.append("linearGradient").attr("id","deathGrad")
-                     .attr("x1","0%").attr("y1","0%")
-                     .attr("x2","100%").attr("y2","0%");
-    grad.append("stop").attr("offset","0%").attr("stop-color", color(0));
-    grad.append("stop").attr("offset","100%").attr("stop-color", color(localMax));
+          grad = defs.append("linearGradient")
+                     .attr("id", "deathGrad")
+                     .attr("x1", "0%").attr("y1", "0%")
+                     .attr("x2", "100%").attr("y2", "0%");
+
+    const nStops = 20;                     // sample Viridis at 20 points
+    for (let i = 0; i <= nStops; i++) {
+      const t = i / nStops;               // 0 … 1
+      grad.append("stop")
+          .attr("offset", `${t * 100}%`)
+          .attr("stop-color", color(t * localMax));
+    }
 
     const legendW = 240, legendH = 12,
-          lx = (W - legendW)/2, ly = H + 40;
+          lx = (W - legendW) / 2,
+          ly = H + 40;
 
     svg.append("rect")
-      .attr("x", lx).attr("y", ly)
-      .attr("width", legendW).attr("height", legendH)
-      .style("fill","url(#deathGrad)")
-      .style("stroke","#333");
+       .attr("x", lx).attr("y", ly)
+       .attr("width", legendW).attr("height", legendH)
+       .style("fill", "url(#deathGrad)")
+       .style("stroke", "#333");
 
     // min / max labels
     svg.append("text")
-      .attr("x", lx).attr("y", ly + legendH + 16)
-      .attr("font-size","0.9rem")
-      .attr("fill","#eee")
-      .text("0 %");
+       .attr("x", lx).attr("y", ly + legendH + 16)
+       .attr("font-size", "0.9rem")
+       .attr("fill", "#eee")
+       .text("0 %");
 
     svg.append("text")
-      .attr("x", lx + legendW).attr("y", ly + legendH + 16)
-      .attr("text-anchor","end")
-      .attr("font-size","0.9rem")
-      .attr("fill","#eee")
-      .text(`${(localMax*100).toFixed(1)} %`);
+       .attr("x", lx + legendW).attr("y", ly + legendH + 16)
+       .attr("text-anchor", "end")
+       .attr("font-size", "0.9rem")
+       .attr("fill", "#eee")
+       .text(`${(localMax * 100).toFixed(1)} %`);
 
     // explanatory blurb
     svg.append("text")
-      .attr("x", W/2).attr("y", ly + legendH + 40)
-      .attr("text-anchor","middle")
-      .style("font-size","0.9rem")
-      .style("fill","#aaa")
-      .style("font-style","italic")
-      .text("Purple = 0 % → Yellow = highest observed mortality");
+       .attr("x", W / 2).attr("y", ly + legendH + 40)
+       .attr("text-anchor", "middle")
+       .style("font-size", "0.9rem")
+       .style("fill", "#aaa")
+       .style("font-style", "italic")
+       .text("Purple = 0 % → Yellow = highest observed mortality");
   }
 
 
   //── on load: fetch data & draw initial, wire up clicks ────────────────────────────
   document.addEventListener("DOMContentLoaded", () => {
     d3.json("data/daniel.json")
-    .then(data => {
-      allCases = data;
-      drawDanielHeatmap();
-    })
-    .catch(err => {
-      d3.select("#heatmap-container")
-        .html(`<div style="color:#faa">Error loading data: ${err.message}</div>`);
-    });
+      .then(drawDanielHeatmap)
+      .catch(err => {
+        d3.select("#heatmap-container")
+          .style("color","crimson")
+          .text("Failed to load data: " + err);
+        console.error(err);
+      });
 
-    window.addEventListener("regionChange", () => {
-      drawDanielHeatmap();
+    d3.selectAll("#body-map .region").on("click", function(){
+      // clear old selection, highlight this one
+      d3.selectAll("#body-map .region").classed("region--selected", false);
+      d3.select(this).classed("region--selected", true);
+
+      window.selectedRegion = d3.select(this).attr("id");
+      d3.json("data/daniel.json").then(drawDanielHeatmap);
     });
   });
 })();

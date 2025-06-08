@@ -388,6 +388,13 @@
   margin-bottom: 1rem;
 }
 
+#heatmap-container {
+  display: flex;
+  flex-direction: column;   /*  ← NEW  */
+  align-items: center;      /*  keep everything centred            */
+  justify-content: flex-start;
+}
+
 /* ── Kate’s Radar Module ──────────────────────────────────────────────── */
 #radar-container {
   display: flex;
