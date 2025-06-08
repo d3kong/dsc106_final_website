@@ -1,3 +1,4 @@
+// ==================== Main Surgeries (as STRINGS, unchanged!) ====================
 window.regionToSurgeries = {
   head_neck: {
     low: "Thyroid lobectomy",
@@ -17,6 +18,19 @@ window.regionToSurgeries = {
   }
 };
 
+// ==================== Surgery Descriptions (for TOOLTIP ONLY) ====================
+window.regionSurgeryDescriptions = {
+  "Thyroid lobectomy": "Removal of one lobe of the thyroid gland, usually for benign nodules or small cancers.",
+  "Total thyroidectomy": "Removal of the entire thyroid gland, typically for larger or more aggressive thyroid cancers.",
+  "Breast-conserving surgery": "Removal of a breast tumor and margin, preserving most of the breast.",
+  "Lung lobectomy": "Removal of one lobe of the lung, most often for cancer or severe lung disease.",
+  "Cholecystectomy": "Removal of the gallbladder, commonly due to gallstones causing pain or infection.",
+  "Exploratory laparotomy": "Surgical opening of the abdomen to diagnose or treat conditions.",
+  "Ileostomy repair": "Surgical repair of an opening from the small intestine to the abdominal wall for waste elimination.",
+  "Low anterior resection": "Removal of the lower part of the rectum, usually for rectal cancer, with reconnection of the colon."
+};
+
+// ==================== Tooltip Info (uses surgery NAMES) ====================
 const regionTooltipInfo = {
   head_neck: {
     label: "Head/Neck",
@@ -39,16 +53,13 @@ const regionTooltipInfo = {
     high: window.regionToSurgeries.pelvis.high
   }
 };
-// -----------------------------------------------------------------------------
 
+// ==================== Region Selection ====================
 window.selectedRegion = null;
 
-// ---- BODY MAP CLICK HANDLER ----
 document.addEventListener("DOMContentLoaded", () => {
   d3.selectAll("#body-map .region").on("click", function() {
     window.selectedRegion = d3.select(this).attr("id");
-    console.log("Clicked region:", window.selectedRegion);
-
     d3.selectAll("#body-map .region").classed("region--selected", false);
     d3.select(this).classed("region--selected", true);
 
@@ -57,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// ---- BODY MAP TOOLTIP HANDLERS ----
+// ==================== Body Map Tooltip ====================
 let bodymapTooltip = d3.select("body").select(".bodymap-tooltip");
 if (bodymapTooltip.empty()) {
   bodymapTooltip = d3.select("body")
@@ -85,8 +96,16 @@ d3.selectAll("#body-map .region")
         .style("display", "block")
         .html(`
           <strong>${info.label}</strong><br>
-          <span style="color:#1a6;"><b>Low Risk:</b> ${info.low}</span><br>
-          <span style="color:#b10;"><b>High Risk:</b> ${info.high}</span>
+          <div style="margin-top:4px">
+            <span style="color:#1a6;"><b>Low Risk:</b> ${info.low}</span>
+            <div style="font-size:13px; margin-left:0.7em; margin-bottom:0.5em; color:#446;">
+              ${window.regionSurgeryDescriptions[info.low]}
+            </div>
+            <span style="color:#b10;"><b>High Risk:</b> ${info.high}</span>
+            <div style="font-size:13px; margin-left:0.7em; color:#664;">
+              ${window.regionSurgeryDescriptions[info.high]}
+            </div>
+          </div>
         `);
     }
   })
@@ -99,7 +118,7 @@ d3.selectAll("#body-map .region")
     bodymapTooltip.style("display", "none");
   });
 
-// ---- RESET FUNCTION ----
+// ==================== Region Reset (optional) ====================
 window.resetRegion = function() {
   window.selectedRegion = null;
   d3.selectAll("#body-map .region").classed("region--selected", false);

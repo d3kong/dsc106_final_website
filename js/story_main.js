@@ -1,82 +1,101 @@
-// --------------------------------------------------------------------------------
-// js/story_main.js
-// Handles: 
-//   • “Enter Story” button → hide title slide, show narrative 
-//   • IntersectionObserver + typewriter effect for each story section
-//   • “Try It Yourself” button → navigate to dashboard.html
-//   • Pupil animation (no theme‐toggle code)
-// --------------------------------------------------------------------------------
-
 document.addEventListener("DOMContentLoaded", () => {
-  // 1) Grab references
   const titleSlide         = document.getElementById("title-slide");
   const narrativeContainer = document.getElementById("narrative-container");
   const enterBtn           = document.getElementById("enter-btn");
   const tryBtn             = document.getElementById("try-btn");
 
-  // 2) “Enter Story” hides title + shows narrative
+  // Hide narrative at first
+  narrativeContainer.style.display = "none";
+
+  // “Enter Story” hides title + shows narrative
   enterBtn.addEventListener("click", () => {
     titleSlide.style.display = "none";
     narrativeContainer.style.display = "flex";
   });
 
-  // 3) IntersectionObserver for typewriter + fade-in
-  const sections = document.querySelectorAll(".visualization-section");
-  const observerOptions = { root: null, threshold: 0.5 };
+  // Set up observer for story sections
+  const sections = Array.from(document.querySelectorAll(".visualization-section.story-section"));
+  const observerOptions = { root: null, threshold: 0.6 };
 
+  // Store the *real* text of each paragraph as data attribute, and set paragraphs blank
+  sections.forEach(section => {
+    section.querySelectorAll("p").forEach(p => {
+      if (!p.dataset.fullText) p.dataset.fullText = p.textContent;
+      p.textContent = ""; // always start blank until typed!
+      p.dataset.typed = "false";
+    });
+  });
+
+  // Type each paragraph in order, only start the next when finished
+  function typeParagraphSequential(paragraphs, idx) {
+    if (idx >= paragraphs.length) return;
+    const p = paragraphs[idx];
+    // Only type if not already typed
+    if (p.dataset.typed === "true") {
+      typeParagraphSequential(paragraphs, idx + 1);
+      return;
+    }
+    p.textContent = ""; // start blank
+    let i = 0;
+    const fullText = p.dataset.fullText;
+    function typeChar() {
+      if (i < fullText.length) {
+        p.textContent += fullText.charAt(i);
+        i++;
+        setTimeout(typeChar, 13 + Math.random() * 16); // tweak speed as needed
+      } else {
+        p.dataset.typed = "true";
+        typeParagraphSequential(paragraphs, idx + 1); // go to next paragraph
+      }
+    }
+    typeChar();
+  }
+
+  // Only run the typing ONCE per section
+  function handleTyping(entry) {
+    const el = entry.target;
+    if (el.dataset.typedStarted === "true") return;
+    el.dataset.typedStarted = "true";
+    const paragraphs = Array.from(el.querySelectorAll("p"));
+    typeParagraphSequential(paragraphs, 0);
+  }
+
+  // IntersectionObserver for typewriter + fade-in
   const revealOnScroll = (entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const el = entry.target;
         el.classList.add("visible");
         observer.unobserve(el);
-
         if (el.classList.contains("story-section")) {
-          const paragraphs = el.querySelectorAll("p");
-          paragraphs.forEach(p => {
-            typewriterEffect(p, p.textContent, 12);
-          });
+          handleTyping(entry);
         }
       }
     });
   };
-
   const observer = new IntersectionObserver(revealOnScroll, observerOptions);
   sections.forEach(section => observer.observe(section));
 
-  // 4) “Try It Yourself” button → navigate to dashboard.html
-  tryBtn.addEventListener("click", () => {
-    window.location.href = "dashboard.html";
-  });
+  // “Try It Yourself” button → dashboard
+  if (tryBtn) {
+    tryBtn.addEventListener("click", () => {
+      window.location.href = "dashboard.html";
+    });
+  }
 
-  // 5) Start pupil animation
+  // Pupil Animation
   animatePupils();
 });
 
-// ───── Typewriter Effect ─────
-function typewriterEffect(element, fullText, delay = 5) {
-  if (element.dataset.typed === "true") return;
-  element.dataset.typed = "true";
-  element.textContent = "";
-  let i = 0;
-  function type() {
-    if (i < fullText.length) {
-      element.textContent += fullText.charAt(i);
-      i++;
-      setTimeout(type, delay);
-    }
-  }
-  type();
-}
-
-// ───── Pupil Animation ─────
+// Pupil Animation (unchanged)
 let t = 0;
-const maxMove = 20; // max pixel movement
-
+const maxMove = 20;
 function animatePupils() {
   const moveX = maxMove * Math.sin(t);
-  d3.select("#pupil-left").attr("cx", 12 + moveX);
-  d3.select("#pupil-right").attr("cx", 137 + moveX);
-  t += 0.03; // speed of oscillation
+  if (window.d3) {
+    d3.select("#pupil-left").attr("cx", 12 + moveX);
+    d3.select("#pupil-right").attr("cx", 137 + moveX);
+  }
+  t += 0.03;
   requestAnimationFrame(animatePupils);
 }
