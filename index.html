@@ -16,22 +16,19 @@
         <circle id="pupil-right" cx="137" cy="18" r="15" fill="black" />
       </svg>
     </div>
+  <!-- siren overlay -->
+  <div class="siren-overlay"></div>
 
     <h1>Data-Driven Surgical Care</h1>
-    <h2>When Every Decision Counts: The ASA 4 Patient</h2>
-    <h2>Kate Feng · Tracy Vu · Daniel Kong · John Wesley Pabalate</h2>
-    <h4>
-      Meet our focal patient: a 68-year-old with COPD, uncontrolled diabetes, and heart disease.  
-      Labeled ASA 4—every surgical choice is a tightrope.  
-      Scroll on to see how data can turn that tightrope into a roadmap.
-    </h4>
-    <button id="enter-btn">Enter Story</button>
+    <h3>When Every Decision Counts: The ASA 4 Patient</h3>
+    <h3>Kate Feng · Tracy Vu · Daniel Kong · John Wesley Pabalate</h3>
+    <button id="enter-btn">Save Your Patient!</button>
   </div>
 
   <!-- ───── NARRATIVE CONTAINER (revealed after “Enter”) ───── -->
   <div id="narrative-container">
     <!-- BACK BUTTON -->
-    <button id="back-btn" style="position:fixed; top:20px; left:20px; z-index:1000; padding:0.5rem 1rem;">
+    <button id="back-btn">
       ← Back to Start
     </button>
 
@@ -39,16 +36,9 @@
     <section id="story-asa4" class="visualization-section story-section">
       <h2>Meet the High-Risk Patient</h2>
       <p>
-        A 68-year-old arrives with chronic obstructive pulmonary disease (COPD), long-standing heart disease, and 
-        uncontrolled diabetes. Their anesthesiologist assigns an <strong>ASA score 4</strong>—a designation meaning 
-        “severe systemic disease that is a constant threat to life.”  
-        As the family waits in the pre-op room, the surgeon, nurse, and anesthesiologist gather. Each decision— 
-        from timing to technique—carries extra weight.
-      </p>
-      <p>
-        This is our focal patient. In their case, “routine” can become anything but routine.  
-        Which surgeries remain feasible? Which must be postponed or carefully planned?  
-        Over the next few sections, we’ll reveal how historical data can guide these life-and-death decisions.
+        Meet Daniel, a 68-year-old man facing a difficult question: Should he undergo exploratory laparotomy—a surgery often used to diagnose or address abdominal emergencies? With long-standing heart disease, uncontrolled diabetes, and COPD, Daniel has been classified as ASA 4, meaning he lives with a constant threat to life from systemic illness.</p>
+        
+        <p>This ASA score isn’t just a label—it’s a signal that routine surgeries can become dangerous quickly. The same procedure might look completely different for someone healthier. So how do we decide what’s safe, and how to move forward?
       </p>
     </section>
 
@@ -56,8 +46,8 @@
     <section class="visualization-section story-section">
       <h2>Identifying Risk Through Past Patients</h2>
       <p>
-        By examining thousands of past cases, we identify patterns that correlate with surgical mortality risk.  
-        We sort procedures into low-, medium-, and high-risk categories—then ask:  
+        By examining thousands of past cases, we identify patterns that correlate with surgical blood loss.  
+        We sort procedures into regions, each with a low-risk and high-risk surgery, then ask:  
         “Which surgeries carry the greatest danger for someone exactly like our ASA 4 patient?”  
         Recognizing the demographic and clinical patterns common in high-risk patients empowers clinicians to 
         tailor consultations and set realistic expectations.
@@ -69,8 +59,7 @@
       <h2>Perception Matters: Pre-Op Stress Signals</h2>
       <p>
         Even “simple” procedures can trigger immense stress—especially when ASA 4 looms large.  
-        In our heatmap (coming next), we’ll track how combinations of risk factors (age, ASA, comorbidities) 
-        amplify pre-operative “stress.”  
+        In our heatmap (coming next), we’ll track how ASA levels can affect mortality rates.  
         This emotional layer can affect consent, compliance, and ultimately outcomes. Anticipating when a patient 
         needs extra reassurance or in-depth explanation is just as crucial as understanding raw mortality statistics.
       </p>

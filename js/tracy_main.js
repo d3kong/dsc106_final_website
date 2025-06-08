@@ -68,12 +68,12 @@
     .attr("transform", `translate(0,${height})`)
     .call(d3.axisBottom(x).tickSize(0))
     .selectAll("text")
-      .attr("font-size","1rem").attr("dy","1.5em");
+      .attr("font-size","1rem").attr("dy","1.5em").attr("font-family", "'Georgia', serif");
 
     svg.append("g")
     .call(d3.axisLeft(y).ticks(6).tickFormat(d3.format(",.0f")))
     .selectAll("text")
-      .attr("font-size","1rem");
+      .attr("font-size","1rem").attr("font-family", "'Georgia', serif");
 
     // 9) force-swarm
     const sim = d3.forceSimulation(plotData)

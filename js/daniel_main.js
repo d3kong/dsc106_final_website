@@ -73,10 +73,13 @@
       .attr("transform", `translate(0,${H})`)
       .call(d3.axisBottom(x))
       .selectAll("text")
-        .attr("dy","1.2em");
+        .attr("dy","1.2em")
+        .attr("font-size","1rem").attr("font-family", "'Georgia', serif");
 
     svg.append("g")
-      .call(d3.axisLeft(y));
+      .call(d3.axisLeft(y))
+      .selectAll("text")
+        .attr("font-size","1rem").attr("font-family", "'Georgia', serif");;
 
     // title / subtitle
     svg.append("text")

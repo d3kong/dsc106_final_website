@@ -109,7 +109,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Main (left) region select: select region, trigger charts
   d3.selectAll("#body-map .region").on("click", function() {
-    window.selectedRegion = d3.select(this).attr("id");
+    // window.selectedRegion = d3.select(this).attr("id");
+    window.selectedRegion = normalizeRegionID(this.id);
     d3.selectAll("#body-map .region").classed("region--selected", false);
     d3.select(this).classed("region--selected", true);
 
@@ -166,8 +167,27 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // ==================== Region Reset (for other code access) ====================
+
+function normalizeRegionID(id) {
+  const regionMap = {
+    center_head_neck: 'head_neck',
+    center_thorax: 'thorax',
+    center_abdomen: 'abdomen',
+    center_pelvis: 'pelvis'
+  };
+  return regionMap[id] || id;
+}
+
 window.resetRegion = function() {
   window.selectedRegion = null;
   d3.selectAll("#body-map .region").classed("region--selected", false);
   window.dispatchEvent(new Event("regionChange"));
 };
+
+const backBtn = document.getElementById('back-btn');
+if (backBtn) {
+  backBtn.addEventListener('click', () => {
+    // jump back to your story page and tell it to show the narrative
+    window.location.href = 'index.html?view=narrative';
+  });
+}

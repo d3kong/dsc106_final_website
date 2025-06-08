@@ -8,18 +8,8 @@
 </head>
 <body>
   <!-- BACK TO TITLE BUTTON -->
-  <button id="back-btn" style="
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 1001;
-    padding: 0.5rem 1rem;
-    background: #ffffff;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    cursor: pointer;
-  ">
-    ← Back to Title
+  <button id="back-btn">
+    ← Back to Start
   </button>
 
   <!-- OVERLAY: Centered Body Map, appears at first -->
@@ -27,10 +17,10 @@
     <div id="center-body-map">
       <svg id="overlay-body-map" width="210" height="420" viewBox="0 0 210 420">
         <image href="images/body.png" x="0" y="0" width="210" height="420" opacity="0.9"/>
-        <ellipse class="region" id="center_head_neck" cx="105" cy="50" rx="36" ry="45"/>
-        <ellipse class="region" id="center_thorax" cx="105" cy="130" rx="45" ry="55"/>
-        <ellipse class="region" id="center_abdomen" cx="105" cy="220" rx="48" ry="44"/>
-        <ellipse class="region" id="center_pelvis" cx="105" cy="295" rx="38" ry="42"/>
+        <ellipse class="region" id="center_head_neck" cx="105" cy="65" rx="47" ry="47"/>
+        <ellipse class="region" id="center_thorax" cx="105" cy="130" rx="45" ry="47"/>
+        <ellipse class="region" id="center_abdomen" cx="105" cy="220" rx="53" ry="48"/>
+        <ellipse class="region" id="center_pelvis" cx="104" cy="285" rx="50" ry="40"/>
       </svg>
       <div class="body-map-label" style="color:#fff;margin-top:2rem;font-size:1.13rem;">Click a region to start</div>
     </div>
@@ -49,10 +39,10 @@
             preserveAspectRatio="xMidYMid slice"
             opacity="0.9"
           />
-          <ellipse class="region" id="head_neck" cx="105" cy="50" rx="36" ry="45" />
-          <ellipse class="region" id="thorax" cx="105" cy="130" rx="45" ry="55" />
-          <ellipse class="region" id="abdomen" cx="105" cy="220" rx="48" ry="44" />
-          <ellipse class="region" id="pelvis" cx="105" cy="295" rx="38" ry="42" />
+          <ellipse class="region" id="center_head_neck" cx="105" cy="65" rx="47" ry="47"/>
+          <ellipse class="region" id="center_thorax" cx="105" cy="130" rx="45" ry="47"/>
+          <ellipse class="region" id="center_abdomen" cx="105" cy="220" rx="53" ry="48"/>
+          <ellipse class="region" id="center_pelvis" cx="104" cy="285" rx="50" ry="40"/>
         </svg>
         <div class="body-map-label">Click on a region to filter operations</div>
       </div>
@@ -63,11 +53,9 @@
 
       <!-- Context Paragraph -->
       <p style="margin: 0;">
-        Some procedures carry inherent risk, but others only become dangerous in the presence of ASA 4-level complexity.
-        This chart shows outcomes for two surgeries: the first generally being low-risk, the other high-risk.
-        Each point represents the records of a past patient, colored by their ASA score.
-        For our ASA 4 patient, notice how red and purple dots (ASA 4–5)
-        may cluster more for the riskier surgery, warning signs that guide real-world decisions.
+        In our 68-year-old ASA 4 patient’s case, a “low-risk” procedure can quickly become life-threatening.  
+        This swarm plot lines up the same surgery at two risk levels and colors each dot by ASA score—so you can see exactly where the danger threshold hits.  
+        As ASA rises, watch how points leap upward on the outcome axis, signaling when we must rethink timing, technique, or even candidacy for surgery.  
       </p>
 
       <!-- Viz 1: Swarm Chart Placeholder -->
@@ -82,11 +70,10 @@
 
       <!-- Interpretation Paragraph -->
       <p style="margin: 1rem 0;">
-        While both low- and high-risk surgeries have led to deaths across the ASA spectrum,
-        the data tells a clearer story for patients like ours. Given his ASA score of 4 and complex medical history,
-        high-risk abdominal procedures, such as exploratory laparotomy, carry a notably elevated mortality risk.
-        Past cases show a sharp increase in poor outcomes for similar patients, underscoring the need for heightened
-        caution when considering such interventions.
+        Rather than blending a composite score, this heatmap zeroes in on one crucial outcome—mortality—and compares it for our selected low- and high-risk surgeries across every ASA category.  
+        On the X-axis you’ll see the two procedures (low vs. high risk for the chosen region), and on the Y-axis each ASA level from 1 through 5.  
+        Darker cells flag where past patients at that ASA score faced the highest mortality rates—revealing exactly how danger scales as systemic disease worsens.  
+        For our ASA 4 focal patient, this makes it crystal-clear how much more life-threatening the high-risk option becomes—and where the line between “acceptable” and “too dangerous” lies.
       </p>
 
       <!-- Viz 2: Heatmap Placeholder -->
@@ -98,6 +85,13 @@
           <span style="color: #999;">[Heatmap will render here]</span>
         </div>
       </section>
+
+      <!-- Interpretation Paragraph -->
+      <p style="margin: 1rem 0;">
+        Now the surgeon must choose—and explain—what comes next.  
+        This interactive radar chart adapts to our ASA 4 patient’s profile (ASA, comorbidities, BMI, etc.) and the selected surgery, plotting five communication priorities: 
+        <em>Medical Complexity</em>, <em>Recovery Support Needs</em>, <em>Decision Clarity</em>, <em>Emotional Sensitivity</em>, and <em>Information Depth</em>.  
+      </p>
 
       <!-- Viz 3: Radar Chart Placeholder -->
       <section id="viz3" class="chart-section">
@@ -196,7 +190,7 @@
 
     // Back-to-title button behavior
     document.getElementById('back-btn').addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.location.href = 'index.html?view=narrative';
     });
   </script>
 </body>
