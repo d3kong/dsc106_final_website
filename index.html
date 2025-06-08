@@ -30,6 +30,11 @@
 
   <!-- ───── NARRATIVE CONTAINER (revealed after “Enter”) ───── -->
   <div id="narrative-container">
+    <!-- BACK BUTTON -->
+    <button id="back-btn" style="position:fixed; top:20px; left:20px; z-index:1000; padding:0.5rem 1rem;">
+      ← Back to Start
+    </button>
+
     <!-- ─── Story Part 1: ASA 4 Patient Introduction ─── -->
     <section id="story-asa4" class="visualization-section story-section">
       <h2>Meet the High-Risk Patient</h2>
@@ -96,5 +101,11 @@
 
   <!-- ───── STORY PAGE SCRIPT ───── -->
   <script src="js/story_main.js"></script>
+  <script>
+    // Back to top when clicked
+    document.getElementById('back-btn').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
 </body>
 </html>

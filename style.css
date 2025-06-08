@@ -544,3 +544,24 @@ html, body {
   stroke: #50e5d8;
   stroke-width: 4;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   BACK BUTTON STYLES
+   ───────────────────────────────────────────────────────────────────────── */
+#back-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#back-btn:hover {
+  background: #f0f0f0;
+}

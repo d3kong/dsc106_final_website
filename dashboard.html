@@ -7,6 +7,21 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
+  <!-- BACK TO TITLE BUTTON -->
+  <button id="back-btn" style="
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    padding: 0.5rem 1rem;
+    background: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    cursor: pointer;
+  ">
+    ← Back to Title
+  </button>
+
   <!-- OVERLAY: Centered Body Map, appears at first -->
   <div id="center-overlay">
     <div id="center-body-map">
@@ -178,6 +193,11 @@
     }
     setupBodymapTooltip("#overlay-body-map", "center_");
     setupBodymapTooltip("#body-map", "");
+
+    // Back-to-title button behavior
+    document.getElementById('back-btn').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   </script>
 </body>
 </html>
