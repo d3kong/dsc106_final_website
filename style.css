@@ -292,20 +292,27 @@
   /* Body‐map regions */
   .region {
     fill: #50e5d8;
-    opacity: 0.07;
+    fill-opacity: 0.02; /* Almost invisible by default */
+    opacity: 1;
+    stroke: none;
+    stroke-width: 0;
     cursor: pointer;
-    stroke: #50e5d8;
-    stroke-width: 1.7;
-    transition: opacity 0.18s, stroke 0.18s;
+    transition: fill-opacity 0.18s, stroke 0.18s;
     pointer-events: all;
   }
   
-  .region:hover,
-  .region.region--selected {
-    opacity: 0.45 !important;
+  .region:hover {
+    fill-opacity: 0.7; /* Visible blue on hover */
     stroke: #50e5d8;
     stroke-width: 4;
   }
+  
+  .region.region--selected {
+    /* No extra highlight; matches default */
+    stroke: none;
+    fill-opacity: 0.02;
+  }
+  
   
   /* RIGHT COLUMN (charts) */
   #right-column {
@@ -521,22 +528,7 @@ html, body {
   display: none;
   max-width: 270px;
 }
-/* Transparent regions */
-.region {
-  fill: #50e5d8;
-  opacity: 0.07;
-  cursor: pointer;
-  stroke: #50e5d8;
-  stroke-width: 1.7;
-  transition: opacity 0.18s, stroke 0.18s;
-  pointer-events: all;
-}
-.region:hover,
-.region.region--selected {
-  opacity: 0.45 !important;
-  stroke: #50e5d8;
-  stroke-width: 4;
-}
+
 
 /* ─────────────────────────────────────────────────────────────────────────
    BACK BUTTON STYLES
@@ -625,4 +617,31 @@ html, body {
 .mini-chart {
   flex: 1 1 35%; /* chart takes about 35% width */
   height: 20em;  /* fixed height */
+}
+
+#pinned-tooltip.bodymap-tooltip {
+  display: none;
+  position: static !important;
+  margin: 18px 0 12px 0;
+  left: unset !important;
+  top: unset !important;
+  right: unset !important;
+  z-index: 3;
+  opacity: 1;
+  background: #fff;
+  color: #222;
+  border: 1.5px solid #999;
+  border-radius: 8px;
+  padding: 10px 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+  font-family: Georgia, serif;
+  font-size: 15px;
+  max-width: 250px;
+  min-width: 200px;
+  transition: opacity 0.45s cubic-bezier(.85,0,.15,1);
+}
+
+/* Prevent floating tooltip from clashing visually */
+.bodymap-tooltip.floating-tooltip {
+  /* your previous tooltip style, unchanged */
 }

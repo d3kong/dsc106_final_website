@@ -57,9 +57,8 @@ const regionTooltipInfo = {
 // ==================== Region Selection ====================
 window.selectedRegion = null;
 
-// ---- Animated Overlay Logic ----
 document.addEventListener("DOMContentLoaded", function() {
-  // If center-overlay exists (for animation)
+  // Overlay logic (unchanged)
   const overlay   = document.getElementById("center-overlay");
   const dashboard = document.getElementById("main-app");
   const restart   = document.getElementById("restart-btn");
@@ -70,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function() {
     center_pelvis: 'pelvis'
   };
 
-  // Overlay region select: animate overlay away, show dashboard
+  // Overlay region select
   if (overlay && dashboard) {
     document.querySelectorAll('#overlay-body-map .region').forEach(region => {
       region.addEventListener('click', function() {
@@ -85,12 +84,14 @@ document.addEventListener("DOMContentLoaded", function() {
               d3.selectAll("#body-map .region").classed("region--selected", false);
               d3.select(`#body-map .region#${rId}`).classed("region--selected", true);
               window.dispatchEvent(new Event("regionChange"));
+              // Set pinned tooltip
+              showPinnedTooltip(rId);
             }, 200);
           }, 700);
         }
       });
     });
-    // Restart: hide dashboard, show overlay, reset selection
+    // Restart
     if (restart) {
       restart.addEventListener('click', function() {
         window.selectedRegion = null;
@@ -101,38 +102,34 @@ document.addEventListener("DOMContentLoaded", function() {
             overlay.classList.remove('hide');
             d3.selectAll("#body-map .region").classed("region--selected", false);
             window.dispatchEvent(new Event("regionChange"));
+            hidePinnedTooltip();
           }, 60);
         }, 700);
       });
     }
   }
 
-  // Main (left) region select: select region, trigger charts
+  // Main (left) region select
   d3.selectAll("#body-map .region").on("click", function() {
-    // window.selectedRegion = d3.select(this).attr("id");
-    window.selectedRegion = normalizeRegionID(this.id);
+    const regionKey = normalizeRegionID(this.id);
+    window.selectedRegion = regionKey;
     d3.selectAll("#body-map .region").classed("region--selected", false);
     d3.select(this).classed("region--selected", true);
-
-    // Dispatch your custom event for others to listen
     window.dispatchEvent(new Event("regionChange"));
+    // Show pinned tooltip
+    showPinnedTooltip(regionKey);
   });
 
-  // ---- Tooltips for both body maps ----
+  // ---- Tooltips for both body maps (hover) ----
   function setupBodymapTooltip(svgSelector, idPrefix='') {
-    let tooltip = d3.select("body").select(".bodymap-tooltip");
+    let tooltip = d3.select("body").select(".bodymap-tooltip.floating-tooltip");
     if (tooltip.empty()) {
       tooltip = d3.select("body")
         .append("div")
-        .attr("class", "bodymap-tooltip")
+        .attr("class", "bodymap-tooltip floating-tooltip")
         .style("display", "none");
     }
-    const tooltipData = {
-      head_neck: {label: "Head/Neck", low: "Thyroid lobectomy", high: "Total thyroidectomy"},
-      thorax: {label: "Thorax/Chest", low: "Breast-conserving surgery", high: "Lung lobectomy"},
-      abdomen: {label: "Abdomen", low: "Cholecystectomy", high: "Exploratory laparotomy"},
-      pelvis: {label: "Pelvis/Lower Abdomen", low: "Ileostomy repair", high: "Low anterior resection"}
-    };
+    const tooltipData = regionTooltipInfo;
     d3.selectAll(svgSelector + " .region")
       .on("mouseover", function(event) {
         let reg = this.id.replace(idPrefix, '');
@@ -164,10 +161,47 @@ document.addEventListener("DOMContentLoaded", function() {
   }
   setupBodymapTooltip("#overlay-body-map", "center_");
   setupBodymapTooltip("#body-map", "");
+
+  // -------- Pinned Tooltip --------
+  const pinnedTooltip = document.getElementById('pinned-tooltip');
+  function showPinnedTooltip(regionKey) {
+    const info = regionTooltipInfo[regionKey];
+    if (info && pinnedTooltip) {
+      pinnedTooltip.style.display = 'block';
+      pinnedTooltip.innerHTML = `
+        <strong>${info.label}</strong><br>
+        <span style="color:#1a6;"><b>Low Risk: ${info.low}</b></span>
+        <div style="font-size:13px; margin-left:0.7em; margin-bottom:0.5em; color:#446;">
+          ${window.regionSurgeryDescriptions[info.low]}
+        </div>
+        <span style="color:#b10;"><b>High Risk: ${info.high}</b></span>
+        <div style="font-size:13px; margin-left:0.7em; color:#664;">
+          ${window.regionSurgeryDescriptions[info.high]}
+        </div>
+      `;
+      pinnedTooltip.style.opacity = 0;
+      setTimeout(() => { pinnedTooltip.style.opacity = 1; }, 10);
+    } else if (pinnedTooltip) {
+      pinnedTooltip.style.display = 'none';
+    }
+  }
+  function hidePinnedTooltip() {
+    if (pinnedTooltip) pinnedTooltip.style.display = 'none';
+  }
+
+  // Optionally show pinned tooltip for initial selection
+  if (window.selectedRegion) showPinnedTooltip(window.selectedRegion);
+
+  // Back button logic
+  const backBtn = document.getElementById('back-btn');
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      window.location.href = 'index.html?view=narrative';
+    });
+  }
 });
 
-// ==================== Region Reset (for other code access) ====================
-
+// ==================== Helpers ====================
 function normalizeRegionID(id) {
   const regionMap = {
     center_head_neck: 'head_neck',
@@ -182,12 +216,6 @@ window.resetRegion = function() {
   window.selectedRegion = null;
   d3.selectAll("#body-map .region").classed("region--selected", false);
   window.dispatchEvent(new Event("regionChange"));
+  const pinnedTooltip = document.getElementById('pinned-tooltip');
+  if (pinnedTooltip) pinnedTooltip.style.display = 'none';
 };
-
-const backBtn = document.getElementById('back-btn');
-if (backBtn) {
-  backBtn.addEventListener('click', () => {
-    // jump back to your story page and tell it to show the narrative
-    window.location.href = 'index.html?view=narrative';
-  });
-}
