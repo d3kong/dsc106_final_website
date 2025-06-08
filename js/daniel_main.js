@@ -14,7 +14,7 @@
     const surgeries = [ mapping.low, mapping.high ];
 
     // y axis = ASA levels 1–5
-    const rows = ["1","2","3","4","5"];
+    const rows = ["5","4","3","2","1"];
 
     const filtered = allCases.filter(d =>
       surgeries.includes(d.opname) &&

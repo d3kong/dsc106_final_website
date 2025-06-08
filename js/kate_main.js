@@ -40,29 +40,37 @@
       return Math.min(Math.max(value, min), max);
     }
 
-    d3.select("#kate-age").on("input", function() {
-      let val = +this.value;
-      if (isNaN(val)) return;  // ignore invalid input
-      age = clamp(val, 10, 100);
-      d3.select("#kate-age").property("value", age); // reset to clamped value if needed
-      drawKateRadar();
-    });
+    function updateOnEnterAndBlur(selector, clampFn, setValueFn) {
+      const input = d3.select(selector);
     
-    d3.select("#kate-height").on("input", function() {
-      let val = +this.value;
-      if (isNaN(val)) return;
-      height = clamp(val, 120, 200);
-      d3.select("#kate-height").property("value", height);
-      drawKateRadar();
-    });
-
-    d3.select("#kate-weight").on("input", function() {
-      let val = +this.value;
-      if (isNaN(val)) return;
-      weight = clamp(val, 30, 150);
-      d3.select("#kate-weight").property("value", weight);
-      drawKateRadar();
-    });
+      // Trigger redraw on blur
+      input.on("change", function() {
+        let val = +this.value;
+        if (isNaN(val)) return;
+        const clamped = clampFn(val);
+        setValueFn(clamped);
+        input.property("value", clamped); // ensure visible value is valid
+        drawKateRadar();
+      });
+    
+      // Trigger redraw on Enter key
+      input.on("keydown", function(event) {
+        if (event.key === "Enter") {
+          let val = +this.value;
+          if (isNaN(val)) return;
+          const clamped = clampFn(val);
+          setValueFn(clamped);
+          input.property("value", clamped);
+          drawKateRadar();
+        }
+      });
+    }
+    
+    // Apply to your three sliders
+    updateOnEnterAndBlur("#kate-age",    val => clamp(val, 10, 100),     val => age = val);
+    updateOnEnterAndBlur("#kate-height", val => clamp(val, 120, 200),    val => height = val);
+    updateOnEnterAndBlur("#kate-weight", val => clamp(val, 30, 150),     val => weight = val);
+    
 
     // FILTER DATA by surgery and sliders
     const filt0 = allCases.filter(d => surgeries.includes(d.opname));
@@ -75,7 +83,7 @@
     // Dimensions and normalization
     const dims = [
       "Medical Complexity", "Recovery Support Needs", "Decision Clarity Needed",
-      "Emotional Sensitivity", "Information Depth", "Mortality Risk", "Avg Blood Loss"
+      "Emotional Sensitivity", "Information Depth",
     ];
     const maxSurgDur = d3.max(filt1, d => +d.surgery_duration) || 1;
     const maxLead    = d3.max(filt1, d => Math.abs(+d.anesthesia_lead_time)) || 1;
@@ -100,8 +108,6 @@
             case "Information Depth":        
               let cnt=0; ["iv1","iv2","aline1","aline2","cline1","cline2"].forEach(k=>{ if(d[k]&&d[k]!="N/A") cnt++; });
               return cnt/6;
-            case "Mortality Risk":           return d.death_inhosp||0;
-            case "Avg Blood Loss":           return (d.intraop_ebl||0)/maxEBL;
           }
         }).filter(v=>isFinite(v));
         means[dim] = vs.length ? d3.mean(vs) : 0;
@@ -119,7 +125,7 @@
         `<th style="border-bottom:1px solid #888; padding:6px;">0 = best … 1 = worst</th>` +
       `</tr></thead><tbody>` +
       [`Medical Complexity`, `Recovery Support Needs`, `Decision Clarity Needed`,
-       `Emotional Sensitivity`, `Information Depth`, `Mortality Risk`, `Avg Blood Loss`]
+       `Emotional Sensitivity`, `Information Depth`]
       .map((dim,i) => {
         const formulas = [
           `ASA / 5`, `Age / 100`, `surgery_duration / max_duration`,

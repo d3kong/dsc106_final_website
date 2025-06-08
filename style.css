@@ -609,3 +609,20 @@ html, body {
   position: relative;       /* sit under the typing layer */
   opacity: 0.4;
 }
+
+.text-chart-wrapper {
+  display: flex;
+  align-items: flex-start; /* top align text and chart */
+  gap: 1rem; /* space between text and chart */
+}
+
+.text-chart-wrapper p {
+  flex: 1 1 60%; /* text takes about 60% width */
+  margin: 0;
+  line-height: 1.4;
+}
+
+.mini-chart {
+  flex: 1 1 35%; /* chart takes about 35% width */
+  height: 20em;  /* fixed height */
+}

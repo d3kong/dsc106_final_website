@@ -45,44 +45,42 @@
     <!-- ─── Story Part 2: Identifying Risk ─── -->
     <section class="visualization-section story-section">
       <h2>Identifying Risk Through Past Patients</h2>
+      <div class="text-chart-wrapper">
       <p>
-        By examining thousands of past cases, we identify patterns that correlate with surgical blood loss.  
-        We sort procedures into regions, each with a low-risk and high-risk surgery, then ask:  
-        “Which surgeries carry the greatest danger for someone exactly like our ASA 4 patient?”  
-        Recognizing the demographic and clinical patterns common in high-risk patients empowers clinicians to 
-        tailor consultations and set realistic expectations.
+        Our first chart—a swarm plot—compares surgical outcomes across ASA levels. Along the X-axis are surgeries grouped by low- and high-risk types; the Y-axis shows estimated blood loss (EBL). What we see isn’t that ASA 4 patients always bleed more—but that higher-risk surgeries attract more ASA 4 patients, and the blood loss in these cases varies dramatically. In Daniel’s case, exploratory laparotomy shows a wide range of blood loss values for patients like him. That variability is dangerous. This chart reveals the unpredictability of high-risk surgeries for patients at the edge of systemic stability.
       </p>
+      <div class="mini-chart" id="swarm-chart-mini"></div>
+      </div>
+
     </section>
 
     <!-- ─── Story Part 3: Perception Matters ─── -->
     <section class="visualization-section story-section">
       <h2>Perception Matters: Pre-Op Stress Signals</h2>
+      <div class="text-chart-wrapper">
       <p>
-        Even “simple” procedures can trigger immense stress—especially when ASA 4 looms large.  
-        In our heatmap (coming next), we’ll track how ASA levels can affect mortality rates.  
-        This emotional layer can affect consent, compliance, and ultimately outcomes. Anticipating when a patient 
-        needs extra reassurance or in-depth explanation is just as crucial as understanding raw mortality statistics.
+        Next, we use a heatmap to scan how mortality shifts with ASA level for each surgery. Exploratory laparotomy stands out: as ASA rises, so does death rate—marked by progressively brighter cells. This heatmap doesn’t just compare surgeries—it exposes how risk escalates for patients like Daniel. While ASA 1 and 2 patients may tolerate this surgery well, the mortality curve climbs steeply at ASA 4. For Daniel, this visual becomes a decision-making guide: is this a tolerable risk, or are there alternatives with a safer profile?
       </p>
+      <div class="mini-chart" id="heatmap-chart-mini"></div>
+    </div>
     </section>
 
     <!-- ─── Story Part 4: Planning the Conversation ─── -->
     <section class="visualization-section story-section">
       <h2>Planning the Conversation</h2>
+      <div class="text-chart-wrapper">
       <p>
-        Once we know which surgeries are risky and where red flags accumulate, the next step is communication.  
-        How do you speak to this ASA 4 patient in a way that’s honest yet empathetic?  
-        The radar chart you’ll see soon will suggest how to balance medical detail, emotional support, and decision-making 
-        urgency—based on demographics and risk factors.
+        Risk isn’t just medical—it’s emotional and logistical too. Our third visualization, a radar chart, maps five key areas that shape how doctors communicate with Daniel: Medical Complexity, Recovery Support Needs, Decision Clarity, Emotional Sensitivity, and Information Depth. For Daniel, the chart shows sharp spikes in complexity and clarity—he needs a detailed explanation, careful reassurance, and support planning for a longer, riskier recovery. This isn’t just about delivering facts—it’s about delivering care in the right voice, at the right depth, for the right patient.
       </p>
+      <div class="mini-chart" id="radar-chart-mini"></div>
+    </div>
     </section>
 
     <!-- ─── Story Part 5: Conclusion & Call-to-Action ─── -->
     <section class="visualization-section story-section">
       <h2>Conclusion: Data Makes Surgical Care More Human</h2>
       <p>
-        Before any incision, data can illuminate the path: predicting risk, anticipating stressors, and shaping 
-        tailored conversations. Our ASA 4 patient is not just a statistic—but an individual whose journey can be 
-        made more transparent, informed, and humane.  
+        Daniel’s case reveals a crucial truth: the same surgery can mean radically different things depending on the patient’s ASA level. What’s survivable for one may be lethal for another. Now, it’s your turn—use the dashboard to explore other regions of the body. Each chart will update to reflect new contexts. You’ll see that risk isn’t fixed—it shifts with anatomy, comorbidities, and ASA scores. With the right data, you can spot the turning points earlier, guide patients more honestly, and ultimately make surgical care more human, especially for those—like Daniel—on the edge of fragility.
       </p>
       <button id="try-btn">Try It Yourself ↗</button>
     </section>
