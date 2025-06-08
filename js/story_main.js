@@ -341,26 +341,38 @@ d3.json("data/tracy.json").then(data => {
       .text("Mortality Rate by ASA & Surgery");
 
     // Legend (simple)
-    const legendW = 150, legendH = 10;
-    const defs = svg.append("defs");
-    const grad = defs.append("linearGradient").attr("id", "grad").attr("x1", "0%").attr("x2", "100%");
 
-    grad.append("stop").attr("offset", "0%").attr("stop-color", color(0));
-    grad.append("stop").attr("offset", "100%").attr("stop-color", color(maxVal));
+    const defs = svg.append("defs");
+    const grad = defs.append("linearGradient")
+      .attr("id", "miniDeathGrad")
+      .attr("x1", "0%").attr("y1", "0%")
+      .attr("x2", "100%").attr("y2", "0%");
+
+    // sample Viridis at 20 evenly spaced stops
+    const nStops = 20;
+    for (let i = 0; i <= nStops; i++) {
+      const t = i / nStops;
+      grad.append("stop")
+        .attr("offset", `${t * 100}%`)
+        .attr("stop-color", color(t * maxVal));
+    }
+    const legendW = 150, legendH = 10,
+          lx = (W - legendW) / 2,
+          ly = H + 35;
 
     svg.append("rect")
-      .attr("x", (W - legendW) / 2)
-      .attr("y", H + 35)
+      .attr("x", lx)
+      .attr("y", ly)
       .attr("width", legendW)
       .attr("height", legendH)
-      .style("fill", "url(#grad)")
+      .style("fill", "url(#miniDeathGrad)")
       .style("stroke", "#444");
 
     svg.append("text")
-      .attr("x", (W - legendW) / 2 - 20)
-      .attr("y", H + 47)
-      .attr("font-size", "0.5rem")
-      .text("0%");
+    .attr("x", (W - legendW) / 2 - 20)
+    .attr("y", H + 47)
+    .attr("font-size", "0.5rem")
+    .text("0%");
 
     svg.append("text")
       .attr("x", (W + legendW) / 2 + 30)

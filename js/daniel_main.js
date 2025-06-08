@@ -28,7 +28,8 @@
     // two columns = low & high surgery names
     const cols = [ pair.low, pair.high ];
     // y axis = ASA levels 1–5
-    const rows = ["1","2","3","4","5"];
+    // const rows = ["1","2","3","4","5"];
+    const rows = ["5","4","3","2","1"];
 
     // filter data down to just those two ops with valid ASA & death
     const filtered = data.filter(d =>
