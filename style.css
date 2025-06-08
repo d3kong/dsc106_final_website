@@ -461,3 +461,86 @@ html, body {
   padding-left: max(10vw, 16px);
   padding-right: max(10vw, 16px);
 }
+
+/* ========================================================================
+   BODY-MAP SLIDE ANIMATION
+   ======================================================================== */
+/* Overlay: Centered body map, fade out when .hide added */
+#center-overlay {
+  position: fixed;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #232323;
+  transition: opacity 0.7s;
+}
+#center-overlay.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+#center-body-map {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.9s cubic-bezier(.7,0,.3,1);
+}
+#center-body-map svg {
+  width: 340px;   /* or 420px for even larger */
+  height: 680px;  /* or 840px for even larger */
+  display: block;
+  margin-bottom: 0.7rem;
+}
+
+#main-app {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background: #232323;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s;
+}
+#main-app.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#main-app.show #right-column {
+  opacity: 1;
+  transform: translateX(0);
+}
+/* Tooltip */
+.bodymap-tooltip {
+  font-family: Georgia, serif;
+  font-size: 15px;
+  pointer-events: none;
+  position: absolute;
+  background: #fff;
+  color: #222;
+  border: 1.5px solid #999;
+  border-radius: 8px;
+  padding: 10px 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+  z-index: 9999;
+  display: none;
+  max-width: 270px;
+}
+/* Transparent regions */
+.region {
+  fill: #50e5d8;
+  opacity: 0.07;
+  cursor: pointer;
+  stroke: #50e5d8;
+  stroke-width: 1.7;
+  transition: opacity 0.18s, stroke 0.18s;
+  pointer-events: all;
+}
+.region:hover,
+.region.region--selected {
+  opacity: 0.45 !important;
+  stroke: #50e5d8;
+  stroke-width: 4;
+}

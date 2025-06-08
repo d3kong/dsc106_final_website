@@ -57,7 +57,57 @@ const regionTooltipInfo = {
 // ==================== Region Selection ====================
 window.selectedRegion = null;
 
-document.addEventListener("DOMContentLoaded", () => {
+// ---- Animated Overlay Logic ----
+document.addEventListener("DOMContentLoaded", function() {
+  // If center-overlay exists (for animation)
+  const overlay   = document.getElementById("center-overlay");
+  const dashboard = document.getElementById("main-app");
+  const restart   = document.getElementById("restart-btn");
+  const regionMap = {
+    center_head_neck: 'head_neck',
+    center_thorax: 'thorax',
+    center_abdomen: 'abdomen',
+    center_pelvis: 'pelvis'
+  };
+
+  // Overlay region select: animate overlay away, show dashboard
+  if (overlay && dashboard) {
+    document.querySelectorAll('#overlay-body-map .region').forEach(region => {
+      region.addEventListener('click', function() {
+        const rId = regionMap[this.id];
+        if (rId) {
+          window.selectedRegion = rId;
+          overlay.classList.add('hide');
+          setTimeout(() => {
+            overlay.style.display = 'none';
+            dashboard.classList.add('show');
+            setTimeout(() => {
+              d3.selectAll("#body-map .region").classed("region--selected", false);
+              d3.select(`#body-map .region#${rId}`).classed("region--selected", true);
+              window.dispatchEvent(new Event("regionChange"));
+            }, 200);
+          }, 700);
+        }
+      });
+    });
+    // Restart: hide dashboard, show overlay, reset selection
+    if (restart) {
+      restart.addEventListener('click', function() {
+        window.selectedRegion = null;
+        dashboard.classList.remove('show');
+        setTimeout(() => {
+          overlay.style.display = 'flex';
+          setTimeout(() => {
+            overlay.classList.remove('hide');
+            d3.selectAll("#body-map .region").classed("region--selected", false);
+            window.dispatchEvent(new Event("regionChange"));
+          }, 60);
+        }, 700);
+      });
+    }
+  }
+
+  // Main (left) region select: select region, trigger charts
   d3.selectAll("#body-map .region").on("click", function() {
     window.selectedRegion = d3.select(this).attr("id");
     d3.selectAll("#body-map .region").classed("region--selected", false);
@@ -66,59 +116,56 @@ document.addEventListener("DOMContentLoaded", () => {
     // Dispatch your custom event for others to listen
     window.dispatchEvent(new Event("regionChange"));
   });
+
+  // ---- Tooltips for both body maps ----
+  function setupBodymapTooltip(svgSelector, idPrefix='') {
+    let tooltip = d3.select("body").select(".bodymap-tooltip");
+    if (tooltip.empty()) {
+      tooltip = d3.select("body")
+        .append("div")
+        .attr("class", "bodymap-tooltip")
+        .style("display", "none");
+    }
+    const tooltipData = {
+      head_neck: {label: "Head/Neck", low: "Thyroid lobectomy", high: "Total thyroidectomy"},
+      thorax: {label: "Thorax/Chest", low: "Breast-conserving surgery", high: "Lung lobectomy"},
+      abdomen: {label: "Abdomen", low: "Cholecystectomy", high: "Exploratory laparotomy"},
+      pelvis: {label: "Pelvis/Lower Abdomen", low: "Ileostomy repair", high: "Low anterior resection"}
+    };
+    d3.selectAll(svgSelector + " .region")
+      .on("mouseover", function(event) {
+        let reg = this.id.replace(idPrefix, '');
+        let info = tooltipData[reg];
+        if (info) {
+          tooltip
+            .style("display", "block")
+            .html(`
+              <strong>${info.label}</strong><br>
+              <span style="color:#1a6;"><b>Low Risk:</b> ${info.low}</span>
+              <div style="font-size:13px; margin-left:0.7em; margin-bottom:0.5em; color:#446;">
+                ${window.regionSurgeryDescriptions[info.low]}
+              </div>
+              <span style="color:#b10;"><b>High Risk:</b> ${info.high}</span>
+              <div style="font-size:13px; margin-left:0.7em; color:#664;">
+                ${window.regionSurgeryDescriptions[info.high]}
+              </div>
+            `);
+        }
+      })
+      .on("mousemove", function(event) {
+        tooltip
+          .style("left", (event.pageX + 16) + "px")
+          .style("top", (event.pageY - 12) + "px");
+      })
+      .on("mouseout", function() {
+        tooltip.style("display", "none");
+      });
+  }
+  setupBodymapTooltip("#overlay-body-map", "center_");
+  setupBodymapTooltip("#body-map", "");
 });
 
-// ==================== Body Map Tooltip ====================
-let bodymapTooltip = d3.select("body").select(".bodymap-tooltip");
-if (bodymapTooltip.empty()) {
-  bodymapTooltip = d3.select("body")
-    .append("div")
-    .attr("class", "bodymap-tooltip")
-    .style("position", "absolute")
-    .style("background", "#fff")
-    .style("padding", "10px 18px")
-    .style("border", "1.5px solid #999")
-    .style("border-radius", "8px")
-    .style("pointer-events", "none")
-    .style("font-size", "15px")
-    .style("color", "#222")
-    .style("box-shadow", "0 2px 8px rgba(0,0,0,0.09)")
-    .style("display", "none")
-    .style("z-index", "9999");
-}
-
-d3.selectAll("#body-map .region")
-  .on("mouseover", function(event) {
-    const regionId = d3.select(this).attr("id");
-    const info = regionTooltipInfo[regionId];
-    if (info) {
-      bodymapTooltip
-        .style("display", "block")
-        .html(`
-          <strong>${info.label}</strong><br>
-          <div style="margin-top:4px">
-            <span style="color:#1a6;"><b>Low Risk:</b> ${info.low}</span>
-            <div style="font-size:13px; margin-left:0.7em; margin-bottom:0.5em; color:#446;">
-              ${window.regionSurgeryDescriptions[info.low]}
-            </div>
-            <span style="color:#b10;"><b>High Risk:</b> ${info.high}</span>
-            <div style="font-size:13px; margin-left:0.7em; color:#664;">
-              ${window.regionSurgeryDescriptions[info.high]}
-            </div>
-          </div>
-        `);
-    }
-  })
-  .on("mousemove", function(event) {
-    bodymapTooltip
-      .style("left", (event.pageX + 16) + "px")
-      .style("top", (event.pageY - 12) + "px");
-  })
-  .on("mouseout", function() {
-    bodymapTooltip.style("display", "none");
-  });
-
-// ==================== Region Reset (optional) ====================
+// ==================== Region Reset (for other code access) ====================
 window.resetRegion = function() {
   window.selectedRegion = null;
   d3.selectAll("#body-map .region").classed("region--selected", false);

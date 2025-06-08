@@ -7,9 +7,22 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-  <!-- ───── MAIN DASHBOARD (Always Visible) ───── -->
+  <!-- OVERLAY: Centered Body Map, appears at first -->
+  <div id="center-overlay">
+    <div id="center-body-map">
+      <svg id="overlay-body-map" width="210" height="420" viewBox="0 0 210 420">
+        <image href="images/body.png" x="0" y="0" width="210" height="420" opacity="0.9"/>
+        <ellipse class="region" id="center_head_neck" cx="105" cy="50" rx="36" ry="45"/>
+        <ellipse class="region" id="center_thorax" cx="105" cy="130" rx="45" ry="55"/>
+        <ellipse class="region" id="center_abdomen" cx="105" cy="220" rx="48" ry="44"/>
+        <ellipse class="region" id="center_pelvis" cx="105" cy="295" rx="38" ry="42"/>
+      </svg>
+      <div class="body-map-label" style="color:#fff;margin-top:2rem;font-size:1.13rem;">Click a region to start</div>
+    </div>
+  </div>
+
+  <!-- MAIN DASHBOARD (hidden at first) -->
   <div id="main-app">
-    
     <!-- LEFT: Body Outline for Region Filtering -->
     <div id="left-column">
       <div id="body-map-container">
@@ -21,7 +34,6 @@
             preserveAspectRatio="xMidYMid slice"
             opacity="0.9"
           />
-          <!-- Clickable regions -->
           <ellipse class="region" id="head_neck" cx="105" cy="50" rx="36" ry="45" />
           <ellipse class="region" id="thorax" cx="105" cy="130" rx="45" ry="55" />
           <ellipse class="region" id="abdomen" cx="105" cy="220" rx="48" ry="44" />
@@ -62,7 +74,6 @@
         caution when considering such interventions.
       </p>
 
-
       <!-- Viz 2: Heatmap Placeholder -->
       <section id="viz2" class="chart-section">
         <div
@@ -77,7 +88,6 @@
       <section id="viz3" class="chart-section">
         <div id="radar-container"
         style="background: #4a4a4a; padding: 2em;"></div>
-        </div>
       </section>   
       
     </div>
@@ -88,5 +98,86 @@
   <script src="js/tracy_main.js"></script>
   <script src="js/daniel_main.js"></script>
   <script src="js/kate_main.js"></script>
+  <script>
+    // Overlay animation logic
+    const regionMap = {
+      center_head_neck: 'head_neck',
+      center_thorax: 'thorax',
+      center_abdomen: 'abdomen',
+      center_pelvis: 'pelvis'
+    };
+    document.querySelectorAll('#overlay-body-map .region').forEach(region => {
+      region.addEventListener('click', function() {
+        const rId = regionMap[this.id];
+        if (rId) {
+          window.selectedRegion = rId;
+          document.getElementById('center-overlay').classList.add('hide');
+          setTimeout(() => {
+            document.getElementById('center-overlay').style.display = 'none';
+            document.getElementById('main-app').classList.add('show');
+            // Set region as selected in left body map
+            setTimeout(() => {
+              d3.selectAll("#body-map .region").classed("region--selected", false);
+              d3.select(`#body-map .region#${rId}`).classed("region--selected", true);
+              window.dispatchEvent(new Event("regionChange"));
+            }, 200);
+          }, 700);
+        }
+      });
+    });
+    // Restart: hide dashboard, reveal overlay, clear regions
+    document.getElementById('restart-btn').addEventListener('click', function() {
+      window.selectedRegion = null;
+      document.getElementById('main-app').classList.remove('show');
+      setTimeout(() => {
+        document.getElementById('center-overlay').style.display = 'flex';
+        setTimeout(() => {
+          document.getElementById('center-overlay').classList.remove('hide');
+          d3.selectAll("#body-map .region").classed("region--selected", false);
+          window.dispatchEvent(new Event("regionChange"));
+        }, 60);
+      }, 700);
+    });
+    // Tooltips for center body map
+    function setupBodymapTooltip(svgSelector, idPrefix='') {
+      let tooltip = d3.select("body").select(".bodymap-tooltip");
+      if (tooltip.empty()) {
+        tooltip = d3.select("body")
+          .append("div")
+          .attr("class", "bodymap-tooltip")
+          .style("display", "none");
+      }
+      const tooltipData = {
+        head_neck: {label: "Head/Neck", low: "Thyroid lobectomy", high: "Total thyroidectomy"},
+        thorax: {label: "Thorax/Chest", low: "Breast-conserving surgery", high: "Lung lobectomy"},
+        abdomen: {label: "Abdomen", low: "Cholecystectomy", high: "Exploratory laparotomy"},
+        pelvis: {label: "Pelvis/Lower Abdomen", low: "Ileostomy repair", high: "Low anterior resection"}
+      };
+      d3.selectAll(svgSelector + " .region")
+        .on("mouseover", function(event) {
+          let reg = this.id.replace(idPrefix, '');
+          let info = tooltipData[reg];
+          if (info) {
+            tooltip
+              .style("display", "block")
+              .html(`
+                <strong>${info.label}</strong><br>
+                <span style="color:#1a6;"><b>Low Risk:</b> ${info.low}</span><br>
+                <span style="color:#b10;"><b>High Risk:</b> ${info.high}</span>
+              `);
+          }
+        })
+        .on("mousemove", function(event) {
+          tooltip
+            .style("left", (event.pageX + 16) + "px")
+            .style("top", (event.pageY - 12) + "px");
+        })
+        .on("mouseout", function() {
+          tooltip.style("display", "none");
+        });
+    }
+    setupBodymapTooltip("#overlay-body-map", "center_");
+    setupBodymapTooltip("#body-map", "");
+  </script>
 </body>
 </html>
