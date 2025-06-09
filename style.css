@@ -647,8 +647,3 @@ html, body {
   min-width: 200px;
   transition: opacity 0.45s cubic-bezier(.85,0,.15,1);
 }
-
-/* Prevent floating tooltip from clashing visually */
-.bodymap-tooltip.floating-tooltip {
-  /* your previous tooltip style, unchanged */
-}

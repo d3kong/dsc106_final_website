@@ -111,16 +111,16 @@
       `Higher <strong>ASA levels</strong> (rows) indicate sicker patients, and follow along the
       gradient to see that as the bars' colors get brighter (i.e. more yellow) the higher the
       mortality rates are across the differnt operations. Mortality rates vary from region to region, and
-      each visualization's color is scaled to the region's max mortality rate`;
+      each visualization's color is scaled to the region's max mortality rate.`;
 
     container.append("div")
       .attr("class","heatmap-note")
-      .style("max-width","1250px")
-      .style("margin","20px auto 0")
+      .style("max-width","70em")
       .style("font-size","0.95rem")
       .style("line-height","1.4")
       .style("color","#eee")
-      .style("text-align","center")
+      .style("text-align","left")
+      .style("padding", "2em")
       .html(descriptionHTML);
 
     // tooltip div

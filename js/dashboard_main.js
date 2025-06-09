@@ -139,11 +139,11 @@ document.addEventListener("DOMContentLoaded", function() {
             .style("display", "block")
             .html(`
               <strong>${info.label}</strong><br>
-              <span style="color:#1a6;"><b>Low Risk:</b> ${info.low}</span>
+              <span style="color:#CC5500;"><b>Low Risk:</b> ${info.low}</span>
               <div style="font-size:13px; margin-left:0.7em; margin-bottom:0.5em; color:#446;">
                 ${window.regionSurgeryDescriptions[info.low]}
               </div>
-              <span style="color:#b10;"><b>High Risk:</b> ${info.high}</span>
+              <span style="color:#4682B4;"><b>High Risk:</b> ${info.high}</span>
               <div style="font-size:13px; margin-left:0.7em; color:#664;">
                 ${window.regionSurgeryDescriptions[info.high]}
               </div>
@@ -170,11 +170,11 @@ document.addEventListener("DOMContentLoaded", function() {
       pinnedTooltip.style.display = 'block';
       pinnedTooltip.innerHTML = `
         <strong>${info.label}</strong><br>
-        <span style="color:#1a6;"><b>Low Risk: ${info.low}</b></span>
+        <span style="color:#CC5500;"><b>Low Risk: ${info.low}</b></span>
         <div style="font-size:13px; margin-left:0.7em; margin-bottom:0.5em; color:#446;">
           ${window.regionSurgeryDescriptions[info.low]}
         </div>
-        <span style="color:#b10;"><b>High Risk: ${info.high}</b></span>
+        <span style="color:#4682B4;"><b>High Risk: ${info.high}</b></span>
         <div style="font-size:13px; margin-left:0.7em; color:#664;">
           ${window.regionSurgeryDescriptions[info.high]}
         </div>
